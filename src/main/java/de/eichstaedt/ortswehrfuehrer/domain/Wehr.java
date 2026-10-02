@@ -44,17 +44,18 @@ public class Wehr {
     this.gebaeude = gebaeude;
   }
 
-  public void gebaeudeHinzufuegen(Gebaeude gebaeude) {
+  public Wehr gebaeudeHinzufuegen(Gebaeude gebaeude) {
     if (this.gebaeude == null) {
       this.gebaeude = new ArrayList<>();
     }
     this.gebaeude.add(gebaeude);
+    return this;
   }
 
-  public boolean gruenden(String name, LocalDate gruendungsdatum) {
+  public Wehr gruenden(String name, LocalDate gruendungsdatum) {
     this.id = UUID.randomUUID().toString();
     this.name = name;
     this.gruendungsdatum = gruendungsdatum;
-    return true;
+    return this;
   }
 }

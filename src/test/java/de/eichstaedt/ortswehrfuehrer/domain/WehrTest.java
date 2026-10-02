@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
@@ -29,9 +30,9 @@ class WehrTest {
     String wehrName = "Freiwillige Feuerwehr Goettlin";
     LocalDate gruendungsdatum = LocalDate.of(1924, 5, 1);
 
-    boolean result = wehr.gruenden(wehrName, gruendungsdatum);
+    Wehr result = wehr.gruenden(wehrName, gruendungsdatum);
 
-    assertTrue(result);
+    assertSame(wehr, result);
     assertEquals(wehrName, wehr.getName());
     assertEquals(gruendungsdatum, wehr.getGruendungsdatum());
     assertNotNull(wehr.getId());
@@ -44,8 +45,9 @@ class WehrTest {
     Adresse adresse = new Adresse("Hauptstraße", "12a", "14712", "Göttlin");
     Gebaeude gebaeude = new Gebaeude("Gerätehaus Göttlin", adresse);
 
-    wehr.gebaeudeHinzufuegen(gebaeude);
+    Wehr result = wehr.gebaeudeHinzufuegen(gebaeude);
 
+    assertSame(wehr, result);
     assertEquals(1, wehr.getGebaeude().size());
     assertEquals(gebaeude, wehr.getGebaeude().get(0));
     assertEquals("Gerätehaus Göttlin", wehr.getGebaeude().get(0).getBezeichnung());
