@@ -2,14 +2,18 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import java.time.LocalDate;
 import java.util.UUID;
+import org.jmolecules.ddd.annotation.AggregateRoot;
+import org.jmolecules.ddd.annotation.Identity;
 
 /**
  * Created by konrad.eichstaedt@gmx.de on 02.10.26.
  * <p>
  * This Class represents a Fire department as Aggregate Root
  */
+@AggregateRoot
 public class Wehr {
 
+  @Identity
   private String id;
 
   private String name;
