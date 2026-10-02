@@ -1,5 +1,6 @@
 package de.eichstaedt.ortswehrfuehrer.domain;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -9,14 +10,11 @@ import java.util.UUID;
  */
 public class Wehr {
 
-  public Wehr(String name) {
-    this.id = UUID.randomUUID().toString();
-    this.name = name;
-  }
-
   private String id;
 
   private String name;
+
+  private LocalDate gruendungsdatum;
 
   public String getId() {
     return id;
@@ -24,5 +22,16 @@ public class Wehr {
 
   public String getName() {
     return name;
+  }
+
+  public LocalDate getGruendungsdatum() {
+    return gruendungsdatum;
+  }
+
+  public boolean gruenden(String name, LocalDate gruendungsdatum) {
+    this.id = UUID.randomUUID().toString();
+    this.name = name;
+    this.gruendungsdatum = gruendungsdatum;
+    return true;
   }
 }
