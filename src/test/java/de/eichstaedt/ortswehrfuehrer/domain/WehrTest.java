@@ -74,7 +74,14 @@ class WehrTest {
   @Test
   void testKameradHinzufuegen() {
     Wehr wehr = new Wehr();
-    Kamerad kamerad = new Kamerad("Max", "Mustermann");
+    Adresse adresse = new Adresse("Dorfstraße", "12", "14712", "Göttlin");
+    LocalDate geburtsdatum = LocalDate.of(1990, 5, 20);
+    Kamerad kamerad = Kamerad.builder()
+        .vorname("Max")
+        .nachname("Mustermann")
+        .geburtsdatum(geburtsdatum)
+        .adresse(adresse)
+        .build();
 
     Wehr result = wehr.kameradHinzufuegen(kamerad);
 
@@ -83,13 +90,15 @@ class WehrTest {
     assertEquals(kamerad, wehr.getKameraden().get(0));
     assertEquals("Max", wehr.getKameraden().get(0).getVorname());
     assertEquals("Mustermann", wehr.getKameraden().get(0).getNachname());
+    assertEquals(geburtsdatum, wehr.getKameraden().get(0).getGeburtsdatum());
+    assertEquals(adresse, wehr.getKameraden().get(0).getAdresse());
   }
 
   @Test
   void testSetKameraden() {
     Wehr wehr = new Wehr();
-    Kamerad kamerad1 = new Kamerad("Max", "Mustermann");
-    Kamerad kamerad2 = new Kamerad("Erika", "Musterfrau");
+    Kamerad kamerad1 = Kamerad.builder().vorname("Max").nachname("Mustermann").build();
+    Kamerad kamerad2 = Kamerad.builder().vorname("Erika").nachname("Musterfrau").build();
 
     wehr.getKameraden().addAll(List.of(kamerad1, kamerad2));
 

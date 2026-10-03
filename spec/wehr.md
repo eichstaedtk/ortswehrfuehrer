@@ -67,11 +67,11 @@ Und als Rückgabewert wird die Wehr-Instanz geliefert
 ---
 
 ### UC-03: Kamerad zur Wehr hinzufügen
-- **Ziel / Nutzen**: Ein aktives Mitglied (Kamerad) mit persönlicher Kennung und Namen der Wehr zuordnen.
+- **Ziel / Nutzen**: Ein aktives Mitglied (Kamerad) mit persönlicher Kennung, Namen, Geburtsdatum und Anschrift der Wehr zuordnen.
 - **Akteur**: Ortswehrführer / Personalverwalter.
 - **Vorbedingung**: Das Aggregate Root `Wehr` existiert. Eine `Kamerad`-Entität liegt vor.
 - **Eingabeparameter**:
-  - `kamerad` (Kamerad): Der hinzuzufügende Kamerad mit Vorname und Nachname (inkl. automatischer ID-Generierung).
+  - `kamerad` (Kamerad): Der hinzuzufügende Kamerad mit Vorname, Nachname, Geburtsdatum (`LocalDate`) und Adresse (`record Adresse`) (inkl. automatischer ID-Generierung).
 - **Nachbedingung**:
   - Der Kamerad ist in der Mitgliederliste der Wehr erfasst.
   - Die Methode gibt die aktualisierte `Wehr`-Instanz zurück (Fluent API).
@@ -79,10 +79,12 @@ Und als Rückgabewert wird die Wehr-Instanz geliefert
 #### Szenario: Kameraden erfolgreich zur Wehr hinzufügen
 ```gherkin
 Gegeben sei eine Wehr
-Und ein Kamerad "Max Mustermann"
+Und ein Kamerad "Max Mustermann" mit dem Geburtsdatum "20.05.1990" und der Adresse "Dorfstraße 12, 14712 Göttlin"
 Wenn der Kamerad zur Wehr hinzugefügt wird
 Dann enthält die Mitgliederliste der Wehr genau 1 Mitglied
 Und der Kamerad besitzt den Vornamen "Max" und den Nachnamen "Mustermann"
+Und das Geburtsdatum des Kameraden ist der 20.05.1990
+Und die Adresse des Kameraden stimmt mit den Angaben überein
 Und als Rückgabewert wird die Wehr-Instanz geliefert
 ```
 
