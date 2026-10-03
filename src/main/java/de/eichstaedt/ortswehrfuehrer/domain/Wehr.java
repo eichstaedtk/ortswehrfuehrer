@@ -26,6 +26,12 @@ public class Wehr {
 
   private List<Kamerad> kameraden = new ArrayList<>();
 
+  private Abteilung jugendabteilung = new Abteilung("Jugendabteilung");
+
+  private Abteilung einsatzabteilung = new Abteilung("Einsatzabteilung");
+
+  private Abteilung altersUndEhrenabteilung = new Abteilung("Alters- und Ehrenabteilung");
+
   public String getId() {
     return id;
   }
@@ -46,6 +52,18 @@ public class Wehr {
     return kameraden;
   }
 
+  public Abteilung getJugendabteilung() {
+    return jugendabteilung;
+  }
+
+  public Abteilung getEinsatzabteilung() {
+    return einsatzabteilung;
+  }
+
+  public Abteilung getAltersUndEhrenabteilung() {
+    return altersUndEhrenabteilung;
+  }
+
   public Wehr gebaeudeHinzufuegen(Gebaeude gebaeude) {
     if (this.gebaeude == null) {
       this.gebaeude = new ArrayList<>();
@@ -55,10 +73,24 @@ public class Wehr {
   }
 
   public Wehr kameradHinzufuegen(Kamerad kamerad) {
+    return kameradHinzufuegen(kamerad, LocalDate.now());
+  }
+
+  public Wehr kameradHinzufuegen(Kamerad kamerad, LocalDate stichtag) {
     if (this.kameraden == null) {
       this.kameraden = new ArrayList<>();
     }
     this.kameraden.add(kamerad);
+    if (kamerad != null && kamerad.getGeburtsdatum() != null) {
+      int alter = kamerad.berechneAlter(stichtag != null ? stichtag : LocalDate.now());
+      if (alter <= 16) {
+        this.jugendabteilung.kameradHinzufuegen(kamerad);
+      } else if (alter <= 65) {
+        this.einsatzabteilung.kameradHinzufuegen(kamerad);
+      } else {
+        this.altersUndEhrenabteilung.kameradHinzufuegen(kamerad);
+      }
+    }
     return this;
   }
 

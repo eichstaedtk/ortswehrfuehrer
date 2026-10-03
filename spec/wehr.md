@@ -9,7 +9,7 @@ Akzeptanzkriterien für das Aggregate Root `Wehr` im System **Ortswehrführer**.
 
 Das Aggregat `Wehr` bildet das zentrale Aggregate Root für eine Feuerwehreinheit (z. B. Ortswehr
 oder Freiwillige Feuerwehr). Es verwaltet den Lebenszyklus der Wehr sowie deren zugeordnete
-Entitäten (`Gebaeude`, `Kamerad`) und Wertobjekte (`Adresse`).
+Entitäten (`Gebaeude`, `Kamerad`, `Abteilung`) und Wertobjekte (`Adresse`).
 
 ### Fachliche Attribute
 
@@ -18,6 +18,9 @@ Entitäten (`Gebaeude`, `Kamerad`) und Wertobjekte (`Adresse`).
 - **Gründungsdatum (`gruendungsdatum`)**: Historisches Datum der Gründung (`LocalDate`).
 - **Gebäude (`gebaeude`)**: Liste der zugeordneten Liegenschaften/Gerätehäuser (`List<Gebaeude>`).
 - **Kameraden (`kameraden`)**: Liste der aktiven Mitglieder/Kameraden (`List<Kamerad>`).
+- **Jugendabteilung (`jugendabteilung`)**: Einsatzabteilung für Kameraden bis 16 Jahre (`Abteilung`).
+- **Einsatzabteilung (`einsatzabteilung`)**: Einsatzabteilung für Kameraden im Alter von 17 bis 65 Jahren (`Abteilung`).
+- **Alters- und Ehrenabteilung (`altersUndEhrenabteilung`)**: Einsatzabteilung für Kameraden über 65 Jahre (`Abteilung`).
 
 ---
 

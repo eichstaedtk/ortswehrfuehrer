@@ -1,0 +1,69 @@
+package de.eichstaedt.ortswehrfuehrer.domain;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import org.jmolecules.ddd.annotation.Entity;
+import org.jmolecules.ddd.annotation.Identity;
+
+/**
+ * Created by konrad.eichstaedt@gmx.de on 03.10.26.
+ * <p>
+ * This Class represents a Department (Einsatzabteilung) as DDD Entity
+ */
+@Entity
+public class Abteilung {
+
+  @Identity
+  private String id;
+
+  private String bezeichnung;
+
+  private List<Kamerad> kameraden = new ArrayList<>();
+
+  public Abteilung() {
+    this.id = UUID.randomUUID().toString();
+  }
+
+  public Abteilung(String bezeichnung) {
+    this.id = UUID.randomUUID().toString();
+    this.bezeichnung = bezeichnung;
+  }
+
+  public Abteilung(String id, String bezeichnung) {
+    this.id = id;
+    this.bezeichnung = bezeichnung;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getBezeichnung() {
+    return bezeichnung;
+  }
+
+  public void setBezeichnung(String bezeichnung) {
+    this.bezeichnung = bezeichnung;
+  }
+
+  public List<Kamerad> getKameraden() {
+    return kameraden;
+  }
+
+  public void setKameraden(List<Kamerad> kameraden) {
+    this.kameraden = kameraden;
+  }
+
+  public Abteilung kameradHinzufuegen(Kamerad kamerad) {
+    if (this.kameraden == null) {
+      this.kameraden = new ArrayList<>();
+    }
+    this.kameraden.add(kamerad);
+    return this;
+  }
+}

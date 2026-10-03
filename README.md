@@ -136,6 +136,7 @@ Performance, Usability).*
 
 1. Erstellung der Entität `Gebaeude` bzw. `Kamerad` mit eindeutiger ID.
 2. Zuweisung über das Aggregate Root (`gebaeudeHinzufuegen`, `kameradHinzufuegen`).
+3. Automatische Zuordnung von Kameraden zu den Einsatzabteilungen (Jugendabteilung, Einsatzabteilung, Alters- und Ehrenabteilung) basierend auf dem Alter.
 
 ---
 
@@ -212,6 +213,7 @@ Performance, Usability).*
 | **Wehr**       | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden und Kameraden. |
 | **Gebäude**    | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                 |
 | **Kamerad**    | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                           |
+| **Abteilung**  | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Einsatzabteilungen (Jugend, Einsatz, Ehren).    |
 | **Adresse**    | Value Object (Java Record) bestehend aus Straße, Hausnummer, PLZ und Ort.                              |
 | **jMolecules** | Bibliothek zur expliziten Annotation von DDD-Konzepten im Quellcode.                                   |
 | **ArchUnit**   | Testwerkzeug zur automatisierten Absicherung von Architektur- und Designregeln.                        |
