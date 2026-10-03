@@ -17,7 +17,7 @@ Entitäten (`Gebaeude`, `Kamerad`, `Abteilung`) und Wertobjekte (`Adresse`).
 - **Name (`name`)**: Vollständige Bezeichnung der Wehr (z. B. "Freiwillige Feuerwehr Göttlin").
 - **Gründungsdatum (`gruendungsdatum`)**: Historisches Datum der Gründung (`LocalDate`).
 - **Gebäude (`gebaeude`)**: Liste der zugeordneten Liegenschaften/Gerätehäuser (`List<Gebaeude>`).
-- **Fahrzeuge (`fahrzeuge`)**: Liste der zugeordneten Einsatzfahrzeuge (`List<Einsatzfahrzeug>`).
+- **Fahrzeuge (`fahrzeugIds` / `getFahrzeugIds()`)**: Menge der zugeordneten Einsatzfahrzeug-IDs (`Set<String>`) nach dem DDD-Prinzip *Reference by ID*.
 - **Kameraden (`getKameraden()`)**: Dynamisch aggregierte Menge aller Mitglieder/Kameraden aus den
   Einsatzabteilungen (`Set<Kamerad>`).
 - **Jugendabteilung (`jugendabteilung`)**: Einsatzabteilung für Kameraden bis 16 Jahre
@@ -160,9 +160,9 @@ Dann ist der Kamerad in einer der Abteilungen enthalten.  Ein Kamerad im Alter b
 
 ### UC-06: Fahrzeuge zur Wehr hinzufügen
 
-- **Ziel / Nutzen**: Eine Wehr hat die Möglichkeit Fahrzeuge hinzuzufügen.
+- **Ziel / Nutzen**: Eine Wehr hat die Möglichkeit Fahrzeuge über deren Identifikator hinzuzufügen.
 - **Nachbedingung**:
-    - Die Wehr hat eine Liste von Fahrzeugen
+    - Die Wehr verwaltet die eindeutigen IDs der zugeordneten Einsatzfahrzeuge (`Set<String> fahrzeugIds`).
 
 #### Szenario: Aggregat prüfen
 
@@ -174,7 +174,7 @@ Die Wehr hat genau eine Alters- und Ehrenabteilung
 Wenn ein Kamerad zur Wehr hinzugefügt wird
 Dann ist der Kamerad in einer der Abteilungen enthalten.  
 Ein Kamerad im Alter bis 16 ist in der Jugendwehr, ein Kamerad im Alter von 17 bis 65 ist in der Einsatzabteilung, ein Kamerad im Alter über 65 ist in der Alters- und Ehrenabteilung.
-Eine Wehr hat mindestens ein Fahrzeug.
+Eine Wehr kann Fahrzeuge über deren ID oder Einsatzfahrzeug-Instanz zuordnen.
 ```
 
 ---
@@ -185,9 +185,12 @@ Eine Wehr hat mindestens ein Fahrzeug.
 
 1. **Aggregatsgrenzen**: Alle Modifikationen an Gebäuden oder Kameraden erfolgen über die Methoden
    des Aggregate Roots `Wehr`.
-2. **Immutability von Wertobjekten**: Adressen werden ausschließlich als unveränderliche Java
+2. **Aggregate-Referenzierung**: Separate Aggregate Roots (`Wehr` und `Einsatzfahrzeug`) referenzieren
+   sich gemäß DDD-Regeln ausschließlich über ihre Identität (`Reference by ID`), um Transaktionsgrenzen
+   zu wahren.
+3. **Immutability von Wertobjekten**: Adressen und Abmessungen werden ausschließlich als unveränderliche Java
    `record`s modelliert.
-3. **Fluent Interface**: Zustandsändernde Methoden des Aggregats geben zur Verbesserung der
+4. **Fluent Interface**: Zustandsändernde Methoden des Aggregats geben zur Verbesserung der
    Aufrufbarkeit stets die Aggregat-Instanz `this` zurück.
-4. **Validierung**: Alle spezifizierten Szenarien sind durch automatisierte Unittests in `WehrTest`
+5. **Validierung**: Alle spezifizierten Szenarien sind durch automatisierte Unittests in `WehrTest`
    und Architekturprüfungen in `ArchitectureTest` verifiziert.

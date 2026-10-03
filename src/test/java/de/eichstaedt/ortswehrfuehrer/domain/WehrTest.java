@@ -2,6 +2,7 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -25,8 +26,12 @@ class WehrTest {
     assertTrue(wehr.getGebaeude().isEmpty());
     assertNotNull(wehr.getFahrzeuge());
     assertTrue(wehr.getFahrzeuge().isEmpty());
+    assertNotNull(wehr.getFahrzeugIds());
+    assertTrue(wehr.getFahrzeugIds().isEmpty());
     assertNotNull(wehr.getEinsatzfahrzeuge());
     assertTrue(wehr.getEinsatzfahrzeuge().isEmpty());
+    assertNotNull(wehr.getEinsatzfahrzeugIds());
+    assertTrue(wehr.getEinsatzfahrzeugIds().isEmpty());
     assertNotNull(wehr.getKameraden());
     assertTrue(wehr.getKameraden().isEmpty());
 
@@ -296,9 +301,25 @@ class WehrTest {
   }
 
   @Test
-  void testFahrzeugHinzufuegen() {
+  void testFahrzeugHinzufuegenViaId() {
+    Wehr wehr = new Wehr();
+    String fahrzeugId = "fz-tsf-01";
+
+    Wehr result = wehr.fahrzeugHinzufuegen(fahrzeugId);
+
+    assertSame(wehr, result);
+    assertEquals(1, wehr.getFahrzeugIds().size());
+    assertTrue(wehr.getFahrzeugIds().contains("fz-tsf-01"));
+    assertTrue(wehr.getFahrzeuge().contains("fz-tsf-01"));
+    assertTrue(wehr.getEinsatzfahrzeuge().contains("fz-tsf-01"));
+    assertTrue(wehr.getEinsatzfahrzeugIds().contains("fz-tsf-01"));
+  }
+
+  @Test
+  void testFahrzeugHinzufuegenViaEinsatzfahrzeug() {
     Wehr wehr = new Wehr();
     Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .id("fz-tsf-48-1")
         .bezeichnung("Tragkraftspritzenfahrzeug")
         .kennung("Florian Göttlin 48-1")
         .fahrzeugtyp(Fahrzeugtyp.TSF)
@@ -307,48 +328,92 @@ class WehrTest {
     Wehr result = wehr.fahrzeugHinzufuegen(fahrzeug);
 
     assertSame(wehr, result);
-    assertEquals(1, wehr.getFahrzeuge().size());
-    assertEquals(fahrzeug, wehr.getFahrzeuge().get(0));
-    assertEquals("Tragkraftspritzenfahrzeug", wehr.getFahrzeuge().get(0).getBezeichnung());
-    assertEquals("Florian Göttlin 48-1", wehr.getFahrzeuge().get(0).getKennung());
-    assertEquals(Fahrzeugtyp.TSF, wehr.getFahrzeuge().get(0).getFahrzeugtyp());
+    assertEquals(1, wehr.getFahrzeugIds().size());
+    assertTrue(wehr.getFahrzeugIds().contains(fahrzeug.getId()));
+    assertTrue(wehr.getFahrzeuge().contains("fz-tsf-48-1"));
   }
 
   @Test
   void testEinsatzfahrzeugHinzufuegenAlias() {
     Wehr wehr = new Wehr();
     Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .id("fz-hlf-48-2")
         .bezeichnung("Hilfeleistungslöschgruppenfahrzeug")
         .kennung("Florian Göttlin 48-2")
         .fahrzeugtyp(Fahrzeugtyp.HLF10)
         .build();
 
     Wehr result = wehr.einsatzfahrzeugHinzufuegen(fahrzeug);
-
     assertSame(wehr, result);
-    assertEquals(1, wehr.getFahrzeuge().size());
-    assertEquals(fahrzeug, wehr.getFahrzeuge().get(0));
+    assertTrue(wehr.getFahrzeugIds().contains("fz-hlf-48-2"));
+
+    wehr.einsatzfahrzeugHinzufuegen("fz-tlf-48-3");
+    assertEquals(2, wehr.getFahrzeugIds().size());
+    assertTrue(wehr.getFahrzeugIds().contains("fz-tlf-48-3"));
   }
 
   @Test
-  void testSetFahrzeuge() {
+  void testKeineDoppeltenFahrzeugeBeimMehrfachenHinzufuegen() {
+    Wehr wehr = new Wehr();
+    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .id("fz-unique-1")
+        .bezeichnung("TSF")
+        .kennung("Florian 1")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
+        .build();
+
+    wehr.fahrzeugHinzufuegen(fahrzeug);
+    wehr.fahrzeugHinzufuegen(fahrzeug);
+    wehr.fahrzeugHinzufuegen("fz-unique-1");
+
+    assertEquals(1, wehr.getFahrzeugIds().size());
+    assertTrue(wehr.getFahrzeugIds().contains("fz-unique-1"));
+  }
+
+  @Test
+  void testFahrzeugEntfernen() {
     Wehr wehr = new Wehr();
     Einsatzfahrzeug fahrzeug1 = Einsatzfahrzeug.builder()
+        .id("fz-1")
         .bezeichnung("TSF")
         .kennung("Florian 1")
         .fahrzeugtyp(Fahrzeugtyp.TSF)
         .build();
     Einsatzfahrzeug fahrzeug2 = Einsatzfahrzeug.builder()
+        .id("fz-2")
         .bezeichnung("TLF 2000")
         .kennung("Florian 2")
         .fahrzeugtyp(Fahrzeugtyp.TLF2000)
         .build();
 
-    wehr.setFahrzeuge(List.of(fahrzeug1, fahrzeug2));
+    wehr.fahrzeugHinzufuegen(fahrzeug1).fahrzeugHinzufuegen(fahrzeug2);
+    assertEquals(2, wehr.getFahrzeugIds().size());
 
-    assertEquals(2, wehr.getFahrzeuge().size());
-    assertEquals(fahrzeug1, wehr.getFahrzeuge().get(0));
-    assertEquals(fahrzeug2, wehr.getFahrzeuge().get(1));
+    wehr.fahrzeugEntfernen(fahrzeug1);
+    assertEquals(1, wehr.getFahrzeugIds().size());
+    assertFalse(wehr.getFahrzeugIds().contains("fz-1"));
+    assertTrue(wehr.getFahrzeugIds().contains("fz-2"));
+
+    wehr.fahrzeugEntfernen("fz-2");
+    assertTrue(wehr.getFahrzeugIds().isEmpty());
+
+    // Null safety
+    assertDoesNotThrow(() -> wehr.fahrzeugEntfernen((String) null));
+    assertDoesNotThrow(() -> wehr.fahrzeugEntfernen((Einsatzfahrzeug) null));
+  }
+
+  @Test
+  void testSetFahrzeugeUndSetFahrzeugIds() {
+    Wehr wehr = new Wehr();
+
+    wehr.setFahrzeugIds(Set.of("fz-1", "fz-2"));
+    assertEquals(2, wehr.getFahrzeugIds().size());
+    assertTrue(wehr.getFahrzeugIds().contains("fz-1"));
+    assertTrue(wehr.getFahrzeugIds().contains("fz-2"));
+
+    wehr.setFahrzeuge(Set.of("fz-3"));
+    assertEquals(1, wehr.getFahrzeuge().size());
+    assertTrue(wehr.getFahrzeuge().contains("fz-3"));
   }
 
   @Test
@@ -358,6 +423,7 @@ class WehrTest {
     assertNull(wehr.getFahrzeuge());
 
     Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .id("fz-1")
         .bezeichnung("TSF")
         .kennung("Florian 1")
         .fahrzeugtyp(Fahrzeugtyp.TSF)
@@ -365,8 +431,15 @@ class WehrTest {
 
     wehr.fahrzeugHinzufuegen(fahrzeug);
     assertEquals(1, wehr.getFahrzeuge().size());
+    assertTrue(wehr.getFahrzeuge().contains("fz-1"));
 
-    wehr.fahrzeugHinzufuegen(null);
+    wehr.fahrzeugHinzufuegen((Einsatzfahrzeug) null);
+    assertEquals(1, wehr.getFahrzeuge().size());
+
+    wehr.fahrzeugHinzufuegen((String) null);
+    assertEquals(1, wehr.getFahrzeuge().size());
+
+    wehr.fahrzeugHinzufuegen("   ");
     assertEquals(1, wehr.getFahrzeuge().size());
   }
 }

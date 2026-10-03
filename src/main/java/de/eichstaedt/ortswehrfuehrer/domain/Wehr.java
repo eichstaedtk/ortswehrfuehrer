@@ -26,7 +26,7 @@ public class Wehr {
 
   private List<Gebaeude> gebaeude = new ArrayList<>();
 
-  private List<Einsatzfahrzeug> fahrzeuge = new ArrayList<>();
+  private Set<String> fahrzeuge = new LinkedHashSet<>();
 
   private Abteilung jugendabteilung = new Abteilung("Jugendabteilung");
 
@@ -50,15 +50,27 @@ public class Wehr {
     return gebaeude;
   }
 
-  public List<Einsatzfahrzeug> getFahrzeuge() {
+  public Set<String> getFahrzeugIds() {
     return fahrzeuge;
   }
 
-  public List<Einsatzfahrzeug> getEinsatzfahrzeuge() {
+  public Set<String> getFahrzeuge() {
     return fahrzeuge;
   }
 
-  public void setFahrzeuge(List<Einsatzfahrzeug> fahrzeuge) {
+  public Set<String> getEinsatzfahrzeuge() {
+    return fahrzeuge;
+  }
+
+  public Set<String> getEinsatzfahrzeugIds() {
+    return fahrzeuge;
+  }
+
+  public void setFahrzeugIds(Set<String> fahrzeugIds) {
+    this.fahrzeuge = fahrzeugIds;
+  }
+
+  public void setFahrzeuge(Set<String> fahrzeuge) {
     this.fahrzeuge = fahrzeuge;
   }
 
@@ -96,18 +108,43 @@ public class Wehr {
     return this;
   }
 
-  public Wehr fahrzeugHinzufuegen(Einsatzfahrzeug fahrzeug) {
+  public Wehr fahrzeugHinzufuegen(String fahrzeugId) {
     if (this.fahrzeuge == null) {
-      this.fahrzeuge = new ArrayList<>();
+      this.fahrzeuge = new LinkedHashSet<>();
     }
-    if (fahrzeug != null) {
-      this.fahrzeuge.add(fahrzeug);
+    if (fahrzeugId != null && !fahrzeugId.isBlank()) {
+      this.fahrzeuge.add(fahrzeugId);
     }
     return this;
   }
 
+  public Wehr fahrzeugHinzufuegen(Einsatzfahrzeug fahrzeug) {
+    if (fahrzeug != null) {
+      return fahrzeugHinzufuegen(fahrzeug.getId());
+    }
+    return this;
+  }
+
+  public Wehr einsatzfahrzeugHinzufuegen(String fahrzeugId) {
+    return fahrzeugHinzufuegen(fahrzeugId);
+  }
+
   public Wehr einsatzfahrzeugHinzufuegen(Einsatzfahrzeug fahrzeug) {
     return fahrzeugHinzufuegen(fahrzeug);
+  }
+
+  public Wehr fahrzeugEntfernen(String fahrzeugId) {
+    if (this.fahrzeuge != null && fahrzeugId != null) {
+      this.fahrzeuge.remove(fahrzeugId);
+    }
+    return this;
+  }
+
+  public Wehr fahrzeugEntfernen(Einsatzfahrzeug fahrzeug) {
+    if (fahrzeug != null) {
+      return fahrzeugEntfernen(fahrzeug.getId());
+    }
+    return this;
   }
 
   public Wehr kameradHinzufuegen(Kamerad kamerad) {

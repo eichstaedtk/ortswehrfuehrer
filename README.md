@@ -187,6 +187,7 @@ Performance, Usability).*
 | ADR-01 | Einsatz von Quarkus & Java 21   | Angenommen | Hohe Ausführungsgeschwindigkeit, geringer Speicherverbrauch, moderne Sprachmittel.    |
 | ADR-02 | DDD-Modellierung mit jMolecules | Angenommen | Strukturierte Domänentrennung und automatische Erkennung von Architekturverletzungen. |
 | ADR-03 | Value Objects als Java Records  | Angenommen | Garantierte Unveränderlichkeit, kein Boilerplate-Code, maximale Fehlervermeidung.     |
+| ADR-04 | Aggregate-Referenzierung via ID | Angenommen | Entkopplung von Aggregate Roots (`Wehr` & `Einsatzfahrzeug`) zur Wahrung von Transaktionsgrenzen nach DDD. |
 
 ---
 
@@ -198,11 +199,11 @@ Performance, Usability).*
 
 Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`) ermittelt:
 
-- **Gesamtergebnis Tests**: 86 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
-- **Zeilenabdeckung (Line Coverage)**: **97,09 %** (401 von 413 Zeilen abgedeckt)
-- **Instruktionsabdeckung (Instruction Coverage)**: **97,37 %** (1.778 von 1.826 Instruktionen abgedeckt)
-- **Methodenabdeckung (Method Coverage)**: **96,76 %** (179 von 185 Methoden abgedeckt)
-- **Zweigabdeckung (Branch Coverage)**: **86,44 %** (102 von 118 Branches abgedeckt)
+- **Gesamtergebnis Tests**: 89 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
+- **Zeilenabdeckung (Line Coverage)**: **97,19 %** (415 von 427 Zeilen abgedeckt)
+- **Instruktionsabdeckung (Instruction Coverage)**: **97,44 %** (1.825 von 1.873 Instruktionen abgedeckt)
+- **Methodenabdeckung (Method Coverage)**: **96,88 %** (186 von 192 Methoden abgedeckt)
+- **Zweigabdeckung (Branch Coverage)**: **86,72 %** (111 von 128 Branches abgedeckt)
 
 ### 10.2 Qualitätsszenarien
 
@@ -227,7 +228,7 @@ Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`
 
 | Begriff            | Definition                                                                                                           |
 |--------------------|----------------------------------------------------------------------------------------------------------------------|
-| **Wehr**           | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden, Fahrzeugen und Kameraden.  |
+| **Wehr**           | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden, Fahrzeug-IDs und Kameraden.  |
 | **Einsatzfahrzeug**| Aggregate Root, repräsentiert ein Feuerwehr-Fahrzeug mit ID, Bezeichnung, Kennung und DIN-14530-Attributen.         |
 | **Gebäude**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                               |
 | **Kamerad**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                                         |
