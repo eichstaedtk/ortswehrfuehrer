@@ -107,9 +107,11 @@ Performance, Usability).*
 |   +-------------------------------------------------------+ |
 |   | domain (DDD Aggregate, Entities, Value Objects)       | |
 |   |  - Wehr (AggregateRoot)                               | |
+|   |  - Einsatzfahrzeug (AggregateRoot)                     | |
 |   |  - Gebaeude (Entity)                                  | |
 |   |  - Abteilung (Entity)                                 | |
 |   |  - Kamerad (Entity)                                   | |
+|   |  - Fahrzeugtyp (Enum)                                 | |
 |   |  - Adresse (ValueObject / Record)                     | |
 |   +-------------------------------------------------------+ |
 |                                                             |
@@ -189,12 +191,25 @@ Performance, Usability).*
 
 ## 10. Qualitätsanforderungen
 
-*Konkrete Szenarien zur Bewertung der Qualitätsziele aus Kapitel 1.2.*
+*Konkrete Szenarien zur Bewertung der Qualitätsziele aus Kapitel 1.2 sowie aktuelle Qualitätsmetriken.*
+
+### 10.1 Aktuelle Testabdeckung & Metriken
+
+Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`) ermittelt:
+
+- **Gesamtergebnis Tests**: 42 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
+- **Zeilenabdeckung (Line Coverage)**: **95,48 %** (211 von 221 Zeilen abgedeckt)
+- **Instruktionsabdeckung (Instruction Coverage)**: **94,33 %** (699 von 741 Instruktionen abgedeckt)
+- **Methodenabdeckung (Method Coverage)**: **94,23 %** (98 von 104 Methoden abgedeckt)
+- **Zweigabdeckung (Branch Coverage)**: **72,92 %** (35 von 48 Branches abgedeckt)
+
+### 10.2 Qualitätsszenarien
 
 | ID  | Qualitätsmerkmal | Szenario                              | Erwartete Reaktion                        |
 |-----|------------------|---------------------------------------|-------------------------------------------|
 | Q-1 | Wartbarkeit      | Verletzung von DDD-Regeln im Code     | Build schlägt in `ArchitectureTest` fehl. |
 | Q-2 | Robustheit       | Wehr-Erstellung mit ungültigen Werten | Saubere Fehlerbehandlung / Validierung.   |
+| Q-3 | Testabdeckung    | Ausführung der Testsuite (`./mvnw test`) | Automatische Erstellung des JaCoCo-Reports mit > 90 % Zeilenabdeckung. |
 
 ---
 
@@ -209,12 +224,14 @@ Performance, Usability).*
 
 ## 12. Glossar
 
-| Begriff        | Definition                                                                                             |
-|----------------|--------------------------------------------------------------------------------------------------------|
-| **Wehr**       | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden und Kameraden. |
-| **Gebäude**    | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                 |
-| **Kamerad**    | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                           |
-| **Abteilung**  | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Einsatzabteilungen (Jugend, Einsatz, Ehren).    |
-| **Adresse**    | Value Object (Java Record) bestehend aus Straße, Hausnummer, PLZ und Ort.                              |
-| **jMolecules** | Bibliothek zur expliziten Annotation von DDD-Konzepten im Quellcode.                                   |
-| **ArchUnit**   | Testwerkzeug zur automatisierten Absicherung von Architektur- und Designregeln.                        |
+| Begriff            | Definition                                                                                             |
+|--------------------|--------------------------------------------------------------------------------------------------------|
+| **Wehr**           | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden und Kameraden. |
+| **Einsatzfahrzeug**| Aggregate Root, repräsentiert ein Feuerwehr-Fahrzeug mit ID, Bezeichnung, Kennung und Fahrzeugtyp.    |
+| **Gebäude**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                 |
+| **Kamerad**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                           |
+| **Abteilung**      | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Einsatzabteilungen (Jugend, Einsatz, Ehren).    |
+| **Fahrzeugtyp**    | Enum der Fahrzeugtypen (z. B. TSF, TLF2000, HLF10, LF1000).                                            |
+| **Adresse**        | Value Object (Java Record) bestehend aus Straße, Hausnummer, PLZ und Ort.                              |
+| **jMolecules**     | Bibliothek zur expliziten Annotation von DDD-Konzepten im Quellcode.                                   |
+| **ArchUnit**       | Testwerkzeug zur automatisierten Absicherung von Architektur- und Designregeln.                        |
