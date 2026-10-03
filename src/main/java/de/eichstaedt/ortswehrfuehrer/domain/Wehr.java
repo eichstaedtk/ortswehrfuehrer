@@ -2,7 +2,9 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Identity;
@@ -23,8 +25,6 @@ public class Wehr {
   private LocalDate gruendungsdatum;
 
   private List<Gebaeude> gebaeude = new ArrayList<>();
-
-  private List<Kamerad> kameraden = new ArrayList<>();
 
   private Abteilung jugendabteilung = new Abteilung("Jugendabteilung");
 
@@ -48,8 +48,18 @@ public class Wehr {
     return gebaeude;
   }
 
-  public List<Kamerad> getKameraden() {
-    return kameraden;
+  public Set<Kamerad> getKameraden() {
+    Set<Kamerad> alleKameraden = new LinkedHashSet<>();
+    if (this.jugendabteilung != null && this.jugendabteilung.getKameraden() != null) {
+      alleKameraden.addAll(this.jugendabteilung.getKameraden());
+    }
+    if (this.einsatzabteilung != null && this.einsatzabteilung.getKameraden() != null) {
+      alleKameraden.addAll(this.einsatzabteilung.getKameraden());
+    }
+    if (this.altersUndEhrenabteilung != null && this.altersUndEhrenabteilung.getKameraden() != null) {
+      alleKameraden.addAll(this.altersUndEhrenabteilung.getKameraden());
+    }
+    return alleKameraden;
   }
 
   public Abteilung getJugendabteilung() {
@@ -77,18 +87,18 @@ public class Wehr {
   }
 
   public Wehr kameradHinzufuegen(Kamerad kamerad, LocalDate stichtag) {
-    if (this.kameraden == null) {
-      this.kameraden = new ArrayList<>();
-    }
-    this.kameraden.add(kamerad);
-    if (kamerad != null && kamerad.getGeburtsdatum() != null) {
-      int alter = kamerad.berechneAlter(stichtag != null ? stichtag : LocalDate.now());
-      if (alter <= 16) {
-        this.jugendabteilung.kameradHinzufuegen(kamerad);
-      } else if (alter <= 65) {
-        this.einsatzabteilung.kameradHinzufuegen(kamerad);
+    if (kamerad != null) {
+      if (kamerad.getGeburtsdatum() != null) {
+        int alter = kamerad.berechneAlter(stichtag != null ? stichtag : LocalDate.now());
+        if (alter <= 16) {
+          this.jugendabteilung.kameradHinzufuegen(kamerad);
+        } else if (alter <= 65) {
+          this.einsatzabteilung.kameradHinzufuegen(kamerad);
+        } else {
+          this.altersUndEhrenabteilung.kameradHinzufuegen(kamerad);
+        }
       } else {
-        this.altersUndEhrenabteilung.kameradHinzufuegen(kamerad);
+        this.einsatzabteilung.kameradHinzufuegen(kamerad);
       }
     }
     return this;

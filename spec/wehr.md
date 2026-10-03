@@ -17,7 +17,7 @@ Entitäten (`Gebaeude`, `Kamerad`, `Abteilung`) und Wertobjekte (`Adresse`).
 - **Name (`name`)**: Vollständige Bezeichnung der Wehr (z. B. "Freiwillige Feuerwehr Göttlin").
 - **Gründungsdatum (`gruendungsdatum`)**: Historisches Datum der Gründung (`LocalDate`).
 - **Gebäude (`gebaeude`)**: Liste der zugeordneten Liegenschaften/Gerätehäuser (`List<Gebaeude>`).
-- **Kameraden (`kameraden`)**: Liste der aktiven Mitglieder/Kameraden (`List<Kamerad>`).
+- **Kameraden (`getKameraden()`)**: Dynamisch aggregierte Menge aller Mitglieder/Kameraden aus den Einsatzabteilungen (`Set<Kamerad>`).
 - **Jugendabteilung (`jugendabteilung`)**: Einsatzabteilung für Kameraden bis 16 Jahre (`Abteilung`).
 - **Einsatzabteilung (`einsatzabteilung`)**: Einsatzabteilung für Kameraden im Alter von 17 bis 65 Jahren (`Abteilung`).
 - **Alters- und Ehrenabteilung (`altersUndEhrenabteilung`)**: Einsatzabteilung für Kameraden über 65 Jahre (`Abteilung`).
@@ -116,7 +116,7 @@ Und als Rückgabewert wird die Wehr-Instanz geliefert
   `NullPointerException`s zu verhindern.
 - **Nachbedingung**:
     - `id`, `name` und `gruendungsdatum` sind `null`.
-    - `gebaeude` und `kameraden` sind leere, nicht-null Listen.
+    - `gebaeude` ist eine leere, nicht-null Liste und `getKameraden()` liefert eine leere Menge.
 
 #### Szenario: Aggregat im Initialzustand prüfen
 
@@ -126,7 +126,7 @@ Dann ist die ID nicht gesetzt (null)
 Und der Name ist nicht gesetzt (null)
 Und das Gründungsdatum ist nicht gesetzt (null)
 Und die Gebäudeliste ist nicht null und leer
-Und die Kameradenliste ist nicht null und leer
+Und die aggregierte Kameradenmenge ist nicht null und leer
 ```
 
 ### UC-05: Einsatzabteilungen der Wehr

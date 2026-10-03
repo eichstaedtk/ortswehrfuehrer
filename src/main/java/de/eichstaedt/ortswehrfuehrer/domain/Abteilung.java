@@ -1,7 +1,7 @@
 package de.eichstaedt.ortswehrfuehrer.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.Entity;
 import org.jmolecules.ddd.annotation.Identity;
@@ -19,7 +19,7 @@ public class Abteilung {
 
   private String bezeichnung;
 
-  private List<Kamerad> kameraden = new ArrayList<>();
+  private Set<Kamerad> kameraden = new LinkedHashSet<>();
 
   public Abteilung() {
     this.id = UUID.randomUUID().toString();
@@ -51,17 +51,17 @@ public class Abteilung {
     this.bezeichnung = bezeichnung;
   }
 
-  public List<Kamerad> getKameraden() {
+  public Set<Kamerad> getKameraden() {
     return kameraden;
   }
 
-  public void setKameraden(List<Kamerad> kameraden) {
+  public void setKameraden(Set<Kamerad> kameraden) {
     this.kameraden = kameraden;
   }
 
   public Abteilung kameradHinzufuegen(Kamerad kamerad) {
     if (this.kameraden == null) {
-      this.kameraden = new ArrayList<>();
+      this.kameraden = new LinkedHashSet<>();
     }
     this.kameraden.add(kamerad);
     return this;

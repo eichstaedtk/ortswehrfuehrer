@@ -2,6 +2,7 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -162,5 +163,32 @@ class KameradTest {
         .build();
 
     assertThrows(IllegalArgumentException.class, () -> kamerad.berechneAlter(null));
+  }
+
+  @Test
+  void testEqualsAndHashCode() {
+    Kamerad kamerad1 = Kamerad.builder()
+        .id("kamerad-id-1")
+        .vorname("Max")
+        .nachname("Mustermann")
+        .build();
+
+    Kamerad kamerad2 = Kamerad.builder()
+        .id("kamerad-id-1")
+        .vorname("Maximilian")
+        .nachname("Mustermann")
+        .build();
+
+    Kamerad kamerad3 = Kamerad.builder()
+        .id("kamerad-id-2")
+        .vorname("Max")
+        .nachname("Mustermann")
+        .build();
+
+    assertEquals(kamerad1, kamerad2);
+    assertEquals(kamerad1.hashCode(), kamerad2.hashCode());
+    assertNotEquals(kamerad1, kamerad3);
+    assertNotEquals(null, kamerad1);
+    assertNotEquals(kamerad1, new Object());
   }
 }

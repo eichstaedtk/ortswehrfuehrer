@@ -2,6 +2,7 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.Entity;
 import org.jmolecules.ddd.annotation.Identity;
@@ -149,5 +150,22 @@ public class Kamerad {
       throw new IllegalArgumentException("Stichtag darf nicht null sein.");
     }
     return Period.between(this.geburtsdatum, stichtag).getYears();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Kamerad kamerad = (Kamerad) o;
+    return Objects.equals(id, kamerad.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
   }
 }

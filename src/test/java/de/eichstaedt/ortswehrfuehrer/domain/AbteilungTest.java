@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
@@ -60,7 +60,7 @@ class AbteilungTest {
 
     assertSame(abteilung, result);
     assertEquals(1, abteilung.getKameraden().size());
-    assertEquals(kamerad, abteilung.getKameraden().get(0));
+    assertTrue(abteilung.getKameraden().contains(kamerad));
   }
 
   @Test
@@ -69,10 +69,26 @@ class AbteilungTest {
     Kamerad kamerad1 = Kamerad.builder().vorname("Max").nachname("Mustermann").build();
     Kamerad kamerad2 = Kamerad.builder().vorname("Erika").nachname("Musterfrau").build();
 
-    abteilung.setKameraden(List.of(kamerad1, kamerad2));
+    abteilung.setKameraden(Set.of(kamerad1, kamerad2));
 
     assertEquals(2, abteilung.getKameraden().size());
-    assertEquals(kamerad1, abteilung.getKameraden().get(0));
-    assertEquals(kamerad2, abteilung.getKameraden().get(1));
+    assertTrue(abteilung.getKameraden().contains(kamerad1));
+    assertTrue(abteilung.getKameraden().contains(kamerad2));
+  }
+
+  @Test
+  void testKeineDoppeltenKameradenInAbteilung() {
+    Abteilung abteilung = new Abteilung("Einsatzabteilung");
+    Kamerad kamerad = Kamerad.builder()
+        .id("kamerad-1")
+        .vorname("Max")
+        .nachname("Mustermann")
+        .build();
+
+    abteilung.kameradHinzufuegen(kamerad);
+    abteilung.kameradHinzufuegen(kamerad);
+
+    assertEquals(1, abteilung.getKameraden().size());
+    assertTrue(abteilung.getKameraden().contains(kamerad));
   }
 }

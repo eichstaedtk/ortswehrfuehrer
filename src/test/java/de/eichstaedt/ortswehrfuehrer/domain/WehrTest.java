@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
@@ -99,11 +100,11 @@ class WehrTest {
 
     assertSame(wehr, result);
     assertEquals(1, wehr.getKameraden().size());
-    assertEquals(kamerad, wehr.getKameraden().get(0));
-    assertEquals("Max", wehr.getKameraden().get(0).getVorname());
-    assertEquals("Mustermann", wehr.getKameraden().get(0).getNachname());
-    assertEquals(geburtsdatum, wehr.getKameraden().get(0).getGeburtsdatum());
-    assertEquals(adresse, wehr.getKameraden().get(0).getAdresse());
+    assertTrue(wehr.getKameraden().contains(kamerad));
+    assertEquals("Max", kamerad.getVorname());
+    assertEquals("Mustermann", kamerad.getNachname());
+    assertEquals(geburtsdatum, kamerad.getGeburtsdatum());
+    assertEquals(adresse, kamerad.getAdresse());
     assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(kamerad));
   }
 
@@ -131,8 +132,8 @@ class WehrTest {
 
     assertEquals(2, wehr.getKameraden().size());
     assertEquals(2, wehr.getJugendabteilung().getKameraden().size());
-    assertEquals(jugendlicher16, wehr.getJugendabteilung().getKameraden().get(0));
-    assertEquals(kind12, wehr.getJugendabteilung().getKameraden().get(1));
+    assertTrue(wehr.getJugendabteilung().getKameraden().contains(jugendlicher16));
+    assertTrue(wehr.getJugendabteilung().getKameraden().contains(kind12));
     assertTrue(wehr.getEinsatzabteilung().getKameraden().isEmpty());
     assertTrue(wehr.getAltersUndEhrenabteilung().getKameraden().isEmpty());
   }
@@ -161,8 +162,8 @@ class WehrTest {
 
     assertEquals(2, wehr.getKameraden().size());
     assertEquals(2, wehr.getEinsatzabteilung().getKameraden().size());
-    assertEquals(einsatzkraft17, wehr.getEinsatzabteilung().getKameraden().get(0));
-    assertEquals(einsatzkraft65, wehr.getEinsatzabteilung().getKameraden().get(1));
+    assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(einsatzkraft17));
+    assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(einsatzkraft65));
     assertTrue(wehr.getJugendabteilung().getKameraden().isEmpty());
     assertTrue(wehr.getAltersUndEhrenabteilung().getKameraden().isEmpty());
   }
@@ -191,8 +192,8 @@ class WehrTest {
 
     assertEquals(2, wehr.getKameraden().size());
     assertEquals(2, wehr.getAltersUndEhrenabteilung().getKameraden().size());
-    assertEquals(senior66, wehr.getAltersUndEhrenabteilung().getKameraden().get(0));
-    assertEquals(senior80, wehr.getAltersUndEhrenabteilung().getKameraden().get(1));
+    assertTrue(wehr.getAltersUndEhrenabteilung().getKameraden().contains(senior66));
+    assertTrue(wehr.getAltersUndEhrenabteilung().getKameraden().contains(senior80));
     assertTrue(wehr.getJugendabteilung().getKameraden().isEmpty());
     assertTrue(wehr.getEinsatzabteilung().getKameraden().isEmpty());
   }
@@ -225,25 +226,64 @@ class WehrTest {
     assertEquals(3, wehr.getKameraden().size());
 
     assertEquals(1, wehr.getJugendabteilung().getKameraden().size());
-    assertEquals(jugend, wehr.getJugendabteilung().getKameraden().get(0));
+    assertTrue(wehr.getJugendabteilung().getKameraden().contains(jugend));
 
     assertEquals(1, wehr.getEinsatzabteilung().getKameraden().size());
-    assertEquals(einsatz, wehr.getEinsatzabteilung().getKameraden().get(0));
+    assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(einsatz));
 
     assertEquals(1, wehr.getAltersUndEhrenabteilung().getKameraden().size());
-    assertEquals(ehren, wehr.getAltersUndEhrenabteilung().getKameraden().get(0));
+    assertTrue(wehr.getAltersUndEhrenabteilung().getKameraden().contains(ehren));
   }
 
   @Test
-  void testSetKameraden() {
+  void testKameradenWerdenAusAllenAbteilungenGelesen() {
     Wehr wehr = new Wehr();
-    Kamerad kamerad1 = Kamerad.builder().vorname("Max").nachname("Mustermann").build();
-    Kamerad kamerad2 = Kamerad.builder().vorname("Erika").nachname("Musterfrau").build();
+    LocalDate stichtag = LocalDate.of(2026, 1, 1);
 
-    wehr.getKameraden().addAll(List.of(kamerad1, kamerad2));
+    Kamerad jugend = Kamerad.builder()
+        .vorname("Tim")
+        .nachname("Müller")
+        .geburtsdatum(LocalDate.of(2012, 1, 1))
+        .build();
+    Kamerad einsatz = Kamerad.builder()
+        .vorname("Max")
+        .nachname("Mustermann")
+        .geburtsdatum(LocalDate.of(1990, 1, 1))
+        .build();
+    Kamerad ehren = Kamerad.builder()
+        .vorname("Hans")
+        .nachname("Bauer")
+        .geburtsdatum(LocalDate.of(1950, 1, 1))
+        .build();
 
-    assertEquals(2, wehr.getKameraden().size());
-    assertEquals(kamerad1, wehr.getKameraden().get(0));
-    assertEquals(kamerad2, wehr.getKameraden().get(1));
+    wehr.kameradHinzufuegen(jugend, stichtag)
+        .kameradHinzufuegen(einsatz, stichtag)
+        .kameradHinzufuegen(ehren, stichtag);
+
+    Set<Kamerad> alleKameraden = wehr.getKameraden();
+    assertEquals(3, alleKameraden.size());
+    assertTrue(alleKameraden.contains(jugend));
+    assertTrue(alleKameraden.contains(einsatz));
+    assertTrue(alleKameraden.contains(ehren));
+  }
+
+  @Test
+  void testKeineDoppeltenKameradenBeimMehrfachenHinzufuegen() {
+    Wehr wehr = new Wehr();
+    LocalDate stichtag = LocalDate.of(2026, 1, 1);
+
+    Kamerad kamerad = Kamerad.builder()
+        .id("kamerad-unique")
+        .vorname("Max")
+        .nachname("Mustermann")
+        .geburtsdatum(LocalDate.of(1990, 1, 1))
+        .build();
+
+    wehr.kameradHinzufuegen(kamerad, stichtag);
+    wehr.kameradHinzufuegen(kamerad, stichtag);
+
+    assertEquals(1, wehr.getKameraden().size());
+    assertEquals(1, wehr.getEinsatzabteilung().getKameraden().size());
+    assertTrue(wehr.getKameraden().contains(kamerad));
   }
 }

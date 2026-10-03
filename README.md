@@ -108,6 +108,7 @@ Performance, Usability).*
 |   | domain (DDD Aggregate, Entities, Value Objects)       | |
 |   |  - Wehr (AggregateRoot)                               | |
 |   |  - Gebaeude (Entity)                                  | |
+|   |  - Abteilung (Entity)                                 | |
 |   |  - Kamerad (Entity)                                   | |
 |   |  - Adresse (ValueObject / Record)                     | |
 |   +-------------------------------------------------------+ |
