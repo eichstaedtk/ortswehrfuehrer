@@ -17,6 +17,7 @@ Entitäten (`Gebaeude`, `Kamerad`, `Abteilung`) und Wertobjekte (`Adresse`).
 - **Name (`name`)**: Vollständige Bezeichnung der Wehr (z. B. "Freiwillige Feuerwehr Göttlin").
 - **Gründungsdatum (`gruendungsdatum`)**: Historisches Datum der Gründung (`LocalDate`).
 - **Gebäude (`gebaeude`)**: Liste der zugeordneten Liegenschaften/Gerätehäuser (`List<Gebaeude>`).
+- **Fahrzeuge (`fahrzeuge`)**: Liste der zugeordneten Einsatzfahrzeuge (`List<Einsatzfahrzeug>`).
 - **Kameraden (`getKameraden()`)**: Dynamisch aggregierte Menge aller Mitglieder/Kameraden aus den
   Einsatzabteilungen (`Set<Kamerad>`).
 - **Jugendabteilung (`jugendabteilung`)**: Einsatzabteilung für Kameraden bis 16 Jahre
@@ -156,6 +157,27 @@ Die Wehr hat genau eine Alters- und Ehrenabteilung
 Wenn ein Kamerad zur Wehr hinzugefügt wird
 Dann ist der Kamerad in einer der Abteilungen enthalten.  Ein Kamerad im Alter bis 16 ist in der Jugendwehr, ein Kamerad im Alter von 17 bis 65 ist in der Einsatzabteilung, ein Kamerad im Alter über 65 ist in der Alters- und Ehrenabteilung.
 ```
+
+### UC-06: Fahrzeuge zur Wehr hinzufügen
+
+- **Ziel / Nutzen**: Eine Wehr hat die Möglichkeit Fahrzeuge hinzuzufügen.
+- **Nachbedingung**:
+    - Die Wehr hat eine Liste von Fahrzeugen
+
+#### Szenario: Aggregat prüfen
+
+```gherkin
+Gegeben sei eine neu instanziierte Wehr
+Die Wehr hat genau eine Jugendabteilung
+Die Wehr hat genau eine Einsatzabteilung
+Die Wehr hat genau eine Alters- und Ehrenabteilung
+Wenn ein Kamerad zur Wehr hinzugefügt wird
+Dann ist der Kamerad in einer der Abteilungen enthalten.  
+Ein Kamerad im Alter bis 16 ist in der Jugendwehr, ein Kamerad im Alter von 17 bis 65 ist in der Einsatzabteilung, ein Kamerad im Alter über 65 ist in der Alters- und Ehrenabteilung.
+Eine Wehr hat mindestens ein Fahrzeug.
+```
+
+---
 
 ---
 

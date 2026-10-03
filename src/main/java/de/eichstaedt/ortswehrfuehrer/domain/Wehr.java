@@ -26,6 +26,8 @@ public class Wehr {
 
   private List<Gebaeude> gebaeude = new ArrayList<>();
 
+  private List<Einsatzfahrzeug> fahrzeuge = new ArrayList<>();
+
   private Abteilung jugendabteilung = new Abteilung("Jugendabteilung");
 
   private Abteilung einsatzabteilung = new Abteilung("Einsatzabteilung");
@@ -46,6 +48,18 @@ public class Wehr {
 
   public List<Gebaeude> getGebaeude() {
     return gebaeude;
+  }
+
+  public List<Einsatzfahrzeug> getFahrzeuge() {
+    return fahrzeuge;
+  }
+
+  public List<Einsatzfahrzeug> getEinsatzfahrzeuge() {
+    return fahrzeuge;
+  }
+
+  public void setFahrzeuge(List<Einsatzfahrzeug> fahrzeuge) {
+    this.fahrzeuge = fahrzeuge;
   }
 
   public Set<Kamerad> getKameraden() {
@@ -80,6 +94,20 @@ public class Wehr {
     }
     this.gebaeude.add(gebaeude);
     return this;
+  }
+
+  public Wehr fahrzeugHinzufuegen(Einsatzfahrzeug fahrzeug) {
+    if (this.fahrzeuge == null) {
+      this.fahrzeuge = new ArrayList<>();
+    }
+    if (fahrzeug != null) {
+      this.fahrzeuge.add(fahrzeug);
+    }
+    return this;
+  }
+
+  public Wehr einsatzfahrzeugHinzufuegen(Einsatzfahrzeug fahrzeug) {
+    return fahrzeugHinzufuegen(fahrzeug);
   }
 
   public Wehr kameradHinzufuegen(Kamerad kamerad) {

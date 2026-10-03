@@ -113,6 +113,7 @@ Performance, Usability).*
 |   |  - Kamerad (Entity)                                   | |
 |   |  - Fahrzeugtyp (Enum)                                 | |
 |   |  - Adresse (ValueObject / Record)                     | |
+|   |  - Abmessungen (ValueObject / Record)                 | |
 |   +-------------------------------------------------------+ |
 |                                                             |
 |   +-------------------------------------------------------+ |
@@ -135,10 +136,10 @@ Performance, Usability).*
 2. Aufruf von `gruenden(name, gruendungsdatum)`.
 3. Vergabe einer eindeutigen UUID und Setzen des Gründungsdatums.
 
-### 6.2 Szenario 2: Hinzufügen von Gebäuden und Kameraden
+### 6.2 Szenario 2: Hinzufügen von Gebäuden, Fahrzeugen und Kameraden
 
-1. Erstellung der Entität `Gebaeude` bzw. `Kamerad` mit eindeutiger ID.
-2. Zuweisung über das Aggregate Root (`gebaeudeHinzufuegen`, `kameradHinzufuegen`).
+1. Erstellung der Entität `Gebaeude`, `Einsatzfahrzeug` bzw. `Kamerad` mit eindeutiger ID.
+2. Zuweisung über das Aggregate Root (`gebaeudeHinzufuegen`, `fahrzeugHinzufuegen`, `kameradHinzufuegen`).
 3. Automatische Zuordnung von Kameraden zu den Einsatzabteilungen (Jugendabteilung, Einsatzabteilung, Alters- und Ehrenabteilung) basierend auf dem Alter.
 
 ---
@@ -197,11 +198,11 @@ Performance, Usability).*
 
 Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`) ermittelt:
 
-- **Gesamtergebnis Tests**: 42 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
-- **Zeilenabdeckung (Line Coverage)**: **95,48 %** (211 von 221 Zeilen abgedeckt)
-- **Instruktionsabdeckung (Instruction Coverage)**: **94,33 %** (699 von 741 Instruktionen abgedeckt)
-- **Methodenabdeckung (Method Coverage)**: **94,23 %** (98 von 104 Methoden abgedeckt)
-- **Zweigabdeckung (Branch Coverage)**: **72,92 %** (35 von 48 Branches abgedeckt)
+- **Gesamtergebnis Tests**: 86 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
+- **Zeilenabdeckung (Line Coverage)**: **97,09 %** (401 von 413 Zeilen abgedeckt)
+- **Instruktionsabdeckung (Instruction Coverage)**: **97,37 %** (1.778 von 1.826 Instruktionen abgedeckt)
+- **Methodenabdeckung (Method Coverage)**: **96,76 %** (179 von 185 Methoden abgedeckt)
+- **Zweigabdeckung (Branch Coverage)**: **86,44 %** (102 von 118 Branches abgedeckt)
 
 ### 10.2 Qualitätsszenarien
 
@@ -224,14 +225,15 @@ Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`
 
 ## 12. Glossar
 
-| Begriff            | Definition                                                                                             |
-|--------------------|--------------------------------------------------------------------------------------------------------|
-| **Wehr**           | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden und Kameraden. |
-| **Einsatzfahrzeug**| Aggregate Root, repräsentiert ein Feuerwehr-Fahrzeug mit ID, Bezeichnung, Kennung und Fahrzeugtyp.    |
-| **Gebäude**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                 |
-| **Kamerad**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                           |
-| **Abteilung**      | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Einsatzabteilungen (Jugend, Einsatz, Ehren).    |
-| **Fahrzeugtyp**    | Enum der Fahrzeugtypen (z. B. TSF, TLF2000, HLF10, LF1000).                                            |
-| **Adresse**        | Value Object (Java Record) bestehend aus Straße, Hausnummer, PLZ und Ort.                              |
-| **jMolecules**     | Bibliothek zur expliziten Annotation von DDD-Konzepten im Quellcode.                                   |
-| **ArchUnit**       | Testwerkzeug zur automatisierten Absicherung von Architektur- und Designregeln.                        |
+| Begriff            | Definition                                                                                                           |
+|--------------------|----------------------------------------------------------------------------------------------------------------------|
+| **Wehr**           | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden, Fahrzeugen und Kameraden.  |
+| **Einsatzfahrzeug**| Aggregate Root, repräsentiert ein Feuerwehr-Fahrzeug mit ID, Bezeichnung, Kennung und DIN-14530-Attributen.         |
+| **Gebäude**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                               |
+| **Kamerad**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                                         |
+| **Abteilung**      | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Einsatzabteilungen (Jugend, Einsatz, Ehren).                  |
+| **Fahrzeugtyp**    | Enum der genormten Feuerwehrfahrzeugtypen nach DIN 14530 (z. B. KLF, TSF, TSF-W, MLF, LF 10, HLF 10, LF 20, TLF).   |
+| **Adresse**        | Value Object (Java Record) bestehend aus Straße, Hausnummer, PLZ und Ort.                                            |
+| **Abmessungen**    | Value Object (Java Record) für maximale Fahrzeugabmessungen (Länge × Breite × Höhe in Metern).                      |
+| **jMolecules**     | Bibliothek zur expliziten Annotation von DDD-Konzepten im Quellcode.                                                 |
+| **ArchUnit**       | Testwerkzeug zur automatisierten Absicherung von Architektur- und Designregeln.                                      |

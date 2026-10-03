@@ -23,6 +23,10 @@ class WehrTest {
     assertNull(wehr.getGruendungsdatum());
     assertNotNull(wehr.getGebaeude());
     assertTrue(wehr.getGebaeude().isEmpty());
+    assertNotNull(wehr.getFahrzeuge());
+    assertTrue(wehr.getFahrzeuge().isEmpty());
+    assertNotNull(wehr.getEinsatzfahrzeuge());
+    assertTrue(wehr.getEinsatzfahrzeuge().isEmpty());
     assertNotNull(wehr.getKameraden());
     assertTrue(wehr.getKameraden().isEmpty());
 
@@ -289,5 +293,80 @@ class WehrTest {
     assertEquals(1, wehr.getKameraden().size());
     assertEquals(1, wehr.getEinsatzabteilung().getKameraden().size());
     assertTrue(wehr.getKameraden().contains(kamerad));
+  }
+
+  @Test
+  void testFahrzeugHinzufuegen() {
+    Wehr wehr = new Wehr();
+    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .bezeichnung("Tragkraftspritzenfahrzeug")
+        .kennung("Florian Göttlin 48-1")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
+        .build();
+
+    Wehr result = wehr.fahrzeugHinzufuegen(fahrzeug);
+
+    assertSame(wehr, result);
+    assertEquals(1, wehr.getFahrzeuge().size());
+    assertEquals(fahrzeug, wehr.getFahrzeuge().get(0));
+    assertEquals("Tragkraftspritzenfahrzeug", wehr.getFahrzeuge().get(0).getBezeichnung());
+    assertEquals("Florian Göttlin 48-1", wehr.getFahrzeuge().get(0).getKennung());
+    assertEquals(Fahrzeugtyp.TSF, wehr.getFahrzeuge().get(0).getFahrzeugtyp());
+  }
+
+  @Test
+  void testEinsatzfahrzeugHinzufuegenAlias() {
+    Wehr wehr = new Wehr();
+    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .bezeichnung("Hilfeleistungslöschgruppenfahrzeug")
+        .kennung("Florian Göttlin 48-2")
+        .fahrzeugtyp(Fahrzeugtyp.HLF10)
+        .build();
+
+    Wehr result = wehr.einsatzfahrzeugHinzufuegen(fahrzeug);
+
+    assertSame(wehr, result);
+    assertEquals(1, wehr.getFahrzeuge().size());
+    assertEquals(fahrzeug, wehr.getFahrzeuge().get(0));
+  }
+
+  @Test
+  void testSetFahrzeuge() {
+    Wehr wehr = new Wehr();
+    Einsatzfahrzeug fahrzeug1 = Einsatzfahrzeug.builder()
+        .bezeichnung("TSF")
+        .kennung("Florian 1")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
+        .build();
+    Einsatzfahrzeug fahrzeug2 = Einsatzfahrzeug.builder()
+        .bezeichnung("TLF 2000")
+        .kennung("Florian 2")
+        .fahrzeugtyp(Fahrzeugtyp.TLF2000)
+        .build();
+
+    wehr.setFahrzeuge(List.of(fahrzeug1, fahrzeug2));
+
+    assertEquals(2, wehr.getFahrzeuge().size());
+    assertEquals(fahrzeug1, wehr.getFahrzeuge().get(0));
+    assertEquals(fahrzeug2, wehr.getFahrzeuge().get(1));
+  }
+
+  @Test
+  void testFahrzeugHinzufuegenNullUndInitialisierung() {
+    Wehr wehr = new Wehr();
+    wehr.setFahrzeuge(null);
+    assertNull(wehr.getFahrzeuge());
+
+    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .bezeichnung("TSF")
+        .kennung("Florian 1")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
+        .build();
+
+    wehr.fahrzeugHinzufuegen(fahrzeug);
+    assertEquals(1, wehr.getFahrzeuge().size());
+
+    wehr.fahrzeugHinzufuegen(null);
+    assertEquals(1, wehr.getFahrzeuge().size());
   }
 }
