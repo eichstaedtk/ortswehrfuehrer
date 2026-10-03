@@ -7,10 +7,12 @@ Projekt definiert werden.
 
 - **Domain-Driven Design (DDD)**: Domänenmodelle werden mit jMolecules annotiert (z. B.
   `@AggregateRoot`, `@Identity`, `@Entity`, `@ValueObject`).
-- **Value Objects**: Value Objects werden ausnahmslos als Java `record` implementiert (z. B. `@ValueObject public record Adresse(...) {}`).
+- **Value Objects**: Value Objects werden ausnahmslos als Java `record` implementiert (z. B.
+  `@ValueObject public record Adresse(...) {}`).
 - **Architekturregeln**: ArchUnit-Tests in `ArchitectureTest` stellen die Einhaltung der Regeln
   sicher.
 - **CleanCode**: Code sollte lesbar, wartbar und effizient sein.
+- ** Die Architektur des Projektes ist Clean Architecture **
 
 ## Code-Stil & Java-Standards
 
