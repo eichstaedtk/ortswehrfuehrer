@@ -22,6 +22,8 @@ class WehrTest {
     assertNull(wehr.getGruendungsdatum());
     assertNotNull(wehr.getGebaeude());
     assertTrue(wehr.getGebaeude().isEmpty());
+    assertNotNull(wehr.getKameraden());
+    assertTrue(wehr.getKameraden().isEmpty());
   }
 
   @Test
@@ -62,10 +64,37 @@ class WehrTest {
     Adresse adresse2 = new Adresse("Seestraße", "5", "14712", "Göttlin");
     Gebaeude gebaeude2 = new Gebaeude("Bootshaus Göttlin", adresse2);
 
-    wehr.setGebaeude(List.of(gebaeude1, gebaeude2));
+    wehr.getGebaeude().addAll(List.of(gebaeude1, gebaeude2));
 
     assertEquals(2, wehr.getGebaeude().size());
     assertEquals(gebaeude1, wehr.getGebaeude().get(0));
     assertEquals(gebaeude2, wehr.getGebaeude().get(1));
+  }
+
+  @Test
+  void testKameradHinzufuegen() {
+    Wehr wehr = new Wehr();
+    Kamerad kamerad = new Kamerad("Max", "Mustermann");
+
+    Wehr result = wehr.kameradHinzufuegen(kamerad);
+
+    assertSame(wehr, result);
+    assertEquals(1, wehr.getKameraden().size());
+    assertEquals(kamerad, wehr.getKameraden().get(0));
+    assertEquals("Max", wehr.getKameraden().get(0).getVorname());
+    assertEquals("Mustermann", wehr.getKameraden().get(0).getNachname());
+  }
+
+  @Test
+  void testSetKameraden() {
+    Wehr wehr = new Wehr();
+    Kamerad kamerad1 = new Kamerad("Max", "Mustermann");
+    Kamerad kamerad2 = new Kamerad("Erika", "Musterfrau");
+
+    wehr.getKameraden().addAll(List.of(kamerad1, kamerad2));
+
+    assertEquals(2, wehr.getKameraden().size());
+    assertEquals(kamerad1, wehr.getKameraden().get(0));
+    assertEquals(kamerad2, wehr.getKameraden().get(1));
   }
 }

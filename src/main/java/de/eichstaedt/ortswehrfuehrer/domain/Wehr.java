@@ -24,6 +24,8 @@ public class Wehr {
 
   private List<Gebaeude> gebaeude = new ArrayList<>();
 
+  private List<Kamerad> kameraden = new ArrayList<>();
+
   public String getId() {
     return id;
   }
@@ -40,8 +42,8 @@ public class Wehr {
     return gebaeude;
   }
 
-  public void setGebaeude(List<Gebaeude> gebaeude) {
-    this.gebaeude = gebaeude;
+  public List<Kamerad> getKameraden() {
+    return kameraden;
   }
 
   public Wehr gebaeudeHinzufuegen(Gebaeude gebaeude) {
@@ -49,6 +51,14 @@ public class Wehr {
       this.gebaeude = new ArrayList<>();
     }
     this.gebaeude.add(gebaeude);
+    return this;
+  }
+
+  public Wehr kameradHinzufuegen(Kamerad kamerad) {
+    if (this.kameraden == null) {
+      this.kameraden = new ArrayList<>();
+    }
+    this.kameraden.add(kamerad);
     return this;
   }
 
