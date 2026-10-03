@@ -1,0 +1,114 @@
+# Spezifikation: Anwendungsfälle Aggregate Root `Wehr`
+
+Dieses Dokument spezifiziert die fachlichen Anwendungsfälle (Use Cases), Invarianten und Akzeptanzkriterien für das Aggregate Root `Wehr` im System **Ortswehrführer**.
+
+---
+
+## 1. Übersicht der Domänenentität
+
+Das Aggregat `Wehr` bildet das zentrale Aggregate Root für eine Feuerwehreinheit (z. B. Ortswehr oder Freiwillige Feuerwehr). Es verwaltet den Lebenszyklus der Wehr sowie deren zugeordnete Entitäten (`Gebaeude`, `Kamerad`) und Wertobjekte (`Adresse`).
+
+### Fachliche Attribute
+- **ID (`id`)**: Eindeutiger fachlicher/technischer Identifikator (UUID-Format).
+- **Name (`name`)**: Vollständige Bezeichnung der Wehr (z. B. "Freiwillige Feuerwehr Göttlin").
+- **Gründungsdatum (`gruendungsdatum`)**: Historisches Datum der Gründung (`LocalDate`).
+- **Gebäude (`gebaeude`)**: Liste der zugeordneten Liegenschaften/Gerätehäuser (`List<Gebaeude>`).
+- **Kameraden (`kameraden`)**: Liste der aktiven Mitglieder/Kameraden (`List<Kamerad>`).
+
+---
+
+## 2. Anwendungsfälle (Use Cases)
+
+### UC-01: Wehr gründen
+- **Ziel / Nutzen**: Eine neue Feuerwehreinheit mit eindeutiger Identifikation, Namen und historischem Gründungsdatum offiziell im System anlegen.
+- **Akteur**: Ortswehrführer / Verbandsverwaltung.
+- **Vorbedingung**: Eine Instanz der Klasse `Wehr` wurde initialisiert.
+- **Eingabeparameter**:
+  - `name` (String): Bezeichnung der Feuerwehr.
+  - `gruendungsdatum` (LocalDate): Tag der offiziellen Gründung.
+- **Nachbedingung**:
+  - Die Wehr besitzt eine gültige, zufallsgenerierte UUID als Identifikator.
+  - Name und Gründungsdatum sind persistent gesetzt.
+  - Die Methode gibt die modifizierte `Wehr`-Instanz zurück (Fluent API).
+
+#### Szenario: Erfolgreiche Gründung einer Wehr
+```gherkin
+Gegeben sei eine neu initialisierte Wehr
+Wenn die Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" gegründet wird
+Dann hat die Wehr eine gültige UUID als ID
+Und der Name der Wehr lautet "Freiwillige Feuerwehr Göttlin"
+Und das Gründungsdatum ist der 01.05.1924
+Und als Rückgabewert wird die gegründete Wehr-Instanz geliefert
+```
+
+---
+
+### UC-02: Gebäude zur Wehr hinzufügen
+- **Ziel / Nutzen**: Liegenschaften (z. B. Gerätehaus, Bootshaus) mit vollständiger Anschrift der zuständigen Wehr zuordnen.
+- **Akteur**: Ortswehrführer / Liegenschaftsverwaltung.
+- **Vorbedingung**: Das Aggregate Root `Wehr` existiert. Eine `Gebaeude`-Entität mit gültiger `Adresse` liegt vor.
+- **Eingabeparameter**:
+  - `gebaeude` (Gebaeude): Das hinzuzufügende Gebäude mit Bezeichnung und Adresse (`record Adresse`).
+- **Nachbedingung**:
+  - Das Gebäude ist in der Gebäudeliste der Wehr enthalten.
+  - Die Methode gibt die aktualisierte `Wehr`-Instanz zurück (Fluent API).
+
+#### Szenario: Gebäude mit Adresse erfolgreich zuweisen
+```gherkin
+Gegeben sei eine Wehr
+Und ein Gebäude "Gerätehaus Göttlin" mit der Adresse "Hauptstraße 12a, 14712 Göttlin"
+Wenn das Gebäude zur Wehr hinzugefügt wird
+Dann enthält die Gebäudeliste der Wehr genau 1 Gebäude
+Und das Gebäude besitzt die Bezeichnung "Gerätehaus Göttlin"
+Und die Adresse des Gebäudes stimmt mit den Angaben überein
+Und als Rückgabewert wird die Wehr-Instanz geliefert
+```
+
+---
+
+### UC-03: Kamerad zur Wehr hinzufügen
+- **Ziel / Nutzen**: Ein aktives Mitglied (Kamerad) mit persönlicher Kennung und Namen der Wehr zuordnen.
+- **Akteur**: Ortswehrführer / Personalverwalter.
+- **Vorbedingung**: Das Aggregate Root `Wehr` existiert. Eine `Kamerad`-Entität liegt vor.
+- **Eingabeparameter**:
+  - `kamerad` (Kamerad): Der hinzuzufügende Kamerad mit Vorname und Nachname (inkl. automatischer ID-Generierung).
+- **Nachbedingung**:
+  - Der Kamerad ist in der Mitgliederliste der Wehr erfasst.
+  - Die Methode gibt die aktualisierte `Wehr`-Instanz zurück (Fluent API).
+
+#### Szenario: Kameraden erfolgreich zur Wehr hinzufügen
+```gherkin
+Gegeben sei eine Wehr
+Und ein Kamerad "Max Mustermann"
+Wenn der Kamerad zur Wehr hinzugefügt wird
+Dann enthält die Mitgliederliste der Wehr genau 1 Mitglied
+Und der Kamerad besitzt den Vornamen "Max" und den Nachnamen "Mustermann"
+Und als Rückgabewert wird die Wehr-Instanz geliefert
+```
+
+---
+
+### UC-04: Initialzustand und Aggregatintegrität
+- **Ziel / Nutzen**: Sicherstellen, dass ein neu erzeugtes Aggregat deterministische Nullwerte für Stammdaten aufweist, aber initialisierte leere Kollektionen bereitstellt, um `NullPointerException`s zu verhindern.
+- **Nachbedingung**:
+  - `id`, `name` und `gruendungsdatum` sind `null`.
+  - `gebaeude` und `kameraden` sind leere, nicht-null Listen.
+
+#### Szenario: Aggregat im Initialzustand prüfen
+```gherkin
+Gegeben sei eine neu instanziierte Wehr
+Dann ist die ID nicht gesetzt (null)
+Und der Name ist nicht gesetzt (null)
+Und das Gründungsdatum ist nicht gesetzt (null)
+Und die Gebäudeliste ist nicht null und leer
+Und die Kameradenliste ist nicht null und leer
+```
+
+---
+
+## 3. Architektur- und Qualitätsregeln
+
+1. **Aggregatsgrenzen**: Alle Modifikationen an Gebäuden oder Kameraden erfolgen über die Methoden des Aggregate Roots `Wehr`.
+2. **Immutability von Wertobjekten**: Adressen werden ausschließlich als unveränderliche Java `record`s modelliert.
+3. **Fluent Interface**: Zustandsändernde Methoden des Aggregats geben zur Verbesserung der Aufrufbarkeit stets die Aggregat-Instanz `this` zurück.
+4. **Validierung**: Alle spezifizierten Szenarien sind durch automatisierte Unittests in `WehrTest` und Architekturprüfungen in `ArchitectureTest` verifiziert.
