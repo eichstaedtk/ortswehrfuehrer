@@ -26,6 +26,10 @@ public class Kamerad {
 
   private Adresse adresse;
 
+  private String telefonnummer;
+
+  private String emailAdresse;
+
   public Kamerad() {
   }
 
@@ -35,6 +39,8 @@ public class Kamerad {
     this.nachname = builder.nachname;
     this.geburtsdatum = builder.geburtsdatum;
     this.adresse = builder.adresse;
+    this.telefonnummer = builder.telefonnummer;
+    this.emailAdresse = builder.emailAdresse;
   }
 
   public static Builder builder() {
@@ -47,6 +53,8 @@ public class Kamerad {
     private String nachname;
     private LocalDate geburtsdatum;
     private Adresse adresse;
+    private String telefonnummer;
+    private String emailAdresse;
 
     public Builder id(String id) {
       this.id = id;
@@ -93,6 +101,32 @@ public class Kamerad {
       return adresse(adresse);
     }
 
+    public Builder telefonnummer(String telefonnummer) {
+      this.telefonnummer = telefonnummer;
+      return this;
+    }
+
+    public Builder mitTelefonnummer(String telefonnummer) {
+      return telefonnummer(telefonnummer);
+    }
+
+    public Builder emailAdresse(String emailAdresse) {
+      this.emailAdresse = emailAdresse;
+      return this;
+    }
+
+    public Builder mitEmailAdresse(String emailAdresse) {
+      return emailAdresse(emailAdresse);
+    }
+
+    public Builder email(String email) {
+      return emailAdresse(email);
+    }
+
+    public Builder mitEmail(String email) {
+      return emailAdresse(email);
+    }
+
     public Kamerad build() {
       return new Kamerad(this);
     }
@@ -136,6 +170,30 @@ public class Kamerad {
 
   public void setAdresse(Adresse adresse) {
     this.adresse = adresse;
+  }
+
+  public String getTelefonnummer() {
+    return telefonnummer;
+  }
+
+  public void setTelefonnummer(String telefonnummer) {
+    this.telefonnummer = telefonnummer;
+  }
+
+  public String getEmailAdresse() {
+    return emailAdresse;
+  }
+
+  public void setEmailAdresse(String emailAdresse) {
+    this.emailAdresse = emailAdresse;
+  }
+
+  public String getEmail() {
+    return emailAdresse;
+  }
+
+  public void setEmail(String email) {
+    this.emailAdresse = email;
   }
 
   public int berechneAlter() {

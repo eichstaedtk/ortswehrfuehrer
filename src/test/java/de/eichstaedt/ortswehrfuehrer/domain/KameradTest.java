@@ -21,6 +21,8 @@ class KameradTest {
     assertNull(kamerad.getNachname());
     assertNull(kamerad.getGeburtsdatum());
     assertNull(kamerad.getAdresse());
+    assertNull(kamerad.getTelefonnummer());
+    assertNull(kamerad.getEmailAdresse());
 
     LocalDate geburtsdatum = LocalDate.of(1990, 8, 15);
     Adresse adresse = new Adresse("Dorfstraße", "12", "14712", "Göttlin");
@@ -30,12 +32,17 @@ class KameradTest {
     kamerad.setNachname("Mustermann");
     kamerad.setGeburtsdatum(geburtsdatum);
     kamerad.setAdresse(adresse);
+    kamerad.setTelefonnummer("01738884932");
+    kamerad.setEmailAdresse("max.mustermann@example.com");
 
     assertEquals("custom-id-123", kamerad.getId());
     assertEquals("Max", kamerad.getVorname());
     assertEquals("Mustermann", kamerad.getNachname());
     assertEquals(geburtsdatum, kamerad.getGeburtsdatum());
     assertEquals(adresse, kamerad.getAdresse());
+    assertEquals("01738884932", kamerad.getTelefonnummer());
+    assertEquals("max.mustermann@example.com", kamerad.getEmailAdresse());
+    assertEquals("max.mustermann@example.com", kamerad.getEmail());
   }
 
   @Test
@@ -51,6 +58,8 @@ class KameradTest {
     assertEquals("Mustermann", kamerad.getNachname());
     assertNull(kamerad.getGeburtsdatum());
     assertNull(kamerad.getAdresse());
+    assertNull(kamerad.getTelefonnummer());
+    assertNull(kamerad.getEmailAdresse());
   }
 
   @Test
@@ -65,6 +74,8 @@ class KameradTest {
         .nachname("Musterfrau")
         .geburtsdatum(geburtsdatum)
         .adresse(adresse)
+        .telefonnummer("01738884932")
+        .emailAdresse("erika.musterfrau@example.com")
         .build();
 
     assertEquals(id, kamerad.getId());
@@ -72,6 +83,8 @@ class KameradTest {
     assertEquals("Musterfrau", kamerad.getNachname());
     assertEquals(geburtsdatum, kamerad.getGeburtsdatum());
     assertEquals(adresse, kamerad.getAdresse());
+    assertEquals("01738884932", kamerad.getTelefonnummer());
+    assertEquals("erika.musterfrau@example.com", kamerad.getEmailAdresse());
   }
 
   @Test
@@ -86,6 +99,8 @@ class KameradTest {
         .mitNachname("Mustermann")
         .mitGeburtsdatum(geburtsdatum)
         .mitAdresse(adresse)
+        .mitTelefonnummer("01738884932")
+        .mitEmailAdresse("max.mustermann@example.com")
         .build();
 
     assertEquals(id, kamerad.getId());
@@ -93,6 +108,8 @@ class KameradTest {
     assertEquals("Mustermann", kamerad.getNachname());
     assertEquals(geburtsdatum, kamerad.getGeburtsdatum());
     assertEquals(adresse, kamerad.getAdresse());
+    assertEquals("01738884932", kamerad.getTelefonnummer());
+    assertEquals("max.mustermann@example.com", kamerad.getEmailAdresse());
   }
 
   @Test

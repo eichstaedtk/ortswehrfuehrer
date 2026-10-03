@@ -17,10 +17,14 @@ Entitäten (`Gebaeude`, `Kamerad`, `Abteilung`) und Wertobjekte (`Adresse`).
 - **Name (`name`)**: Vollständige Bezeichnung der Wehr (z. B. "Freiwillige Feuerwehr Göttlin").
 - **Gründungsdatum (`gruendungsdatum`)**: Historisches Datum der Gründung (`LocalDate`).
 - **Gebäude (`gebaeude`)**: Liste der zugeordneten Liegenschaften/Gerätehäuser (`List<Gebaeude>`).
-- **Kameraden (`getKameraden()`)**: Dynamisch aggregierte Menge aller Mitglieder/Kameraden aus den Einsatzabteilungen (`Set<Kamerad>`).
-- **Jugendabteilung (`jugendabteilung`)**: Einsatzabteilung für Kameraden bis 16 Jahre (`Abteilung`).
-- **Einsatzabteilung (`einsatzabteilung`)**: Einsatzabteilung für Kameraden im Alter von 17 bis 65 Jahren (`Abteilung`).
-- **Alters- und Ehrenabteilung (`altersUndEhrenabteilung`)**: Einsatzabteilung für Kameraden über 65 Jahre (`Abteilung`).
+- **Kameraden (`getKameraden()`)**: Dynamisch aggregierte Menge aller Mitglieder/Kameraden aus den
+  Einsatzabteilungen (`Set<Kamerad>`).
+- **Jugendabteilung (`jugendabteilung`)**: Einsatzabteilung für Kameraden bis 16 Jahre
+  (`Abteilung`).
+- **Einsatzabteilung (`einsatzabteilung`)**: Einsatzabteilung für Kameraden im Alter von 17 bis 65
+  Jahren (`Abteilung`).
+- **Alters- und Ehrenabteilung (`altersUndEhrenabteilung`)**: Einsatzabteilung für Kameraden über 65
+  Jahre (`Abteilung`).
 
 ---
 
@@ -88,8 +92,9 @@ Und als Rückgabewert wird die Wehr-Instanz geliefert
 - **Akteur**: Ortswehrführer / Personalverwalter.
 - **Vorbedingung**: Das Aggregate Root `Wehr` existiert. Eine `Kamerad`-Entität liegt vor.
 - **Eingabeparameter**:
-    - `kamerad` (Kamerad): Der hinzuzufügende Kamerad mit Vorname, Nachname, Geburtsdatum
-      (`LocalDate`) und Adresse (`record Adresse`) (inkl. automatischer ID-Generierung).
+    - `kamerad` (Kamerad): Der hinzuzufügende Kamerad mit Vorname, Nachname, Geburtsdatum,
+      Telefonnummer, E-Mail-Adresse (`LocalDate`) und Adresse (`record Adresse`) (inkl.
+      automatischer ID-Generierung).
 - **Nachbedingung**:
     - Der Kamerad ist in der Mitgliederliste der Wehr erfasst.
     - Die Methode gibt die aktualisierte `Wehr`-Instanz zurück (Fluent API).
@@ -98,12 +103,14 @@ Und als Rückgabewert wird die Wehr-Instanz geliefert
 
 ```gherkin
 Gegeben sei eine Wehr
-Und ein Kamerad "Max Mustermann" mit dem Geburtsdatum "20.05.1990" und der Adresse "Dorfstraße 12, 14712 Göttlin"
+Und ein Kamerad "Max Mustermann" mit dem Geburtsdatum "20.05.1990" und der Adresse "Dorfstraße 12, 14712 Göttlin, Telefonummer01738884932, E-Mail-Adresse:max.mustermann@example.com"
 Wenn der Kamerad zur Wehr hinzugefügt wird
 Dann enthält die Mitgliederliste der Wehr genau 1 Mitglied
 Und der Kamerad besitzt den Vornamen "Max" und den Nachnamen "Mustermann"
 Und das Geburtsdatum des Kameraden ist der 20.05.1990
 Und die Adresse des Kameraden stimmt mit den Angaben überein
+Und die Telefonummer des Kameraden stimmt mit den Angaben überein
+Und die E-Mail-Adresse des Kameraden stimmt mit den Angaben überein
 Und als Rückgabewert wird die Wehr-Instanz geliefert
 ```
 

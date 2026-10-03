@@ -94,6 +94,8 @@ class WehrTest {
         .nachname("Mustermann")
         .geburtsdatum(geburtsdatum)
         .adresse(adresse)
+        .telefonnummer("01738884932")
+        .emailAdresse("max.mustermann@example.com")
         .build();
 
     Wehr result = wehr.kameradHinzufuegen(kamerad);
@@ -105,6 +107,8 @@ class WehrTest {
     assertEquals("Mustermann", kamerad.getNachname());
     assertEquals(geburtsdatum, kamerad.getGeburtsdatum());
     assertEquals(adresse, kamerad.getAdresse());
+    assertEquals("01738884932", kamerad.getTelefonnummer());
+    assertEquals("max.mustermann@example.com", kamerad.getEmailAdresse());
     assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(kamerad));
   }
 
