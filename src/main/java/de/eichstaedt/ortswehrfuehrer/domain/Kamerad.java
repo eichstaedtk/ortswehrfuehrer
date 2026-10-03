@@ -1,6 +1,7 @@
 package de.eichstaedt.ortswehrfuehrer.domain;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.Entity;
 import org.jmolecules.ddd.annotation.Identity;
@@ -134,5 +135,19 @@ public class Kamerad {
 
   public void setAdresse(Adresse adresse) {
     this.adresse = adresse;
+  }
+
+  public int berechneAlter() {
+    return berechneAlter(LocalDate.now());
+  }
+
+  public int berechneAlter(LocalDate stichtag) {
+    if (this.geburtsdatum == null) {
+      throw new IllegalStateException("Berechnung des Alters nicht möglich, da kein Geburtsdatum gesetzt ist.");
+    }
+    if (stichtag == null) {
+      throw new IllegalArgumentException("Stichtag darf nicht null sein.");
+    }
+    return Period.between(this.geburtsdatum, stichtag).getYears();
   }
 }

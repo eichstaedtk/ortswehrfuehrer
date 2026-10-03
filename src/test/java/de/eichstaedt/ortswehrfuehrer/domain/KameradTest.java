@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -110,5 +111,56 @@ class KameradTest {
     assertEquals("Mustermann", kamerad.getNachname());
     assertEquals(geburtsdatum, kamerad.getGeburtsdatum());
     assertEquals(adresse, kamerad.getAdresse());
+  }
+
+  @Test
+  void testBerechneAlterMitStichtag() {
+    LocalDate geburtsdatum = LocalDate.of(1990, 5, 15);
+    Kamerad kamerad = Kamerad.builder()
+        .vorname("Max")
+        .nachname("Mustermann")
+        .geburtsdatum(geburtsdatum)
+        .build();
+
+    // Vor dem Geburtstag im selben Jahr
+    assertEquals(33, kamerad.berechneAlter(LocalDate.of(2024, 5, 14)));
+    // Genau am Geburtstag
+    assertEquals(34, kamerad.berechneAlter(LocalDate.of(2024, 5, 15)));
+    // Nach dem Geburtstag
+    assertEquals(34, kamerad.berechneAlter(LocalDate.of(2024, 5, 16)));
+  }
+
+  @Test
+  void testBerechneAlterMitAktuellemDatum() {
+    LocalDate geburtsdatum = LocalDate.now().minusYears(30).minusDays(10);
+    Kamerad kamerad = Kamerad.builder()
+        .vorname("Max")
+        .nachname("Mustermann")
+        .geburtsdatum(geburtsdatum)
+        .build();
+
+    assertEquals(30, kamerad.berechneAlter());
+  }
+
+  @Test
+  void testBerechneAlterWirftExceptionWennGeburtsdatumNull() {
+    Kamerad kamerad = Kamerad.builder()
+        .vorname("Max")
+        .nachname("Mustermann")
+        .build();
+
+    assertThrows(IllegalStateException.class, kamerad::berechneAlter);
+    assertThrows(IllegalStateException.class, () -> kamerad.berechneAlter(LocalDate.of(2024, 1, 1)));
+  }
+
+  @Test
+  void testBerechneAlterWirftExceptionWennStichtagNull() {
+    Kamerad kamerad = Kamerad.builder()
+        .vorname("Max")
+        .nachname("Mustermann")
+        .geburtsdatum(LocalDate.of(1990, 1, 1))
+        .build();
+
+    assertThrows(IllegalArgumentException.class, () -> kamerad.berechneAlter(null));
   }
 }
