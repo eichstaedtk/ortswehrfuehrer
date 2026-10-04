@@ -1,8 +1,6 @@
 package de.eichstaedt.ortswehrfuehrer.adapter.web;
 
 import de.eichstaedt.ortswehrfuehrer.application.WehrApplicationService;
-import de.eichstaedt.ortswehrfuehrer.domain.Einsatzfahrzeug;
-import de.eichstaedt.ortswehrfuehrer.domain.Fahrzeugtyp;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.FormParam;
@@ -42,33 +40,12 @@ public class FahrzeugController {
       @FormParam("fahrzeugtyp") String fahrzeugtypStr,
       @FormParam("bezeichnung") String bezeichnung
   ) {
-    if (kennung == null || kennung.isBlank()) {
-      log.warn("Einsatzfahrzeug konnte nicht angelegt werden: Funkkennung fehlt.");
+    try {
+      wehrService.fahrzeugHinzufuegen(kennung, fahrzeugtypStr, bezeichnung);
+      return Response.seeOther(URI.create("/?erfolg=fahrzeug_hinzugefuegt#fahrzeuge")).build();
+    } catch (IllegalArgumentException e) {
+      log.warn("Einsatzfahrzeug konnte nicht angelegt werden: {}", e.getMessage());
       return Response.seeOther(URI.create("/?fehler=fahrzeug_kennung_fehlt#fahrzeuge")).build();
     }
-
-    Fahrzeugtyp fahrzeugtyp = null;
-    if (fahrzeugtypStr != null && !fahrzeugtypStr.isBlank()) {
-      try {
-        fahrzeugtyp = Fahrzeugtyp.valueOf(fahrzeugtypStr.trim().toUpperCase());
-      } catch (IllegalArgumentException e) {
-        log.warn("Fahrzeugtyp konnte nicht zugeordnet werden: '{}'.", fahrzeugtypStr, e);
-      }
-    }
-
-    String trimmedKennung = kennung.trim();
-    String trimmedBezeichnung = (bezeichnung != null && !bezeichnung.isBlank())
-        ? bezeichnung.trim()
-        : (fahrzeugtyp != null ? fahrzeugtyp.name() : trimmedKennung);
-
-    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
-        .kennung(trimmedKennung)
-        .fahrzeugtyp(fahrzeugtyp)
-        .bezeichnung(trimmedBezeichnung)
-        .build();
-
-    wehrService.fahrzeugHinzufuegen(fahrzeug);
-
-    return Response.seeOther(URI.create("/?erfolg=fahrzeug_hinzugefuegt#fahrzeuge")).build();
   }
 }

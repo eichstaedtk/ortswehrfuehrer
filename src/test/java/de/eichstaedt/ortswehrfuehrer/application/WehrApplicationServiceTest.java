@@ -121,6 +121,79 @@ class WehrApplicationServiceTest {
     assertEquals(4, service.getFahrzeugeDerAktivenWehr().size());
 
     assertThrows(IllegalArgumentException.class, () -> service.fahrzeugHinzufuegen(null));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugHinzufuegen("", Fahrzeugtyp.LF20, "LF20"));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugHinzufuegen(null, Fahrzeugtyp.LF20, "LF20"));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugHinzufuegen("", "LF20", "LF20"));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugHinzufuegen(null, "LF20", "LF20"));
+  }
+
+  @Test
+  @DisplayName("Einsatzfahrzeug über String-Parameter hinzufügen mit Fallback und ungültigem Typ")
+  void testFahrzeugHinzufuegenMitStringParametern() {
+    Einsatzfahrzeug fzMitTyp = service.fahrzeugHinzufuegen("Florian Test 1/10-1", "KLF", "");
+    assertNotNull(fzMitTyp);
+    assertEquals(Fahrzeugtyp.KLF, fzMitTyp.getFahrzeugtyp());
+    assertEquals("KLF", fzMitTyp.getBezeichnung());
+
+    Einsatzfahrzeug fzUngueltig = service.fahrzeugHinzufuegen("Florian Test 1/11-1", "UNGUELTIG", "");
+    assertNotNull(fzUngueltig);
+    assertEquals(null, fzUngueltig.getFahrzeugtyp());
+    assertEquals("Florian Test 1/11-1", fzUngueltig.getBezeichnung());
+  }
+
+  @Test
+  @DisplayName("Kamerad über String-Formulardaten hinzufügen mit Adresserzeugung und Datum-Parsing")
+  void testKameradHinzufuegenMitFormulardaten() {
+    Kamerad k1 = service.kameradHinzufuegen(
+        "Lisa",
+        "Müller",
+        "2000-01-01",
+        "Hauptstr.",
+        "1",
+        "12345",
+        "Stadt",
+        "01234",
+        "lisa@test.de"
+    );
+    assertNotNull(k1);
+    assertEquals("Lisa", k1.getVorname());
+    assertEquals(LocalDate.of(2000, 1, 1), k1.getGeburtsdatum());
+    assertNotNull(k1.getAdresse());
+    assertEquals("Hauptstr.", k1.getAdresse().strasse());
+
+    Kamerad k2 = service.kameradHinzufuegen(
+        "Tom",
+        "Bauer",
+        "ungueltiges-datum",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    );
+    assertNotNull(k2);
+    assertEquals(null, k2.getGeburtsdatum());
+    assertEquals(null, k2.getAdresse());
+
+    assertThrows(IllegalArgumentException.class, () -> service.kameradHinzufuegen("", "Nachname", "2000-01-01", "", "", "", "", "", ""));
+    assertThrows(IllegalArgumentException.class, () -> service.kameradHinzufuegen("Vorname", "", "2000-01-01", "", "", "", "", "", ""));
+    assertThrows(IllegalArgumentException.class, () -> service.kameradHinzufuegen(null, "Nachname", "2000-01-01", "", "", "", "", "", ""));
+    assertThrows(IllegalArgumentException.class, () -> service.kameradHinzufuegen("Vorname", null, "2000-01-01", "", "", "", "", "", ""));
+  }
+
+  @Test
+  @DisplayName("Dashboard-Übersicht liefert aggregierte Kennzahlen und Objektreferenzen")
+  void testGetDashboardUebersicht() {
+    DashboardUebersicht uebersicht = service.getDashboardUebersicht();
+    assertNotNull(uebersicht);
+    assertEquals(1, uebersicht.anzahlWehren());
+    assertEquals(3, uebersicht.anzahlKameraden());
+    assertEquals(2, uebersicht.anzahlFahrzeuge());
+    assertEquals(1, uebersicht.anzahlGebaeude());
+    assertNotNull(uebersicht.beispielWehr());
+    assertEquals(3, uebersicht.kameraden().size());
+    assertEquals(2, uebersicht.fahrzeuge().size());
   }
 
   @Test

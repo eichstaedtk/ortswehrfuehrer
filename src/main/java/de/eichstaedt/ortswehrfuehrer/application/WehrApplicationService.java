@@ -9,6 +9,7 @@ import de.eichstaedt.ortswehrfuehrer.domain.Wehr;
 import de.eichstaedt.ortswehrfuehrer.domain.WehrFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +128,23 @@ public class WehrApplicationService {
         .toList();
   }
 
+  public DashboardUebersicht getDashboardUebersicht() {
+    Wehr wehr = getAktiveWehr();
+    Set<Kamerad> kameraden = getAlleKameraden();
+    List<Einsatzfahrzeug> fahrzeugeListe = getFahrzeugeDerAktivenWehr();
+    int anzahlWehren = wehr != null ? 1 : 0;
+    int anzahlGebaeude = wehr != null && wehr.getGebaeude() != null ? wehr.getGebaeude().size() : 0;
+    return new DashboardUebersicht(
+        anzahlWehren,
+        kameraden.size(),
+        fahrzeugeListe.size(),
+        anzahlGebaeude,
+        wehr,
+        kameraden,
+        fahrzeugeListe
+    );
+  }
+
   public Einsatzfahrzeug fahrzeugHinzufuegen(Einsatzfahrzeug fahrzeug) {
     if (fahrzeug == null) {
       throw new IllegalArgumentException("Einsatzfahrzeug darf nicht null sein.");
@@ -142,11 +160,47 @@ public class WehrApplicationService {
   }
 
   public Einsatzfahrzeug fahrzeugHinzufuegen(String kennung, Fahrzeugtyp fahrzeugtyp, String bezeichnung) {
+    if (kennung == null || kennung.isBlank()) {
+      throw new IllegalArgumentException("Funkkennung fehlt.");
+    }
+    String trimmedKennung = kennung.trim();
+    String trimmedBezeichnung = (bezeichnung != null && !bezeichnung.isBlank())
+        ? bezeichnung.trim()
+        : (fahrzeugtyp != null ? fahrzeugtyp.name() : trimmedKennung);
+
     Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
-        .kennung(kennung)
+        .kennung(trimmedKennung)
         .fahrzeugtyp(fahrzeugtyp)
-        .bezeichnung(bezeichnung)
+        .bezeichnung(trimmedBezeichnung)
         .build();
+    return fahrzeugHinzufuegen(fahrzeug);
+  }
+
+  public Einsatzfahrzeug fahrzeugHinzufuegen(String kennung, String fahrzeugtypStr, String bezeichnung) {
+    if (kennung == null || kennung.isBlank()) {
+      throw new IllegalArgumentException("Funkkennung fehlt.");
+    }
+
+    Fahrzeugtyp fahrzeugtyp = null;
+    if (fahrzeugtypStr != null && !fahrzeugtypStr.isBlank()) {
+      try {
+        fahrzeugtyp = Fahrzeugtyp.valueOf(fahrzeugtypStr.trim().toUpperCase());
+      } catch (IllegalArgumentException e) {
+        log.warn("Fahrzeugtyp konnte nicht zugeordnet werden: '{}'.", fahrzeugtypStr, e);
+      }
+    }
+
+    String trimmedKennung = kennung.trim();
+    String trimmedBezeichnung = (bezeichnung != null && !bezeichnung.isBlank())
+        ? bezeichnung.trim()
+        : (fahrzeugtyp != null ? fahrzeugtyp.name() : trimmedKennung);
+
+    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .kennung(trimmedKennung)
+        .fahrzeugtyp(fahrzeugtyp)
+        .bezeichnung(trimmedBezeichnung)
+        .build();
+
     return fahrzeugHinzufuegen(fahrzeug);
   }
 
@@ -171,14 +225,66 @@ public class WehrApplicationService {
       String telefonnummer,
       String emailAdresse
   ) {
+    if (vorname == null || vorname.isBlank() || nachname == null || nachname.isBlank()) {
+      throw new IllegalArgumentException("Vor- und Nachname sind Pflichtangaben.");
+    }
     Kamerad kamerad = Kamerad.builder()
-        .vorname(vorname)
-        .nachname(nachname)
+        .vorname(vorname.trim())
+        .nachname(nachname.trim())
         .geburtsdatum(geburtsdatum)
         .adresse(adresse)
-        .telefonnummer(telefonnummer)
-        .emailAdresse(emailAdresse)
+        .telefonnummer(telefonnummer != null && !telefonnummer.isBlank() ? telefonnummer.trim() : null)
+        .emailAdresse(emailAdresse != null && !emailAdresse.isBlank() ? emailAdresse.trim() : null)
         .build();
+    return kameradHinzufuegen(kamerad);
+  }
+
+  public Kamerad kameradHinzufuegen(
+      String vorname,
+      String nachname,
+      String geburtsdatumStr,
+      String strasse,
+      String hausnummer,
+      String postleitzahl,
+      String ort,
+      String telefonnummer,
+      String emailAdresse
+  ) {
+    if (vorname == null || vorname.isBlank() || nachname == null || nachname.isBlank()) {
+      throw new IllegalArgumentException("Vor- oder Nachname fehlt.");
+    }
+
+    LocalDate geburtsdatum = null;
+    if (geburtsdatumStr != null && !geburtsdatumStr.isBlank()) {
+      try {
+        geburtsdatum = LocalDate.parse(geburtsdatumStr.trim());
+      } catch (DateTimeParseException e) {
+        log.warn("Geburtsdatum konnte nicht geparst werden: '{}'.", geburtsdatumStr, e);
+      }
+    }
+
+    Adresse adresse = null;
+    if ((strasse != null && !strasse.isBlank())
+        || (hausnummer != null && !hausnummer.isBlank())
+        || (postleitzahl != null && !postleitzahl.isBlank())
+        || (ort != null && !ort.isBlank())) {
+      adresse = new Adresse(
+          strasse != null ? strasse.trim() : "",
+          hausnummer != null ? hausnummer.trim() : "",
+          postleitzahl != null ? postleitzahl.trim() : "",
+          ort != null ? ort.trim() : ""
+      );
+    }
+
+    Kamerad kamerad = Kamerad.builder()
+        .vorname(vorname.trim())
+        .nachname(nachname.trim())
+        .geburtsdatum(geburtsdatum)
+        .adresse(adresse)
+        .telefonnummer(telefonnummer != null && !telefonnummer.isBlank() ? telefonnummer.trim() : null)
+        .emailAdresse(emailAdresse != null && !emailAdresse.isBlank() ? emailAdresse.trim() : null)
+        .build();
+
     return kameradHinzufuegen(kamerad);
   }
 

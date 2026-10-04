@@ -1,5 +1,6 @@
 package de.eichstaedt.ortswehrfuehrer.adapter.web;
 
+import de.eichstaedt.ortswehrfuehrer.application.DashboardUebersicht;
 import de.eichstaedt.ortswehrfuehrer.application.WehrApplicationService;
 import de.eichstaedt.ortswehrfuehrer.domain.Einsatzfahrzeug;
 import de.eichstaedt.ortswehrfuehrer.domain.Kamerad;
@@ -62,22 +63,20 @@ public class IndexController {
       @QueryParam("erfolg") String erfolg,
       @QueryParam("fehler") String fehler
   ) {
-    Wehr beispielWehr = wehrService.getAktiveWehr();
-    Set<Kamerad> alleKameraden = wehrService.getAlleKameraden();
-    List<Einsatzfahrzeug> fahrzeuge = wehrService.getFahrzeugeDerAktivenWehr();
+    DashboardUebersicht uebersicht = wehrService.getDashboardUebersicht();
 
     log.debug("Lade Startseite für Wehr '{}' mit {} Kameraden und {} Fahrzeugen (erfolg={}, fehler={}).",
-        beispielWehr != null ? beispielWehr.getName() : "keine",
-        alleKameraden.size(), fahrzeuge.size(), erfolg, fehler);
+        uebersicht.beispielWehr() != null ? uebersicht.beispielWehr().getName() : "keine",
+        uebersicht.anzahlKameraden(), uebersicht.anzahlFahrzeuge(), erfolg, fehler);
 
     return Templates.index(
-        1,
-        alleKameraden.size(),
-        fahrzeuge.size(),
-        beispielWehr != null ? beispielWehr.getGebaeude().size() : 0,
-        beispielWehr,
-        alleKameraden,
-        fahrzeuge,
+        uebersicht.anzahlWehren(),
+        uebersicht.anzahlKameraden(),
+        uebersicht.anzahlFahrzeuge(),
+        uebersicht.anzahlGebaeude(),
+        uebersicht.beispielWehr(),
+        uebersicht.kameraden(),
+        uebersicht.fahrzeuge(),
         erfolg,
         fehler
     );

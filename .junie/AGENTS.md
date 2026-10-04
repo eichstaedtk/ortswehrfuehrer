@@ -13,6 +13,7 @@ Projekt definiert werden.
   sicher.
 - **CleanCode**: Code sollte lesbar, wartbar und effizient sein.
 - ** Die Architektur des Projektes ist Clean Architecture **
+- ** `Controller` enthalten keine Geschäftslogik **
 
 ## Code-Stil & Java-Standards
 
