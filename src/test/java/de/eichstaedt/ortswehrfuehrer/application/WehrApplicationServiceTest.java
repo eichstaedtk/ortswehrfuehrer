@@ -6,9 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.eichstaedt.ortswehrfuehrer.domain.Adresse;
+import de.eichstaedt.ortswehrfuehrer.domain.Einsatzfahrzeug;
+import de.eichstaedt.ortswehrfuehrer.domain.Fahrzeugtyp;
 import de.eichstaedt.ortswehrfuehrer.domain.Kamerad;
 import de.eichstaedt.ortswehrfuehrer.domain.Wehr;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,12 +27,17 @@ class WehrApplicationServiceTest {
   }
 
   @Test
-  @DisplayName("Service initialisiert standardmäßig eine aktive Wehr mit 3 Kameraden")
+  @DisplayName("Service initialisiert standardmäßig eine aktive Wehr mit 3 Kameraden und 2 Einsatzfahrzeugen")
   void testInitialisiereStandardWehr() {
     Wehr wehr = service.getAktiveWehr();
     assertNotNull(wehr);
     assertEquals("Freiwillige Feuerwehr Musterstadt", wehr.getName());
     assertEquals(3, service.getAlleKameraden().size());
+
+    List<Einsatzfahrzeug> fahrzeuge = service.getFahrzeugeDerAktivenWehr();
+    assertEquals(2, fahrzeuge.size());
+    assertTrue(fahrzeuge.stream().anyMatch(f -> f.getFahrzeugtyp() == Fahrzeugtyp.TSF_W && "Florian Musterstadt 1/48-1".equals(f.getKennung())));
+    assertTrue(fahrzeuge.stream().anyMatch(f -> f.getFahrzeugtyp() == Fahrzeugtyp.HLF10 && "Florian Musterstadt 1/43-1".equals(f.getKennung())));
   }
 
   @Test
@@ -90,13 +98,37 @@ class WehrApplicationServiceTest {
   }
 
   @Test
+  @DisplayName("Einsatzfahrzeug hinzufügen und verwalten")
+  void testFahrzeugHinzufuegen() {
+    Einsatzfahrzeug tlf = Einsatzfahrzeug.builder()
+        .id("fz-tlf-03")
+        .bezeichnung("Tanklöschfahrzeug 3000")
+        .kennung("Florian Musterstadt 1/24-1")
+        .fahrzeugtyp(Fahrzeugtyp.TLF3000)
+        .build();
+
+    service.fahrzeugHinzufuegen(tlf);
+
+    List<Einsatzfahrzeug> fahrzeuge = service.getFahrzeugeDerAktivenWehr();
+    assertEquals(3, fahrzeuge.size());
+    assertTrue(fahrzeuge.contains(tlf));
+    assertTrue(service.getAlleFahrzeuge().contains(tlf));
+
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugHinzufuegen(null));
+  }
+
+  @Test
   @DisplayName("Service ohne aktive Wehr wirft Exception bzw. liefert leere Menge")
   void testServiceOhneAktiveWehr() {
     service.setAktiveWehr(null);
     assertEquals(Set.of(), service.getAlleKameraden());
+    assertEquals(List.of(), service.getFahrzeugeDerAktivenWehr());
     assertEquals("Unbekannt", service.ermittleAbteilungName(Kamerad.builder().vorname("A").nachname("B").build()));
 
     Kamerad testK = Kamerad.builder().vorname("A").nachname("B").build();
     assertThrows(IllegalStateException.class, () -> service.kameradHinzufuegen(testK));
+
+    Einsatzfahrzeug testFz = Einsatzfahrzeug.builder().id("1").kennung("K").build();
+    assertThrows(IllegalStateException.class, () -> service.fahrzeugHinzufuegen(testFz));
   }
 }

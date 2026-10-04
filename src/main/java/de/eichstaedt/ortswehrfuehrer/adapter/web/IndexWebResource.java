@@ -1,6 +1,7 @@
 package de.eichstaedt.ortswehrfuehrer.adapter.web;
 
 import de.eichstaedt.ortswehrfuehrer.application.WehrApplicationService;
+import de.eichstaedt.ortswehrfuehrer.domain.Einsatzfahrzeug;
 import de.eichstaedt.ortswehrfuehrer.domain.Kamerad;
 import de.eichstaedt.ortswehrfuehrer.domain.Wehr;
 import io.quarkus.qute.CheckedTemplate;
@@ -11,6 +12,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ public class IndexWebResource {
         int anzahlGebaeude,
         Wehr beispielWehr,
         Set<Kamerad> kameraden,
+        List<Einsatzfahrzeug> fahrzeuge,
         String erfolg,
         String fehler
     );
@@ -61,18 +64,20 @@ public class IndexWebResource {
   ) {
     Wehr beispielWehr = wehrService.getAktiveWehr();
     Set<Kamerad> alleKameraden = wehrService.getAlleKameraden();
+    List<Einsatzfahrzeug> fahrzeuge = wehrService.getFahrzeugeDerAktivenWehr();
 
-    log.debug("Lade Startseite für Wehr '{}' mit {} Kameraden (erfolg={}, fehler={}).",
+    log.debug("Lade Startseite für Wehr '{}' mit {} Kameraden und {} Fahrzeugen (erfolg={}, fehler={}).",
         beispielWehr != null ? beispielWehr.getName() : "keine",
-        alleKameraden.size(), erfolg, fehler);
+        alleKameraden.size(), fahrzeuge.size(), erfolg, fehler);
 
     return Templates.index(
         1,
         alleKameraden.size(),
-        beispielWehr != null ? beispielWehr.getFahrzeugIds().size() : 0,
+        fahrzeuge.size(),
         beispielWehr != null ? beispielWehr.getGebaeude().size() : 0,
         beispielWehr,
         alleKameraden,
+        fahrzeuge,
         erfolg,
         fehler
     );

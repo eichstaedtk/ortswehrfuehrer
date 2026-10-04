@@ -2,6 +2,7 @@ package de.eichstaedt.ortswehrfuehrer.adapter.web;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.quarkus.qute.TemplateInstance;
@@ -14,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class IndexWebResourceTest {
 
   @Test
-  @DisplayName("Startseite liefert Status 200 und HTML-Inhalt mit Dashboard- und Kameraden-Elementen")
+  @DisplayName("Startseite liefert Status 200 und HTML-Inhalt mit Dashboard-, Fahrzeug- und Kameraden-Elementen")
   void testIndexEndpoint() {
     given()
         .when()
@@ -27,6 +28,12 @@ class IndexWebResourceTest {
         .body(containsString("Freiwillige Feuerwehr Musterstadt"))
         .body(containsString("Einsatzabteilungen"))
         .body(containsString("Gerätehaus Mitte"))
+        .body(containsString("Zugeordnete Einsatzfahrzeuge"))
+        .body(containsString("TSF_W"))
+        .body(containsString("Florian Musterstadt 1/48-1"))
+        .body(containsString("HLF10"))
+        .body(containsString("Florian Musterstadt 1/43-1"))
+        .body(not(containsString("ID: fz-tsfw-01")))
         .body(containsString("Kamerad aufnehmen"))
         .body(containsString("Kameradinnen"))
         .body(containsString("id=\"kameradModal\""))

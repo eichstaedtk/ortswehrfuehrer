@@ -1,14 +1,19 @@
 package de.eichstaedt.ortswehrfuehrer.application;
 
 import de.eichstaedt.ortswehrfuehrer.domain.Adresse;
+import de.eichstaedt.ortswehrfuehrer.domain.Einsatzfahrzeug;
+import de.eichstaedt.ortswehrfuehrer.domain.Fahrzeugtyp;
 import de.eichstaedt.ortswehrfuehrer.domain.Gebaeude;
 import de.eichstaedt.ortswehrfuehrer.domain.Kamerad;
 import de.eichstaedt.ortswehrfuehrer.domain.Wehr;
 import de.eichstaedt.ortswehrfuehrer.domain.WehrFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import org.jmolecules.ddd.annotation.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +28,7 @@ public class WehrApplicationService {
   private static final Logger log = LoggerFactory.getLogger(WehrApplicationService.class);
 
   private final WehrFactory wehrFactory;
+  private final Map<String, Einsatzfahrzeug> fahrzeuge = new ConcurrentHashMap<>();
   private Wehr aktiveWehr;
 
   public WehrApplicationService() {
@@ -35,6 +41,24 @@ public class WehrApplicationService {
   }
 
   public final void initialisiereStandardWehr() {
+    Einsatzfahrzeug tsfw = Einsatzfahrzeug.builder()
+        .id("fz-tsfw-01")
+        .bezeichnung("Tragkraftspritzenfahrzeug mit Wasser")
+        .kennung("Florian Musterstadt 1/48-1")
+        .fahrzeugtyp(Fahrzeugtyp.TSF_W)
+        .build();
+
+    Einsatzfahrzeug hlf10 = Einsatzfahrzeug.builder()
+        .id("fz-hlf10-02")
+        .bezeichnung("Hilfeleistungslöschgruppenfahrzeug 10")
+        .kennung("Florian Musterstadt 1/43-1")
+        .fahrzeugtyp(Fahrzeugtyp.HLF10)
+        .build();
+
+    this.fahrzeuge.clear();
+    this.fahrzeuge.put(tsfw.getId(), tsfw);
+    this.fahrzeuge.put(hlf10.getId(), hlf10);
+
     this.aktiveWehr = wehrFactory.erzeugeWehr(
         "Freiwillige Feuerwehr Musterstadt",
         LocalDate.of(1924, 5, 1),
@@ -42,7 +66,7 @@ public class WehrApplicationService {
             new Gebaeude("Gerätehaus Mitte",
                 new Adresse("Hauptstraße", "1", "12345", "Musterstadt"))
         ),
-        Set.of("fz-tsfw-01", "fz-hlf10-02"),
+        Set.of(tsfw.getId(), hlf10.getId()),
         List.of(
             Kamerad.builder()
                 .vorname("Max")
@@ -79,6 +103,36 @@ public class WehrApplicationService {
 
   public Set<Kamerad> getAlleKameraden() {
     return aktiveWehr != null ? aktiveWehr.getKameraden() : Set.of();
+  }
+
+  public List<Einsatzfahrzeug> getAlleFahrzeuge() {
+    return new ArrayList<>(fahrzeuge.values());
+  }
+
+  public List<Einsatzfahrzeug> getFahrzeugeDerAktivenWehr() {
+    if (aktiveWehr == null || aktiveWehr.getFahrzeugIds() == null) {
+      return List.of();
+    }
+    return aktiveWehr.getFahrzeugIds().stream()
+        .map(id -> fahrzeuge.getOrDefault(
+            id,
+            Einsatzfahrzeug.builder().id(id).kennung(id).bezeichnung(id).build()
+        ))
+        .toList();
+  }
+
+  public Einsatzfahrzeug fahrzeugHinzufuegen(Einsatzfahrzeug fahrzeug) {
+    if (fahrzeug == null) {
+      throw new IllegalArgumentException("Einsatzfahrzeug darf nicht null sein.");
+    }
+    if (aktiveWehr == null) {
+      throw new IllegalStateException("Keine aktive Wehr vorhanden.");
+    }
+    fahrzeuge.put(fahrzeug.getId(), fahrzeug);
+    aktiveWehr.fahrzeugHinzufuegen(fahrzeug);
+    log.info("Fahrzeug {} ({}) erfolgreich zur Wehr '{}' hinzugefügt.",
+        fahrzeug.getKennung(), fahrzeug.getFahrzeugtyp(), aktiveWehr.getName());
+    return fahrzeug;
   }
 
   public Kamerad kameradHinzufuegen(Kamerad kamerad) {

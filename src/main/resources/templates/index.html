@@ -173,20 +173,28 @@
                 </div>
             </div>
 
-            <!-- Fahrzeuge IDs -->
+            <!-- Zugeordnete Einsatzfahrzeuge -->
             <div class="col-lg-4">
                 <div class="border rounded-3 p-3 bg-light h-100">
                     <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center">
                         <i class="bi bi-truck me-2 text-warning"></i>Zugeordnete Einsatzfahrzeuge
                     </h6>
-                    {#if beispielWehr.fahrzeugIds.isEmpty}
+                    {#if fahrzeuge.isEmpty}
                         <p class="text-muted small mb-0">Keine Fahrzeuge zugeordnet.</p>
                     {#else}
-                        <div class="d-flex flex-wrap gap-2">
-                            {#for fzId in beispielWehr.fahrzeugIds}
-                            <span class="badge bg-dark-subtle text-dark border px-2 py-2">
-                                <i class="bi bi-key me-1 text-danger"></i>ID: {fzId}
-                            </span>
+                        <div class="list-group list-group-flush bg-transparent">
+                            {#for fz in fahrzeuge}
+                            <div class="list-group-item bg-transparent px-0">
+                                <div class="fw-semibold text-dark d-flex align-items-center flex-wrap gap-2">
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                                        {#if fz.fahrzeugtyp}{fz.fahrzeugtyp}{#else}Typ n. v.{/if}
+                                    </span>
+                                    <span>{fz.kennung}</span>
+                                </div>
+                                {#if fz.bezeichnung}
+                                <small class="text-muted d-block mt-1">{fz.bezeichnung}</small>
+                                {/if}
+                            </div>
                             {/for}
                         </div>
                     {/if}

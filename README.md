@@ -226,11 +226,11 @@ Performance, Usability).*
 
 Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`) ermittelt:
 
-- **Gesamtergebnis Tests**: 112 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
-- **Zeilenabdeckung (Line Coverage)**: **97,44 %** (570 von 585 Zeilen abgedeckt)
-- **Instruktionsabdeckung (Instruction Coverage)**: **97,32 %** (2.471 von 2.539 Instruktionen abgedeckt)
-- **Methodenabdeckung (Method Coverage)**: **96,88 %** (217 von 224 Methoden abgedeckt)
-- **Zweigabdeckung (Branch Coverage)**: **78,40 %** (167 von 213 Branches abgedeckt)
+- **Gesamtergebnis Tests**: 113 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
+- **Zeilenabdeckung (Line Coverage)**: **97,57 %** (603 von 618 Zeilen abgedeckt)
+- **Instruktionsabdeckung (Instruction Coverage)**: **97,50 %** (2.613 von 2.680 Instruktionen abgedeckt)
+- **Methodenabdeckung (Method Coverage)**: **96,93 %** (221 von 228 Methoden abgedeckt)
+- **Zweigabdeckung (Branch Coverage)**: **78,64 %** (173 von 220 Branches abgedeckt)
 
 ### 10.2 Qualitätsszenarien
 
