@@ -19,7 +19,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
-class KameradWebResourceTest {
+class KameradControllerTest {
 
   @Inject
   WehrApplicationService wehrService;
@@ -84,17 +84,17 @@ class KameradWebResourceTest {
   }
 
   @Test
-  @DisplayName("Default-Konstruktor von KameradWebResource")
+  @DisplayName("Default-Konstruktor von KameradController")
   void testDefaultKonstruktor() {
-    KameradWebResource defaultResource = new KameradWebResource();
+    KameradController defaultResource = new KameradController();
     assertNotNull(defaultResource);
   }
 
   @Test
-  @DisplayName("Direkter Methodenaufruf an KameradWebResource mit ungültigem Datum und partieller Adresse")
+  @DisplayName("Direkter Methodenaufruf an KameradController mit ungültigem Datum und partieller Adresse")
   void testDirekterMethodenaufruf() {
     WehrApplicationService mockService = new WehrApplicationService();
-    KameradWebResource resource = new KameradWebResource(mockService);
+    KameradController resource = new KameradController(mockService);
 
     try (Response response = resource.kameradHinzufuegen(
         "Klara",

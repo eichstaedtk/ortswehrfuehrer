@@ -124,8 +124,9 @@ Performance, Usability).*
 |                                                             |
 |   +-------------------------------------------------------+ |
 |   | adapter.web (Quarkus Qute & HTMX Web UI)              | |
-|   |  - IndexWebResource (Web Controller / Dashboard)      | |
-|   |  - KameradWebResource (Web Controller / Kameraden)    | |
+|   |  - IndexController (Web Controller / Dashboard)       | |
+|   |  - KameradController (Web Controller / Kameraden)     | |
+|   |  - FahrzeugController (Web Controller / Fahrzeuge)    | |
 |   |  - templates/ (base.html, index.html)                 | |
 |   +-------------------------------------------------------+ |
 +-------------------------------------------------------------+

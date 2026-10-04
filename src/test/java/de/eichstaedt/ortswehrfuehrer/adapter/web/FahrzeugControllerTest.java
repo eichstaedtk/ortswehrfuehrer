@@ -1,0 +1,115 @@
+package de.eichstaedt.ortswehrfuehrer.adapter.web;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import de.eichstaedt.ortswehrfuehrer.application.WehrApplicationService;
+import de.eichstaedt.ortswehrfuehrer.domain.Einsatzfahrzeug;
+import de.eichstaedt.ortswehrfuehrer.domain.Fahrzeugtyp;
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.http.ContentType;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Response;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+@QuarkusTest
+class FahrzeugControllerTest {
+
+  @Inject
+  WehrApplicationService wehrService;
+
+  @Test
+  @DisplayName("POST /fahrzeuge mit vollständigen Daten legt Einsatzfahrzeug an und leitet weiter")
+  void testFahrzeugHinzufuegenErfolgreich() {
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("kennung", "Florian Musterstadt 1/24-1")
+        .formParam("fahrzeugtyp", "TLF3000")
+        .formParam("bezeichnung", "Tanklöschfahrzeug 3000")
+        .when()
+        .post("/fahrzeuge")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?erfolg=fahrzeug_hinzugefuegt#fahrzeuge"));
+
+    Optional<Einsatzfahrzeug> tlf = wehrService.getFahrzeugeDerAktivenWehr().stream()
+        .filter(f -> "Florian Musterstadt 1/24-1".equals(f.getKennung()))
+        .findFirst();
+
+    assertTrue(tlf.isPresent());
+    assertEquals(Fahrzeugtyp.TLF3000, tlf.get().getFahrzeugtyp());
+    assertEquals("Tanklöschfahrzeug 3000", tlf.get().getBezeichnung());
+  }
+
+  @Test
+  @DisplayName("POST /fahrzeuge ohne Funkkennung leitet mit Fehlermeldung weiter")
+  void testFahrzeugHinzufuegenFehlerOhneKennung() {
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("kennung", "")
+        .formParam("fahrzeugtyp", "HLF20")
+        .when()
+        .post("/fahrzeuge")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?fehler=fahrzeug_kennung_fehlt#fahrzeuge"));
+  }
+
+  @Test
+  @DisplayName("Default-Konstruktor von FahrzeugController")
+  void testDefaultKonstruktor() {
+    FahrzeugController defaultResource = new FahrzeugController();
+    assertNotNull(defaultResource);
+  }
+
+  @Test
+  @DisplayName("Direkter Methodenaufruf an FahrzeugController mit ungültigem Typ und automatischer Bezeichnung")
+  void testDirekterMethodenaufruf() {
+    WehrApplicationService mockService = new WehrApplicationService();
+    FahrzeugController resource = new FahrzeugController(mockService);
+
+    Response response = resource.fahrzeugHinzufuegen(
+        "Florian Test 1/11-1",
+        "UNGUELTIGER_TYP",
+        ""
+    );
+
+    assertEquals(303, response.getStatus());
+    Optional<Einsatzfahrzeug> testFz = mockService.getFahrzeugeDerAktivenWehr().stream()
+        .filter(f -> "Florian Test 1/11-1".equals(f.getKennung()))
+        .findFirst();
+
+    assertTrue(testFz.isPresent());
+    assertEquals(null, testFz.get().getFahrzeugtyp());
+    assertEquals("Florian Test 1/11-1", testFz.get().getBezeichnung());
+  }
+
+  @Test
+  @DisplayName("Direkter Methodenaufruf an FahrzeugController ohne explizite Bezeichnung übernimmt Typname")
+  void testDirekterMethodenaufrufMitTypnameAlsFallback() {
+    WehrApplicationService mockService = new WehrApplicationService();
+    FahrzeugController resource = new FahrzeugController(mockService);
+
+    Response response = resource.fahrzeugHinzufuegen(
+        "Florian Test 1/44-1",
+        "LF20",
+        ""
+    );
+
+    assertEquals(303, response.getStatus());
+    Optional<Einsatzfahrzeug> lf20 = mockService.getFahrzeugeDerAktivenWehr().stream()
+        .filter(f -> "Florian Test 1/44-1".equals(f.getKennung()))
+        .findFirst();
+
+    assertTrue(lf20.isPresent());
+    assertEquals(Fahrzeugtyp.LF20, lf20.get().getFahrzeugtyp());
+    assertEquals("LF20", lf20.get().getBezeichnung());
+  }
+}

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
-class IndexWebResourceTest {
+class IndexControllerTest {
 
   @Test
   @DisplayName("Startseite liefert Status 200 und HTML-Inhalt mit Dashboard-, Fahrzeug- und Kameraden-Elementen")
@@ -110,13 +110,13 @@ class IndexWebResourceTest {
   }
 
   @Test
-  @DisplayName("Direkter Aufruf der WebResource-Methode erzeugt eine valide TemplateInstance")
+  @DisplayName("Direkter Aufruf der Controller-Methode erzeugt eine valide TemplateInstance")
   void testIndexDirectMethodCall() {
-    IndexWebResource webResource = new IndexWebResource();
-    TemplateInstance templateInstance = webResource.index();
+    IndexController controller = new IndexController();
+    TemplateInstance templateInstance = controller.index();
     assertNotNull(templateInstance);
 
-    TemplateInstance mitParams = webResource.index("kamerad_hinzugefuegt", null);
+    TemplateInstance mitParams = controller.index("kamerad_hinzugefuegt", null);
     assertNotNull(mitParams);
   }
 }

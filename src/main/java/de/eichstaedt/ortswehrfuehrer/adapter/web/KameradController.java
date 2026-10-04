@@ -21,18 +21,18 @@ import org.slf4j.LoggerFactory;
  * Controller for managing Kameraden via web form submissions.
  */
 @Path("/kameraden")
-public class KameradWebResource {
+public class KameradController {
 
-  private static final Logger log = LoggerFactory.getLogger(KameradWebResource.class);
+  private static final Logger log = LoggerFactory.getLogger(KameradController.class);
 
   private final WehrApplicationService wehrService;
 
   @Inject
-  public KameradWebResource(WehrApplicationService wehrService) {
+  public KameradController(WehrApplicationService wehrService) {
     this.wehrService = wehrService;
   }
 
-  public KameradWebResource() {
+  public KameradController() {
     this(new WehrApplicationService());
   }
 

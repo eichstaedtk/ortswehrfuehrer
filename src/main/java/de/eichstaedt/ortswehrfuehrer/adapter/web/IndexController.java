@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
  * Controller for rendering the application's start page (dashboard) via Quarkus Qute (ADR-05).
  */
 @Path("/")
-public class IndexWebResource {
+public class IndexController {
 
-  private static final Logger log = LoggerFactory.getLogger(IndexWebResource.class);
+  private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
   @CheckedTemplate(basePath = "")
   public static class Templates {
@@ -44,11 +44,11 @@ public class IndexWebResource {
   private final WehrApplicationService wehrService;
 
   @Inject
-  public IndexWebResource(WehrApplicationService wehrService) {
+  public IndexController(WehrApplicationService wehrService) {
     this.wehrService = wehrService;
   }
 
-  public IndexWebResource() {
+  public IndexController() {
     this(new WehrApplicationService());
   }
 
