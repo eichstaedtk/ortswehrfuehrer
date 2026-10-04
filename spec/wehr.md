@@ -200,6 +200,25 @@ Und das Gründungsdatum ist der 01.05.1924
 Und alle Abteilungen und Kollektionen sind initialisiert
 ```
 
+## UC-82: Kamerad loeschen
+
+Es soll eine Möglichkeit geschaffen werden ein Kameraden zu entfernen.
+
+**Nachbedingung**:
+
+- Die Wehr verfügt über keine Kameraden mehr.
+
+```gherkin
+Gegeben sei eine WehrFactory
+Wenn eine Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" über die Factory erzeugt wird
+Dann besitzt die erzeugte Wehr eine gültige UUID als ID
+Und der Name lautet "Freiwillige Feuerwehr Göttlin"
+Und das Gründungsdatum ist der 01.05.1924
+Und alle Abteilungen und Kollektionen sind initialisiert
+Die verfügt über ein Kamerad besitzt den Vornamen "Max" und den Nachnamen "Mustermann. 
+Es wird die Funktion Kamerad entfernen aufgerufen. 
+```
+
 ---
 
 ---

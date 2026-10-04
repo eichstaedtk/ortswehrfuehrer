@@ -64,4 +64,18 @@ public class KameradController {
       return Response.seeOther(URI.create("/?fehler=name_fehlt#kameraden")).build();
     }
   }
+
+  @POST
+  @Path("/entfernen")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Produces(MediaType.TEXT_HTML)
+  public Response kameradEntfernen(@FormParam("kameradId") String kameradId) {
+    try {
+      wehrService.kameradEntfernen(kameradId);
+      return Response.seeOther(URI.create("/?erfolg=kamerad_entfernt#kameraden")).build();
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      log.warn("Kamerad konnte nicht entfernt werden: {}", e.getMessage());
+      return Response.seeOther(URI.create("/?fehler=kamerad_entfernen_fehlgeschlagen#kameraden")).build();
+    }
+  }
 }

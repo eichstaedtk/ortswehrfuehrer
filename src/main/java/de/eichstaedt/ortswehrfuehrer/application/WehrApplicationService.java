@@ -241,6 +241,25 @@ public class WehrApplicationService {
     return kamerad;
   }
 
+  public void kameradEntfernen(String kameradId) {
+    if (kameradId == null || kameradId.isBlank()) {
+      throw new IllegalArgumentException("Kamerad-ID darf nicht leer sein.");
+    }
+    if (aktiveWehr == null) {
+      throw new IllegalStateException("Keine aktive Wehr vorhanden.");
+    }
+    String trimmedId = kameradId.trim();
+    aktiveWehr.kameradEntfernen(trimmedId);
+    log.info("Kamerad mit ID '{}' erfolgreich aus Wehr '{}' entfernt.", trimmedId, aktiveWehr.getName());
+  }
+
+  public void kameradEntfernen(Kamerad kamerad) {
+    if (kamerad == null) {
+      throw new IllegalArgumentException("Kamerad darf nicht null sein.");
+    }
+    kameradEntfernen(kamerad.getId());
+  }
+
   public Kamerad kameradHinzufuegen(
       String vorname,
       String nachname,

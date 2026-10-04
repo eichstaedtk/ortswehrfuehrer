@@ -94,6 +94,34 @@ class AbteilungTest {
   }
 
   @Test
+  void testKameradEntfernenMitInstanzUndId() {
+    Abteilung abteilung = new Abteilung("Einsatzabteilung");
+    Kamerad k1 = Kamerad.builder().id("kam-1").vorname("Max").nachname("Mustermann").build();
+    Kamerad k2 = Kamerad.builder().id("kam-2").vorname("Erika").nachname("Musterfrau").build();
+
+    abteilung.kameradHinzufuegen(k1);
+    abteilung.kameradHinzufuegen(k2);
+    assertEquals(2, abteilung.getKameraden().size());
+
+    // Entfernen mit Instanz
+    Abteilung res1 = abteilung.kameradEntfernen(k1);
+    assertSame(abteilung, res1);
+    assertEquals(1, abteilung.getKameraden().size());
+    assertFalse(abteilung.getKameraden().contains(k1));
+    assertTrue(abteilung.getKameraden().contains(k2));
+
+    // Entfernen mit ID
+    Abteilung res2 = abteilung.kameradEntfernen("kam-2");
+    assertSame(abteilung, res2);
+    assertTrue(abteilung.getKameraden().isEmpty());
+
+    // Null- / Blank-Handling
+    assertDoesNotThrow(() -> abteilung.kameradEntfernen((Kamerad) null));
+    assertDoesNotThrow(() -> abteilung.kameradEntfernen((String) null));
+    assertDoesNotThrow(() -> abteilung.kameradEntfernen("   "));
+  }
+
+  @Test
   void testEqualsUndHashCode() {
     Abteilung a1 = new Abteilung("abt-1", "Einsatzabteilung");
     Abteilung a2 = new Abteilung("abt-1", "Jugendabteilung");

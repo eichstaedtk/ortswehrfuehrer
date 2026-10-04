@@ -219,6 +219,27 @@ class WehrApplicationServiceTest {
   }
 
   @Test
+  @DisplayName("Kamerad entfernen")
+  void testKameradEntfernen() {
+    Kamerad k = service.kameradHinzufuegen("Test", "Person", LocalDate.of(1995, 3, 10), null, null, null);
+    assertEquals(4, service.getAlleKameraden().size());
+
+    service.kameradEntfernen(k.getId());
+    assertEquals(3, service.getAlleKameraden().size());
+    assertFalse(service.getAlleKameraden().contains(k));
+
+    service.kameradHinzufuegen(k);
+    assertEquals(4, service.getAlleKameraden().size());
+
+    service.kameradEntfernen(k);
+    assertEquals(3, service.getAlleKameraden().size());
+
+    assertThrows(IllegalArgumentException.class, () -> service.kameradEntfernen((String) null));
+    assertThrows(IllegalArgumentException.class, () -> service.kameradEntfernen("   "));
+    assertThrows(IllegalArgumentException.class, () -> service.kameradEntfernen((Kamerad) null));
+  }
+
+  @Test
   @DisplayName("Dashboard-Übersicht liefert aggregierte Kennzahlen und Objektreferenzen")
   void testGetDashboardUebersicht() {
     DashboardUebersicht uebersicht = service.getDashboardUebersicht();

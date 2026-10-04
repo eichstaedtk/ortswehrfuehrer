@@ -508,6 +508,86 @@ class WehrTest {
   }
 
   @Test
+  void testUc82KameradEntfernen() {
+    // Gegeben sei eine WehrFactory
+    WehrFactory factory = new WehrFactory();
+
+    // Wenn eine Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" über die Factory erzeugt wird
+    LocalDate gruendung = LocalDate.of(1924, 5, 1);
+    Wehr wehr = factory.erzeugeWehr("Freiwillige Feuerwehr Göttlin", gruendung);
+
+    // Dann besitzt die erzeugte Wehr eine gültige UUID als ID
+    assertNotNull(wehr.getId());
+    assertDoesNotThrow(() -> UUID.fromString(wehr.getId()));
+    // Und der Name lautet "Freiwillige Feuerwehr Göttlin"
+    assertEquals("Freiwillige Feuerwehr Göttlin", wehr.getName());
+    // Und das Gründungsdatum ist der 01.05.1924
+    assertEquals(gruendung, wehr.getGruendungsdatum());
+    // Und alle Abteilungen und Kollektionen sind initialisiert
+    assertNotNull(wehr.getJugendabteilung());
+    assertNotNull(wehr.getEinsatzabteilung());
+    assertNotNull(wehr.getAltersUndEhrenabteilung());
+    assertNotNull(wehr.getGebaeude());
+    assertNotNull(wehr.getFahrzeugIds());
+    assertNotNull(wehr.getKameraden());
+
+    // Die verfügt über ein Kamerad besitzt den Vornamen "Max" und den Nachnamen "Mustermann.
+    Kamerad max = Kamerad.builder()
+        .id("kam-max-mustermann")
+        .vorname("Max")
+        .nachname("Mustermann")
+        .geburtsdatum(LocalDate.of(1990, 5, 20))
+        .build();
+    wehr.kameradHinzufuegen(max);
+    assertEquals(1, wehr.getKameraden().size());
+    assertTrue(wehr.getKameraden().contains(max));
+
+    // Es wird die Funktion Kamerad entfernen aufgerufen.
+    wehr.kameradEntfernen(max);
+
+    // Nachbedingung: Die Wehr verfügt über keine Kameraden mehr.
+    assertTrue(wehr.getKameraden().isEmpty());
+  }
+
+  @Test
+  void testKameradEntfernenUeberIdUndVerschiedeneAbteilungen() {
+    Wehr wehr = new Wehr();
+    LocalDate refDate = LocalDate.of(2024, 1, 1);
+
+    Kamerad jugend = Kamerad.builder().id("k-j").vorname("Jugend").nachname("Mitglied").geburtsdatum(LocalDate.of(2012, 1, 1)).build();
+    Kamerad einsatz = Kamerad.builder().id("k-e").vorname("Einsatz").nachname("Mitglied").geburtsdatum(LocalDate.of(1990, 1, 1)).build();
+    Kamerad alters = Kamerad.builder().id("k-a").vorname("Alters").nachname("Mitglied").geburtsdatum(LocalDate.of(1950, 1, 1)).build();
+
+    wehr.kameradHinzufuegen(jugend, refDate);
+    wehr.kameradHinzufuegen(einsatz, refDate);
+    wehr.kameradHinzufuegen(alters, refDate);
+
+    assertEquals(3, wehr.getKameraden().size());
+    assertTrue(wehr.getJugendabteilung().getKameraden().contains(jugend));
+    assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(einsatz));
+    assertTrue(wehr.getAltersUndEhrenabteilung().getKameraden().contains(alters));
+
+    // Entfernen per ID
+    wehr.kameradEntfernen("k-j");
+    assertEquals(2, wehr.getKameraden().size());
+    assertFalse(wehr.getJugendabteilung().getKameraden().contains(jugend));
+
+    // Entfernen per Instanz
+    wehr.kameradEntfernen(einsatz);
+    assertEquals(1, wehr.getKameraden().size());
+    assertFalse(wehr.getEinsatzabteilung().getKameraden().contains(einsatz));
+
+    // Entfernen des letzten Kameraden
+    wehr.kameradEntfernen("k-a");
+    assertTrue(wehr.getKameraden().isEmpty());
+
+    // Null/Blank checks
+    assertDoesNotThrow(() -> wehr.kameradEntfernen((Kamerad) null));
+    assertDoesNotThrow(() -> wehr.kameradEntfernen((String) null));
+    assertDoesNotThrow(() -> wehr.kameradEntfernen("   "));
+  }
+
+  @Test
   void testSetFahrzeugeUndSetFahrzeugIds() {
     Wehr wehr = new Wehr();
 

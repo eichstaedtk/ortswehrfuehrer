@@ -205,6 +205,24 @@ public class Wehr {
     return this;
   }
 
+  public Wehr kameradEntfernen(Kamerad kamerad) {
+    if (kamerad != null) {
+      this.jugendabteilung.kameradEntfernen(kamerad);
+      this.einsatzabteilung.kameradEntfernen(kamerad);
+      this.altersUndEhrenabteilung.kameradEntfernen(kamerad);
+    }
+    return this;
+  }
+
+  public Wehr kameradEntfernen(String kameradId) {
+    if (kameradId != null && !kameradId.isBlank()) {
+      this.jugendabteilung.kameradEntfernen(kameradId);
+      this.einsatzabteilung.kameradEntfernen(kameradId);
+      this.altersUndEhrenabteilung.kameradEntfernen(kameradId);
+    }
+    return this;
+  }
+
   public Wehr gruenden(String name) {
     return gruenden(name, null);
   }

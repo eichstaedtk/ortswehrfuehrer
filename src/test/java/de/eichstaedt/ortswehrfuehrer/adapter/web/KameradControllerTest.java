@@ -84,6 +84,60 @@ class KameradControllerTest {
   }
 
   @Test
+  @DisplayName("POST /kameraden/entfernen entfernt Kamerad und leitet weiter")
+  void testKameradEntfernenErfolgreich() {
+    Kamerad k = wehrService.kameradHinzufuegen("Ben", "Entfernbar", LocalDate.of(1992, 2, 2), null, null, null);
+    assertTrue(wehrService.getAlleKameraden().contains(k));
+
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("kameradId", k.getId())
+        .when()
+        .post("/kameraden/entfernen")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?erfolg=kamerad_entfernt#kameraden"));
+
+    assertTrue(wehrService.getAlleKameraden().stream().noneMatch(kam -> kam.getId().equals(k.getId())));
+  }
+
+  @Test
+  @DisplayName("POST /kameraden/entfernen mit leerer ID leitet mit Fehlermeldung weiter")
+  void testKameradEntfernenFehlerLeereId() {
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("kameradId", "")
+        .when()
+        .post("/kameraden/entfernen")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?fehler=kamerad_entfernen_fehlgeschlagen#kameraden"));
+  }
+
+  @Test
+  @DisplayName("Direkter Methodenaufruf kameradEntfernen an Controller")
+  void testDirekterMethodenaufrufEntfernen() {
+    WehrApplicationService mockService = new WehrApplicationService();
+    KameradController controller = new KameradController(mockService);
+
+    Kamerad k1 = mockService.kameradHinzufuegen("Dirk", "Direct1", LocalDate.of(1990, 1, 1), null, null, null);
+    assertEquals(4, mockService.getAlleKameraden().size());
+
+    try (Response r1 = controller.kameradEntfernen(k1.getId())) {
+      assertEquals(303, r1.getStatus());
+      assertEquals(3, mockService.getAlleKameraden().size());
+      assertEquals("/?erfolg=kamerad_entfernt#kameraden", r1.getLocation().toString());
+    }
+
+    try (Response r2 = controller.kameradEntfernen("")) {
+      assertEquals(303, r2.getStatus());
+      assertEquals("/?fehler=kamerad_entfernen_fehlgeschlagen#kameraden", r2.getLocation().toString());
+    }
+  }
+
+  @Test
   @DisplayName("Default-Konstruktor von KameradController")
   void testDefaultKonstruktor() {
     KameradController defaultResource = new KameradController();

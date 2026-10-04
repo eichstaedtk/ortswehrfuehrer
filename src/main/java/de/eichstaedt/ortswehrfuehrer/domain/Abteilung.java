@@ -68,6 +68,20 @@ public class Abteilung {
     return this;
   }
 
+  public Abteilung kameradEntfernen(Kamerad kamerad) {
+    if (this.kameraden != null && kamerad != null) {
+      this.kameraden.remove(kamerad);
+    }
+    return this;
+  }
+
+  public Abteilung kameradEntfernen(String kameradId) {
+    if (this.kameraden != null && kameradId != null && !kameradId.isBlank()) {
+      this.kameraden.removeIf(k -> Objects.equals(k.getId(), kameradId.trim()));
+    }
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
