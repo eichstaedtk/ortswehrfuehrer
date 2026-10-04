@@ -179,6 +179,29 @@ Eine Wehr kann Fahrzeuge über deren ID oder Einsatzfahrzeug-Instanz zuordnen.
 
 ---
 
+### UC-07: Erzeugung von Wehr-Instanzen über GoF Factory
+
+- **Ziel / Nutzen**: Kapselung der komplexen Erzeugungs-, Rekonstruktions- und Initialisierungslogik
+  für das Aggregate Root `Wehr` über ein GoF Factory Pattern (`WehrFactory`).
+- **Akteur**: Anwendungslogik / Repositories / Test-Suites.
+- **Nachbedingung**:
+    - `WehrFactory` bietet typsichere Methoden zur Neuerzeugung (`erzeugeNeueWehr()`, `erzeugeWehr(name)`, `erzeugeWehr(name, gruendungsdatum)`).
+    - `WehrFactory` bietet Rekonstruktionsmethoden (`rekonstruiereWehr(id, name, gruendungsdatum)`).
+    - `WehrFactory` ermöglicht die vollständige Assemblierung mit Gebäuden, Fahrzeug-IDs und Kameraden.
+
+#### Szenario: Erzeugung einer Wehr über die Factory
+
+```gherkin
+Gegeben sei eine WehrFactory
+Wenn eine Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" über die Factory erzeugt wird
+Dann besitzt die erzeugte Wehr eine gültige UUID als ID
+Und der Name lautet "Freiwillige Feuerwehr Göttlin"
+Und das Gründungsdatum ist der 01.05.1924
+Und alle Abteilungen und Kollektionen sind initialisiert
+```
+
+---
+
 ---
 
 ## 3. Architektur- und Qualitätsregeln

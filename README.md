@@ -107,6 +107,7 @@ Performance, Usability).*
 |   +-------------------------------------------------------+ |
 |   | domain (DDD Aggregate, Entities, Value Objects)       | |
 |   |  - Wehr (AggregateRoot)                               | |
+|   |  - WehrFactory (Factory / GoF Pattern)                | |
 |   |  - Einsatzfahrzeug (AggregateRoot)                     | |
 |   |  - Gebaeude (Entity)                                  | |
 |   |  - Abteilung (Entity)                                 | |
@@ -117,7 +118,9 @@ Performance, Usability).*
 |   +-------------------------------------------------------+ |
 |                                                             |
 |   +-------------------------------------------------------+ |
-|   | application / service / rest (Quarkus-Infrastruktur)  | |
+|   | adapter.web (Quarkus Qute & HTMX Web UI)              | |
+|   |  - IndexWebResource (Web Controller / Dashboard)      | |
+|   |  - templates/ (base.html, index.html)                 | |
 |   +-------------------------------------------------------+ |
 +-------------------------------------------------------------+
 ```
@@ -182,12 +185,29 @@ Performance, Usability).*
 
 ## 9. Architekturentscheidungen
 
-| ADR    | Titel                           | Status     | Begründung & Nutzen                                                                   |
-|--------|---------------------------------|------------|---------------------------------------------------------------------------------------|
-| ADR-01 | Einsatz von Quarkus & Java 21   | Angenommen | Hohe Ausführungsgeschwindigkeit, geringer Speicherverbrauch, moderne Sprachmittel.    |
-| ADR-02 | DDD-Modellierung mit jMolecules | Angenommen | Strukturierte Domänentrennung und automatische Erkennung von Architekturverletzungen. |
-| ADR-03 | Value Objects als Java Records  | Angenommen | Garantierte Unveränderlichkeit, kein Boilerplate-Code, maximale Fehlervermeidung.     |
-| ADR-04 | Aggregate-Referenzierung via ID | Angenommen | Entkopplung von Aggregate Roots (`Wehr` & `Einsatzfahrzeug`) zur Wahrung von Transaktionsgrenzen nach DDD. |
+| ADR    | Titel                                      | Status     | Begründung & Nutzen                                                                   |
+|--------|--------------------------------------------|------------|---------------------------------------------------------------------------------------|
+| ADR-01 | Einsatz von Quarkus & Java 21              | Angenommen | Hohe Ausführungsgeschwindigkeit, geringer Speicherverbrauch, moderne Sprachmittel.    |
+| ADR-02 | DDD-Modellierung mit jMolecules            | Angenommen | Strukturierte Domänentrennung und automatische Erkennung von Architekturverletzungen. |
+| ADR-03 | Value Objects als Java Records             | Angenommen | Garantierte Unveränderlichkeit, kein Boilerplate-Code, maximale Fehlervermeidung.     |
+| ADR-04 | Aggregate-Referenzierung via ID            | Angenommen | Entkopplung von Aggregate Roots (`Wehr` & `Einsatzfahrzeug`) zur Wahrung von Transaktionsgrenzen nach DDD. |
+| ADR-05 | Web-UI-Architektur (Quarkus Qute & HTMX)   | Angenommen | Server-Side Rendering (SSR) mit typsicheren Templates (`quarkus-qute`), minimalem Ressourcenbedarf, nativer Build-Unterstützung und reaktiver Dynamik via HTMX. |
+
+### 9.1 Detailansicht ADR-05: Auswahl der UI-Technologie
+
+* **Kontext**:
+  Die Anwendung *Ortswehrführer* benötigt eine intuitive, benutzerfreundliche Weboberfläche zur Verwaltung von Wehren, Liegenschaften, Einsatzfahrzeugen und Kameraden. Die Oberfläche muss leichtgewichtig, ressourcenschonend und nahtlos in den Quarkus-Stack sowie die Clean-Architecture-Schichten integrierbar sein.
+* **Betrachtete Alternativen**:
+  1. *Quarkus Qute + HTMX / TailwindCSS / Bootstrap*: Typsichere Server-Side-Rendering-Engine mit voller Quarkus- und GraalVM-Native-Unterstützung. HTMX ermöglicht moderne Single-Page-App-Interaktivität ohne komplexen JavaScript-Build-Stack (Node/NPM).
+  2. *Single Page Application (SPA, z. B. React / Vue / Angular / Svelte) mit Quarkus REST API*: Hohe Flexibilität und clientseitige Entkopplung, erfordert jedoch zusätzliche Build-Pipelines, Tooling (Node, npm/vite), separates State-Management und doppelten DTO-Synchronisationsaufwand.
+  3. *Vaadin Flow (Java-basierte Komponenten)*: Reine Java-Entwicklung für UI-Komponenten, jedoch höherer Speicherverbrauch und sessionbasierter Server-State, was der Cloud-Native-/Stateless-Ausrichtung von Quarkus entgegensteht.
+* **Entscheidung**:
+  Einsatz von **Quarkus Qute in Kombination mit HTMX und einem schlanken CSS-Framework (z. B. Bootstrap 5 oder TailwindCSS)** als primäre UI-Technologie.
+* **Konsequenzen / Nutzen**:
+  - **Zero-Node-Overhead**: Kein separater Frontend-Build-Prozess notwendig; Standard-Maven-Workflow (`./mvnw quarkus:dev`) genügt für Frontend und Backend.
+  - **Typsicherheit**: Qute validiert Templates zur Compile-Zeit (`@CheckedTemplate`), wodurch Template-Laufzeitfehler vermieden werden.
+  - **Performance & Footprint**: Perfekte Unterstützung für Native-Image-Kompilierung mit minimalen Startzeiten und geringem RAM-Verbrauch.
+  - **Schichtenarchitektur**: UI-Controller/Ressourcen nutzen Application Services oder Aggregate direkt über Adapter/View-Models, ohne die Domäne zu verunreinigen.
 
 ---
 
@@ -199,11 +219,11 @@ Performance, Usability).*
 
 Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`) ermittelt:
 
-- **Gesamtergebnis Tests**: 89 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
-- **Zeilenabdeckung (Line Coverage)**: **97,19 %** (415 von 427 Zeilen abgedeckt)
-- **Instruktionsabdeckung (Instruction Coverage)**: **97,44 %** (1.825 von 1.873 Instruktionen abgedeckt)
-- **Methodenabdeckung (Method Coverage)**: **96,88 %** (186 von 192 Methoden abgedeckt)
-- **Zweigabdeckung (Branch Coverage)**: **86,72 %** (111 von 128 Branches abgedeckt)
+- **Gesamtergebnis Tests**: 100 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
+- **Zeilenabdeckung (Line Coverage)**: **97,38 %** (483 von 496 Zeilen abgedeckt)
+- **Instruktionsabdeckung (Instruction Coverage)**: **97,63 %** (2.100 von 2.151 Instruktionen abgedeckt)
+- **Methodenabdeckung (Method Coverage)**: **96,62 %** (200 von 207 Methoden abgedeckt)
+- **Zweigabdeckung (Branch Coverage)**: **87,32 %** (124 von 142 Branches abgedeckt)
 
 ### 10.2 Qualitätsszenarien
 
@@ -229,6 +249,7 @@ Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`
 | Begriff            | Definition                                                                                                           |
 |--------------------|----------------------------------------------------------------------------------------------------------------------|
 | **Wehr**           | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden, Fahrzeug-IDs und Kameraden.  |
+| **WehrFactory**    | GoF Factory (`@Factory`) zur Erzeugung, Rekonstruktion und Standardinitialisierung von `Wehr`-Aggregaten.           |
 | **Einsatzfahrzeug**| Aggregate Root, repräsentiert ein Feuerwehr-Fahrzeug mit ID, Bezeichnung, Kennung und DIN-14530-Attributen.         |
 | **Gebäude**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                               |
 | **Kamerad**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                                         |

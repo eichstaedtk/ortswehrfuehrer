@@ -34,16 +34,43 @@ public class Wehr {
 
   private Abteilung altersUndEhrenabteilung = new Abteilung("Alters- und Ehrenabteilung");
 
+  public Wehr() {
+  }
+
+  public Wehr(String name, LocalDate gruendungsdatum) {
+    this.id = UUID.randomUUID().toString();
+    this.name = name;
+    this.gruendungsdatum = gruendungsdatum;
+  }
+
+  public Wehr(String id, String name, LocalDate gruendungsdatum) {
+    this.id = id != null && !id.isBlank() ? id : UUID.randomUUID().toString();
+    this.name = name;
+    this.gruendungsdatum = gruendungsdatum;
+  }
+
   public String getId() {
     return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getName() {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public LocalDate getGruendungsdatum() {
     return gruendungsdatum;
+  }
+
+  public void setGruendungsdatum(LocalDate gruendungsdatum) {
+    this.gruendungsdatum = gruendungsdatum;
   }
 
   public List<Gebaeude> getGebaeude() {
@@ -167,6 +194,10 @@ public class Wehr {
       }
     }
     return this;
+  }
+
+  public Wehr gruenden(String name) {
+    return gruenden(name, null);
   }
 
   public Wehr gruenden(String name, LocalDate gruendungsdatum) {

@@ -64,6 +64,46 @@ class WehrTest {
   }
 
   @Test
+  void testGruendenNurMitName() {
+    Wehr wehr = new Wehr();
+    String wehrName = "Freiwillige Feuerwehr Goettlin";
+
+    Wehr result = wehr.gruenden(wehrName);
+
+    assertSame(wehr, result);
+    assertEquals(wehrName, wehr.getName());
+    assertNull(wehr.getGruendungsdatum());
+    assertNotNull(wehr.getId());
+    assertDoesNotThrow(() -> UUID.fromString(wehr.getId()));
+  }
+
+  @Test
+  void testKonstruktorenUndSetter() {
+    LocalDate gruendung = LocalDate.of(1920, 1, 1);
+    Wehr wehr1 = new Wehr("Wehr 1", gruendung);
+    assertNotNull(wehr1.getId());
+    assertEquals("Wehr 1", wehr1.getName());
+    assertEquals(gruendung, wehr1.getGruendungsdatum());
+
+    Wehr wehr2 = new Wehr("custom-id-1", "Wehr 2", gruendung);
+    assertEquals("custom-id-1", wehr2.getId());
+    assertEquals("Wehr 2", wehr2.getName());
+    assertEquals(gruendung, wehr2.getGruendungsdatum());
+
+    Wehr wehr3 = new Wehr("   ", "Wehr 3", null);
+    assertNotNull(wehr3.getId());
+    assertDoesNotThrow(() -> UUID.fromString(wehr3.getId()));
+
+    Wehr wehr4 = new Wehr();
+    wehr4.setId("id-4");
+    wehr4.setName("Wehr 4");
+    wehr4.setGruendungsdatum(gruendung);
+    assertEquals("id-4", wehr4.getId());
+    assertEquals("Wehr 4", wehr4.getName());
+    assertEquals(gruendung, wehr4.getGruendungsdatum());
+  }
+
+  @Test
   void testGebaeudeHinzufuegen() {
     Wehr wehr = new Wehr();
     Adresse adresse = new Adresse("Hauptstraße", "12a", "14712", "Göttlin");
