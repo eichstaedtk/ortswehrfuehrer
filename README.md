@@ -118,8 +118,14 @@ Performance, Usability).*
 |   +-------------------------------------------------------+ |
 |                                                             |
 |   +-------------------------------------------------------+ |
+|   | application (Use Cases & Application Services)        | |
+|   |  - WehrApplicationService (Orchestrierung & Logik)    | |
+|   +-------------------------------------------------------+ |
+|                                                             |
+|   +-------------------------------------------------------+ |
 |   | adapter.web (Quarkus Qute & HTMX Web UI)              | |
 |   |  - IndexWebResource (Web Controller / Dashboard)      | |
+|   |  - KameradWebResource (Web Controller / Kameraden)    | |
 |   |  - templates/ (base.html, index.html)                 | |
 |   +-------------------------------------------------------+ |
 +-------------------------------------------------------------+
@@ -219,11 +225,11 @@ Performance, Usability).*
 
 Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`) ermittelt:
 
-- **Gesamtergebnis Tests**: 100 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
-- **Zeilenabdeckung (Line Coverage)**: **97,38 %** (483 von 496 Zeilen abgedeckt)
-- **Instruktionsabdeckung (Instruction Coverage)**: **97,63 %** (2.100 von 2.151 Instruktionen abgedeckt)
-- **Methodenabdeckung (Method Coverage)**: **96,62 %** (200 von 207 Methoden abgedeckt)
-- **Zweigabdeckung (Branch Coverage)**: **87,32 %** (124 von 142 Branches abgedeckt)
+- **Gesamtergebnis Tests**: 112 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
+- **Zeilenabdeckung (Line Coverage)**: **97,39 %** (559 von 574 Zeilen abgedeckt)
+- **Instruktionsabdeckung (Instruction Coverage)**: **97,27 %** (2.389 von 2.456 Instruktionen abgedeckt)
+- **Methodenabdeckung (Method Coverage)**: **96,83 %** (214 von 221 Methoden abgedeckt)
+- **Zweigabdeckung (Branch Coverage)**: **78,30 %** (166 von 212 Branches abgedeckt)
 
 ### 10.2 Qualitätsszenarien
 

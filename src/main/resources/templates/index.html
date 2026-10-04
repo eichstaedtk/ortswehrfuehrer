@@ -3,6 +3,23 @@
 {#title}Ortswehrführer - Startseite{/title}
 
 {#content}
+<!-- Benachrichtigungen / Alerts -->
+{#if erfolg == 'kamerad_hinzugefuegt'}
+<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+    <strong>Erfolg!</strong> Der Kamerad / die Kameradin wurde erfolgreich aufgenommen und anhand des Alters automatisch der passenden Einsatzabteilung zugewiesen.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
+{#if fehler == 'name_fehlt'}
+<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+    <strong>Fehler beim Speichern:</strong> Bitte geben Sie mindestens Vorname und Nachname an.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
 <!-- Hero Section -->
 <div class="hero-banner p-4 p-md-5 mb-4 shadow">
     <div class="row align-items-center">
@@ -16,11 +33,11 @@
                 altersgerechte Zuordnung in Einsatzabteilungen, Verwaltung genormter DIN-14530-Einsatzfahrzeuge und Liegenschaften.
             </p>
             <div class="d-flex flex-wrap gap-2">
-                <a href="#aktionen" class="btn btn-feuerwehr btn-lg px-4 shadow-sm">
-                    <i class="bi bi-plus-circle me-1"></i> Schnellstart / Aktionen
-                </a>
-                <a href="#uebersicht-wehr" class="btn btn-outline-light btn-lg px-4">
-                    <i class="bi bi-info-circle me-1"></i> Details zur Beispiel-Wehr
+                <button type="button" class="btn btn-feuerwehr btn-lg px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#kameradModal">
+                    <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
+                </button>
+                <a href="#kameraden" class="btn btn-outline-light btn-lg px-4">
+                    <i class="bi bi-people-fill me-1"></i> Kameradenliste ({anzahlKameraden})
                 </a>
             </div>
         </div>
@@ -180,6 +197,112 @@
 </div>
 {/if}
 
+<!-- Kameraden-Übersicht & Tabelle -->
+<div id="kameraden" class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h5 class="mb-0 fw-bold text-dark">
+                <i class="bi bi-people-fill text-primary me-2"></i>Kameradinnen & Kameraden ({anzahlKameraden})
+            </h5>
+            <small class="text-muted">Mitgliederübersicht mit automatischer Abteilungseinteilung nach Alter</small>
+        </div>
+        <button type="button" class="btn btn-feuerwehr shadow-sm" data-bs-toggle="modal" data-bs-target="#kameradModal">
+            <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
+        </button>
+    </div>
+    <div class="card-body p-0">
+        {#if kameraden.isEmpty}
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-person-slash fs-1 d-block mb-2 text-secondary"></i>
+                <p class="mb-0">Noch keine Kameradinnen und Kameraden erfasst.</p>
+            </div>
+        {#else}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="ps-3">Name</th>
+                            <th scope="col">Einsatzabteilung</th>
+                            <th scope="col">Alter / Geburtsdatum</th>
+                            <th scope="col">Wohnadresse</th>
+                            <th scope="col" class="pe-3">Kontaktdaten</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#for k in kameraden}
+                        <tr>
+                            <td class="ps-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="rounded-circle bg-secondary-subtle text-secondary d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; font-weight: 600;">
+                                        {k.vorname.substring(0, 1)}{k.nachname.substring(0, 1)}
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">{k.vorname} {k.nachname}</div>
+                                        <small class="text-muted font-monospace" style="font-size: 0.75rem;">ID: {k.id}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {#if beispielWehr.jugendabteilung.kameraden.contains(k)}
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                                        <i class="bi bi-person-heart me-1"></i>Jugendabteilung
+                                    </span>
+                                {#else if beispielWehr.einsatzabteilung.kameraden.contains(k)}
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
+                                        <i class="bi bi-person-check-fill me-1"></i>Einsatzabteilung
+                                    </span>
+                                {#else if beispielWehr.altersUndEhrenabteilung.kameraden.contains(k)}
+                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1">
+                                        <i class="bi bi-award me-1"></i>Alters- & Ehrenabteilung
+                                    </span>
+                                {#else}
+                                    <span class="badge bg-light text-dark border">
+                                        Mitglied
+                                    </span>
+                                {/if}
+                            </td>
+                            <td>
+                                {#if k.geburtsdatum}
+                                    <div class="fw-semibold">{k.berechneAlter()} Jahre</div>
+                                    <small class="text-muted"><i class="bi bi-calendar-event me-1"></i>{k.geburtsdatum}</small>
+                                {#else}
+                                    <span class="text-muted small">Nicht angegeben</span>
+                                {/if}
+                            </td>
+                            <td>
+                                {#if k.adresse}
+                                    <div>{k.adresse.strasse} {k.adresse.hausnummer}</div>
+                                    <small class="text-muted">{k.adresse.postleitzahl} {k.adresse.ort}</small>
+                                {#else}
+                                    <span class="text-muted small">Keine Adresse</span>
+                                {/if}
+                            </td>
+                            <td class="pe-3">
+                                <div class="d-flex flex-column gap-1 small">
+                                    {#if k.telefonnummer}
+                                        <a href="tel:{k.telefonnummer}" class="text-decoration-none text-dark">
+                                            <i class="bi bi-telephone text-primary me-1"></i>{k.telefonnummer}
+                                        </a>
+                                    {/if}
+                                    {#if k.emailAdresse}
+                                        <a href="mailto:{k.emailAdresse}" class="text-decoration-none text-muted">
+                                            <i class="bi bi-envelope text-danger me-1"></i>{k.emailAdresse}
+                                        </a>
+                                    {/if}
+                                    {#if !k.telefonnummer && !k.emailAdresse}
+                                        <span class="text-muted small">–</span>
+                                    {/if}
+                                </div>
+                            </td>
+                        </tr>
+                        {/for}
+                    </tbody>
+                </table>
+            </div>
+        {/if}
+    </div>
+</div>
+
 <!-- Schnellstart / Aktionsbereich -->
 <div id="aktionen" class="card shadow-sm border-0 mb-4">
     <div class="card-header bg-white py-3 border-bottom">
@@ -202,7 +325,9 @@
                     <i class="bi bi-person-plus text-primary fs-1 mb-2"></i>
                     <h6 class="fw-bold">Kamerad aufnehmen</h6>
                     <p class="text-muted small">Mitglied mit Adresse, Geburtsdatum und Kontaktdaten erfassen.</p>
-                    <button class="btn btn-sm btn-outline-primary w-100 disabled" title="In Kürze verfügbar">Erfassen</button>
+                    <button type="button" class="btn btn-sm btn-primary w-100" data-bs-toggle="modal" data-bs-target="#kameradModal">
+                        <i class="bi bi-plus-circle me-1"></i> Aufnehmen
+                    </button>
                 </div>
             </div>
             <div class="col-md-3">
@@ -221,6 +346,95 @@
                     <button class="btn btn-sm btn-outline-success w-100 disabled" title="In Kürze verfügbar">Anlegen</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Kamerad aufnehmen -->
+<div class="modal fade" id="kameradModal" tabindex="-1" aria-labelledby="kameradModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-feuerwehr text-white">
+                <h5 class="modal-title fw-bold" id="kameradModalLabel">
+                    <i class="bi bi-person-plus-fill me-2"></i>Neuen Kameraden / Kameradin aufnehmen
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Schließen"></button>
+            </div>
+            <form action="/kameraden" method="post" id="formKameradAufnehmen">
+                <div class="modal-body p-4">
+                    <div class="alert alert-info py-2 small d-flex align-items-center mb-4" role="alert">
+                        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                        <span>Die Zuordnung zur passenden <strong>Einsatzabteilung</strong> (Jugendwehr bis 16 Jahre, Einsatzabteilung 17–65 Jahre, Alters- und Ehrenabteilung &gt;65 Jahre) erfolgt vollautomatisch anhand des Geburtsdatums.</span>
+                    </div>
+
+                    <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                        <i class="bi bi-person-lines-fill me-1 text-danger"></i> 1. Persönliche Angaben
+                    </h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="inputVorname" class="form-label fw-semibold">Vorname <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="inputVorname" name="vorname" placeholder="z. B. Julia" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputNachname" class="form-label fw-semibold">Nachname <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="inputNachname" name="nachname" placeholder="z. B. Meier" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputGeburtsdatum" class="form-label fw-semibold">Geburtsdatum</label>
+                            <input type="date" class="form-control" id="inputGeburtsdatum" name="geburtsdatum">
+                            <div class="form-text small">Wird zur automatischen Abteilungsberechnung benötigt.</div>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                        <i class="bi bi-house-door-fill me-1 text-success"></i> 2. Anschrift
+                    </h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-8">
+                            <label for="inputStrasse" class="form-label fw-semibold">Straße</label>
+                            <input type="text" class="form-control" id="inputStrasse" name="strasse" placeholder="z. B. Lindenallee">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputHausnummer" class="form-label fw-semibold">Hausnummer</label>
+                            <input type="text" class="form-control" id="inputHausnummer" name="hausnummer" placeholder="z. B. 12a">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputPlz" class="form-label fw-semibold">Postleitzahl</label>
+                            <input type="text" class="form-control" id="inputPlz" name="postleitzahl" placeholder="z. B. 12345">
+                        </div>
+                        <div class="col-md-8">
+                            <label for="inputOrt" class="form-label fw-semibold">Wohnort</label>
+                            <input type="text" class="form-control" id="inputOrt" name="ort" placeholder="z. B. Musterstadt">
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                        <i class="bi bi-telephone-fill me-1 text-primary"></i> 3. Kontaktdaten & Erreichbarkeit
+                    </h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="inputTelefon" class="form-label fw-semibold">Telefonnummer / Mobil</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="tel" class="form-control" id="inputTelefon" name="telefonnummer" placeholder="z. B. 0171 9876543">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputEmail" class="form-label fw-semibold">E-Mail-Adresse</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="inputEmail" name="emailAdresse" placeholder="z. B. julia.meier@feuerwehr.de">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="submit" class="btn btn-feuerwehr shadow-sm px-4">
+                        <i class="bi bi-check-lg me-1"></i> Kamerad aufnehmen
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -1,18 +1,16 @@
 package de.eichstaedt.ortswehrfuehrer.adapter.web;
 
-import de.eichstaedt.ortswehrfuehrer.domain.Adresse;
-import de.eichstaedt.ortswehrfuehrer.domain.Gebaeude;
+import de.eichstaedt.ortswehrfuehrer.application.WehrApplicationService;
 import de.eichstaedt.ortswehrfuehrer.domain.Kamerad;
 import de.eichstaedt.ortswehrfuehrer.domain.Wehr;
-import de.eichstaedt.ortswehrfuehrer.domain.WehrFactory;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,54 +27,46 @@ public class IndexWebResource {
         int anzahlKameraden,
         int anzahlFahrzeuge,
         int anzahlGebaeude,
-        Wehr beispielWehr
+        Wehr beispielWehr,
+        Set<Kamerad> kameraden,
+        String erfolg,
+        String fehler
     );
   }
 
-  private final WehrFactory wehrFactory;
+  private final WehrApplicationService wehrService;
+
+  @Inject
+  public IndexWebResource(WehrApplicationService wehrService) {
+    this.wehrService = wehrService;
+  }
 
   public IndexWebResource() {
-    this.wehrFactory = new WehrFactory();
+    this(new WehrApplicationService());
+  }
+
+  public TemplateInstance index() {
+    return index(null, null);
   }
 
   @GET
   @Produces(MediaType.TEXT_HTML)
-  public TemplateInstance index() {
-    Wehr beispielWehr = wehrFactory.erzeugeWehr(
-        "Freiwillige Feuerwehr Musterstadt",
-        LocalDate.of(1924, 5, 1),
-        List.of(
-            new Gebaeude("Gerätehaus Mitte",
-                new Adresse("Hauptstraße", "1", "12345", "Musterstadt"))
-        ),
-        Set.of("fz-tsfw-01", "fz-hlf10-02"),
-        List.of(
-            Kamerad.builder()
-                .vorname("Max")
-                .nachname("Mustermann")
-                .geburtsdatum(LocalDate.of(1995, 3, 15))
-                .emailAdresse("max.mustermann@feuerwehr.de")
-                .telefonnummer("0170 1234567")
-                .build(),
-            Kamerad.builder()
-                .vorname("Leon")
-                .nachname("Schmidt")
-                .geburtsdatum(LocalDate.of(2012, 8, 20))
-                .build(),
-            Kamerad.builder()
-                .vorname("Hans")
-                .nachname("Weber")
-                .geburtsdatum(LocalDate.of(1950, 11, 2))
-                .build()
-        )
-    );
+  public TemplateInstance index(
+      @QueryParam("erfolg") String erfolg,
+      @QueryParam("fehler") String fehler
+  ) {
+    Wehr beispielWehr = wehrService.getAktiveWehr();
+    Set<Kamerad> alleKameraden = wehrService.getAlleKameraden();
 
     return Templates.index(
         1,
-        beispielWehr.getKameraden().size(),
-        beispielWehr.getFahrzeugIds().size(),
-        beispielWehr.getGebaeude().size(),
-        beispielWehr
+        alleKameraden.size(),
+        beispielWehr != null ? beispielWehr.getFahrzeugIds().size() : 0,
+        beispielWehr != null ? beispielWehr.getGebaeude().size() : 0,
+        beispielWehr,
+        alleKameraden,
+        erfolg,
+        fehler
     );
   }
 }
