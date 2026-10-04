@@ -12,10 +12,10 @@ import org.jmolecules.ddd.annotation.ValueObject;
 class ArchitectureTest {
 
   @ArchTest
-  ArchRule dddRules = JMoleculesDddRules.all();
+  public static final ArchRule dddRules = JMoleculesDddRules.all();
 
   @ArchTest
-  ArchRule valueObjectsShouldBeRecords = classes()
+  public static final ArchRule valueObjectsShouldBeRecords = classes()
       .that().areAnnotatedWith(ValueObject.class)
       .should().beRecords();
 }

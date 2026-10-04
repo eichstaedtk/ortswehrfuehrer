@@ -2,6 +2,7 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -90,5 +91,20 @@ class AbteilungTest {
 
     assertEquals(1, abteilung.getKameraden().size());
     assertTrue(abteilung.getKameraden().contains(kamerad));
+  }
+
+  @Test
+  void testEqualsUndHashCode() {
+    Abteilung a1 = new Abteilung("abt-1", "Einsatzabteilung");
+    Abteilung a2 = new Abteilung("abt-1", "Jugendabteilung");
+    Abteilung a3 = new Abteilung("abt-2", "Einsatzabteilung");
+
+    assertEquals(a1, a2);
+    assertTrue(a1.equals(a1));
+    assertEquals(a1.hashCode(), a2.hashCode());
+    assertFalse(a1.equals(a3));
+    assertNotNull(a1);
+    assertFalse(a1.equals(null));
+    assertFalse(a1.equals("other"));
   }
 }

@@ -4,6 +4,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.eichstaedt.ortswehrfuehrer.application.WehrApplicationService;
 import de.eichstaedt.ortswehrfuehrer.domain.Kamerad;
@@ -47,7 +49,7 @@ class KameradWebResourceTest {
         .filter(k -> "Anna".equals(k.getVorname()) && "Fischer".equals(k.getNachname()))
         .findFirst();
 
-    assertEquals(true, anna.isPresent());
+    assertTrue(anna.isPresent());
     assertEquals(LocalDate.of(1998, 7, 22), anna.get().getGeburtsdatum());
     assertEquals("0175 1122334", anna.get().getTelefonnummer());
     assertEquals("anna.fischer@feuerwehr.de", anna.get().getEmailAdresse());
@@ -94,7 +96,7 @@ class KameradWebResourceTest {
     WehrApplicationService mockService = new WehrApplicationService();
     KameradWebResource resource = new KameradWebResource(mockService);
 
-    Response response = resource.kameradHinzufuegen(
+    try (Response response = resource.kameradHinzufuegen(
         "Klara",
         "Berger",
         "ungueltiges-datum",
@@ -104,15 +106,16 @@ class KameradWebResourceTest {
         "",
         "",
         ""
-    );
+    )) {
+      assertEquals(303, response.getStatus());
+    }
 
-    assertEquals(303, response.getStatus());
     Optional<Kamerad> klara = mockService.getAlleKameraden().stream()
         .filter(k -> "Klara".equals(k.getVorname()))
         .findFirst();
 
-    assertEquals(true, klara.isPresent());
-    assertEquals(null, klara.get().getGeburtsdatum());
+    assertTrue(klara.isPresent());
+    assertNull(klara.get().getGeburtsdatum());
     assertEquals("Wiesenweg", klara.get().getAdresse().strasse());
   }
 }

@@ -25,6 +25,12 @@ import org.slf4j.LoggerFactory;
 @ApplicationScoped
 public class WehrApplicationService {
 
+  public static final String JUGENDABTEILUNG = "Jugendabteilung";
+  public static final String EINSATZABTEILUNG = "Einsatzabteilung";
+  public static final String ALTERS_UND_EHRENABTEILUNG = "Alters- und Ehrenabteilung";
+  public static final String UNBEKANNT = "Unbekannt";
+  public static final String NICHT_ZUGEORDNET = "Nicht zugeordnet";
+
   private static final Logger log = LoggerFactory.getLogger(WehrApplicationService.class);
 
   private final WehrFactory wehrFactory;
@@ -135,6 +141,15 @@ public class WehrApplicationService {
     return fahrzeug;
   }
 
+  public Einsatzfahrzeug fahrzeugHinzufuegen(String kennung, Fahrzeugtyp fahrzeugtyp, String bezeichnung) {
+    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .kennung(kennung)
+        .fahrzeugtyp(fahrzeugtyp)
+        .bezeichnung(bezeichnung)
+        .build();
+    return fahrzeugHinzufuegen(fahrzeug);
+  }
+
   public Kamerad kameradHinzufuegen(Kamerad kamerad) {
     if (kamerad == null) {
       throw new IllegalArgumentException("Kamerad darf nicht null sein.");
@@ -169,20 +184,20 @@ public class WehrApplicationService {
 
   public String ermittleAbteilungName(Kamerad kamerad) {
     if (aktiveWehr == null || kamerad == null) {
-      return "Unbekannt";
+      return UNBEKANNT;
     }
     if (aktiveWehr.getJugendabteilung() != null
         && aktiveWehr.getJugendabteilung().getKameraden().contains(kamerad)) {
-      return "Jugendabteilung";
+      return JUGENDABTEILUNG;
     }
     if (aktiveWehr.getEinsatzabteilung() != null
         && aktiveWehr.getEinsatzabteilung().getKameraden().contains(kamerad)) {
-      return "Einsatzabteilung";
+      return EINSATZABTEILUNG;
     }
     if (aktiveWehr.getAltersUndEhrenabteilung() != null
         && aktiveWehr.getAltersUndEhrenabteilung().getKameraden().contains(kamerad)) {
-      return "Alters- und Ehrenabteilung";
+      return ALTERS_UND_EHRENABTEILUNG;
     }
-    return "Nicht zugeordnet";
+    return NICHT_ZUGEORDNET;
   }
 }

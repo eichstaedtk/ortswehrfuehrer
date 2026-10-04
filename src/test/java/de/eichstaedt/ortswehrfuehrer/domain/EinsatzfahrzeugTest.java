@@ -1,9 +1,11 @@
 package de.eichstaedt.ortswehrfuehrer.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -176,17 +178,26 @@ class EinsatzfahrzeugTest {
   @Test
   void testBuilderMitWeiterenAliasen() {
     Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .fahrzeugTyp(Fahrzeugtyp.TLF2000)
         .din14530("Teil 18")
         .gesamtmasse("9,0–14,0 t")
         .abmessungen(6.3, 2.3, 3.1)
         .fuehrerscheinklasse("C")
         .build();
 
+    assertEquals(Fahrzeugtyp.TLF2000, fahrzeug.getFahrzeugtyp());
     assertEquals("Teil 18", fahrzeug.getDinNorm());
     assertEquals("DIN 14530 Teil 18", fahrzeug.getDin14530());
     assertEquals("9,0–14,0 t", fahrzeug.getZulassigeGesamtmasse());
     assertEquals(new Abmessungen(6.3, 2.3, 3.1), fahrzeug.getAbmessungen());
     assertEquals("C", fahrzeug.getFuehrerscheinklasse());
+
+    Einsatzfahrzeug fahrzeug2 = Einsatzfahrzeug.builder()
+        .mitFahrzeugtyp(Fahrzeugtyp.TSF_W)
+        .mitAbmessungen(6.3, 2.35, 2.9)
+        .build();
+    assertEquals(Fahrzeugtyp.TSF_W, fahrzeug2.getFahrzeugtyp());
+    assertEquals(new Abmessungen(6.3, 2.35, 2.9), fahrzeug2.getAbmessungen());
   }
 
   @Test
@@ -195,11 +206,12 @@ class EinsatzfahrzeugTest {
     Einsatzfahrzeug f2 = new Einsatzfahrzeug("id-1", "Anderer Name", "Andere Kennung", Fahrzeugtyp.HLF10);
     Einsatzfahrzeug f3 = new Einsatzfahrzeug("id-2", "TSF", "HVL 5/47/2", Fahrzeugtyp.TSF);
 
-    assertEquals(f1, f1);
     assertEquals(f1, f2);
+    assertTrue(f1.equals(f1));
     assertNotEquals(f1, f3);
-    assertNotEquals(f1, null);
-    assertNotEquals(f1, "other-type");
+    assertNotNull(f1);
+    assertFalse(f1.equals(null));
+    assertFalse(f1.equals("other-type"));
     assertEquals(f1.hashCode(), f2.hashCode());
   }
 

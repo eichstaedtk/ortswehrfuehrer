@@ -12,10 +12,26 @@
 </div>
 {/if}
 
+{#if erfolg == 'fahrzeug_hinzugefuegt'}
+<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+    <strong>Erfolg!</strong> Das Einsatzfahrzeug wurde erfolgreich angelegt und der Wehr zugeordnet.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
 {#if fehler == 'name_fehlt'}
 <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
     <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
     <strong>Fehler beim Speichern:</strong> Bitte geben Sie mindestens Vorname und Nachname an.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
+{#if fehler == 'fahrzeug_kennung_fehlt'}
+<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+    <strong>Fehler beim Speichern:</strong> Bitte geben Sie eine Funkkennung für das Einsatzfahrzeug an.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
 </div>
 {/if}
@@ -35,6 +51,9 @@
             <div class="d-flex flex-wrap gap-2">
                 <button type="button" class="btn btn-feuerwehr btn-lg px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#kameradModal">
                     <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
+                </button>
+                <button type="button" class="btn btn-warning text-dark btn-lg px-4 shadow-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
+                    <i class="bi bi-truck me-1"></i> Fahrzeug hinzufügen
                 </button>
                 <a href="#kameraden" class="btn btn-outline-light btn-lg px-4">
                     <i class="bi bi-people-fill me-1"></i> Kameradenliste ({anzahlKameraden})
@@ -174,11 +193,16 @@
             </div>
 
             <!-- Zugeordnete Einsatzfahrzeuge -->
-            <div class="col-lg-4">
+            <div id="fahrzeuge" class="col-lg-4">
                 <div class="border rounded-3 p-3 bg-light h-100">
-                    <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center">
-                        <i class="bi bi-truck me-2 text-warning"></i>Zugeordnete Einsatzfahrzeuge
-                    </h6>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold text-secondary mb-0 d-flex align-items-center">
+                            <i class="bi bi-truck me-2 text-warning"></i>Zugeordnete Einsatzfahrzeuge
+                        </h6>
+                        <button type="button" class="btn btn-sm btn-outline-warning text-dark fw-semibold" data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
+                            <i class="bi bi-plus-lg me-1"></i>Hinzufügen
+                        </button>
+                    </div>
                     {#if fahrzeuge.isEmpty}
                         <p class="text-muted small mb-0">Keine Fahrzeuge zugeordnet.</p>
                     {#else}
@@ -343,7 +367,9 @@
                     <i class="bi bi-truck-front text-warning fs-1 mb-2"></i>
                     <h6 class="fw-bold">Fahrzeug zuweisen</h6>
                     <p class="text-muted small">DIN-14530-Einsatzfahrzeug der Wehr zuordnen.</p>
-                    <button class="btn btn-sm btn-outline-warning text-dark w-100 disabled" title="In Kürze verfügbar">Zuweisen</button>
+                    <button type="button" class="btn btn-sm btn-warning text-dark fw-semibold w-100" data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
+                        <i class="bi bi-plus-circle me-1"></i> Hinzufügen
+                    </button>
                 </div>
             </div>
             <div class="col-md-3">
@@ -440,6 +466,64 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
                     <button type="submit" class="btn btn-feuerwehr shadow-sm px-4">
                         <i class="bi bi-check-lg me-1"></i> Kamerad aufnehmen
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Einsatzfahrzeug hinzufügen -->
+<div class="modal fade" id="fahrzeugModal" tabindex="-1" aria-labelledby="fahrzeugModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title fw-bold" id="fahrzeugModalLabel">
+                    <i class="bi bi-truck me-2"></i>Neues Einsatzfahrzeug zur Wehr hinzufügen
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+            </div>
+            <form action="/fahrzeuge" method="post" id="formFahrzeugHinzufuegen">
+                <div class="modal-body p-4">
+                    <div class="alert alert-info py-2 small d-flex align-items-center mb-4" role="alert">
+                        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                        <span>Einsatzfahrzeuge werden gemäß <strong>DIN 14530</strong> typisiert. Technische Eigenschaften (Löschwasser, Besatzung, Pumpe etc.) werden automatisch vom gewählten Typ abgeleitet.</span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="inputKennung" class="form-label fw-semibold">Funkkennung / Kennzeichen <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="inputKennung" name="kennung" placeholder="z. B. Florian Musterstadt 1/48-1" required>
+                            <div class="form-text small">Eindeutiger Funkrufname oder behördliche Kennung.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="selectFahrzeugtyp" class="form-label fw-semibold">Fahrzeugtyp (DIN 14530)</label>
+                            <select class="form-select" id="selectFahrzeugtyp" name="fahrzeugtyp">
+                                <option value="TSF_W" selected>TSF-W – Tragkraftspritzenfahrzeug mit Wasser</option>
+                                <option value="HLF10">HLF 10 – Hilfeleistungslöschgruppenfahrzeug 10</option>
+                                <option value="LF10">LF 10 – Löschgruppenfahrzeug 10</option>
+                                <option value="HLF20">HLF 20 – Hilfeleistungslöschgruppenfahrzeug 20</option>
+                                <option value="LF20">LF 20 – Löschgruppenfahrzeug 20</option>
+                                <option value="LF20_KATS">LF 20 KatS – Löschgruppenfahrzeug Katastrophenschutz</option>
+                                <option value="TLF2000">TLF 2000 – Tanklöschfahrzeug 2000</option>
+                                <option value="TLF3000">TLF 3000 – Tanklöschfahrzeug 3000</option>
+                                <option value="TLF4000">TLF 4000 – Tanklöschfahrzeug 4000</option>
+                                <option value="TSF">TSF – Tragkraftspritzenfahrzeug</option>
+                                <option value="KLF">KLF – Kleinlöschfahrzeug</option>
+                                <option value="MLF">MLF – Mittleres Löschfahrzeug</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputBezeichnung" class="form-label fw-semibold">Bezeichnung / Freitext</label>
+                            <input type="text" class="form-control" id="inputBezeichnung" name="bezeichnung" placeholder="z. B. Tragkraftspritzenfahrzeug mit Wasser (TSF-W)">
+                            <div class="form-text small">Optionale einsatztaktische Benennung oder Zusatzangabe.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light px-4 py-3">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="submit" class="btn btn-warning text-dark fw-semibold px-4">
+                        <i class="bi bi-plus-circle me-1"></i> Fahrzeug hinzufügen
                     </button>
                 </div>
             </form>

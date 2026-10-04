@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.AggregateRoot;
@@ -28,11 +29,11 @@ public class Wehr {
 
   private Set<String> fahrzeuge = new LinkedHashSet<>();
 
-  private Abteilung jugendabteilung = new Abteilung("Jugendabteilung");
+  private final Abteilung jugendabteilung = new Abteilung("Jugendabteilung");
 
-  private Abteilung einsatzabteilung = new Abteilung("Einsatzabteilung");
+  private final Abteilung einsatzabteilung = new Abteilung("Einsatzabteilung");
 
-  private Abteilung altersUndEhrenabteilung = new Abteilung("Alters- und Ehrenabteilung");
+  private final Abteilung altersUndEhrenabteilung = new Abteilung("Alters- und Ehrenabteilung");
 
   public Wehr() {
   }
@@ -103,13 +104,13 @@ public class Wehr {
 
   public Set<Kamerad> getKameraden() {
     Set<Kamerad> alleKameraden = new LinkedHashSet<>();
-    if (this.jugendabteilung != null && this.jugendabteilung.getKameraden() != null) {
+    if (this.jugendabteilung.getKameraden() != null) {
       alleKameraden.addAll(this.jugendabteilung.getKameraden());
     }
-    if (this.einsatzabteilung != null && this.einsatzabteilung.getKameraden() != null) {
+    if (this.einsatzabteilung.getKameraden() != null) {
       alleKameraden.addAll(this.einsatzabteilung.getKameraden());
     }
-    if (this.altersUndEhrenabteilung != null && this.altersUndEhrenabteilung.getKameraden() != null) {
+    if (this.altersUndEhrenabteilung.getKameraden() != null) {
       alleKameraden.addAll(this.altersUndEhrenabteilung.getKameraden());
     }
     return alleKameraden;
@@ -205,5 +206,22 @@ public class Wehr {
     this.name = name;
     this.gruendungsdatum = gruendungsdatum;
     return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Wehr wehr = (Wehr) o;
+    return Objects.equals(id, wehr.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
   }
 }

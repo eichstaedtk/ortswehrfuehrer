@@ -1,6 +1,7 @@
 package de.eichstaedt.ortswehrfuehrer.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,8 +29,9 @@ class AdresseTest {
     assertEquals(adresse1, adresse2);
     assertEquals(adresse1.hashCode(), adresse2.hashCode());
     assertNotEquals(adresse1, adresse3);
-    assertNotEquals(null, adresse1);
-    assertNotEquals(adresse1, new Object());
+    assertNotNull(adresse1);
+    assertFalse(adresse1.equals(null));
+    assertFalse(adresse1.equals(new Object()));
   }
 
   @Test

@@ -77,7 +77,7 @@ class WehrApplicationServiceTest {
   @Test
   @DisplayName("Hinzufügen von null-Kamerad wirft IllegalArgumentException")
   void testKameradNullWirftException() {
-    assertThrows(IllegalArgumentException.class, () -> service.kameradHinzufuegen((Kamerad) null));
+    assertThrows(IllegalArgumentException.class, () -> service.kameradHinzufuegen(null));
   }
 
   @Test
@@ -113,6 +113,12 @@ class WehrApplicationServiceTest {
     assertEquals(3, fahrzeuge.size());
     assertTrue(fahrzeuge.contains(tlf));
     assertTrue(service.getAlleFahrzeuge().contains(tlf));
+
+    Einsatzfahrzeug lf20 = service.fahrzeugHinzufuegen("Florian Musterstadt 1/44-1", Fahrzeugtyp.LF20, "Löschgruppenfahrzeug 20");
+    assertNotNull(lf20);
+    assertEquals("Florian Musterstadt 1/44-1", lf20.getKennung());
+    assertEquals(Fahrzeugtyp.LF20, lf20.getFahrzeugtyp());
+    assertEquals(4, service.getFahrzeugeDerAktivenWehr().size());
 
     assertThrows(IllegalArgumentException.class, () -> service.fahrzeugHinzufuegen(null));
   }

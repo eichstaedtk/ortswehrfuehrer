@@ -1,7 +1,9 @@
 package de.eichstaedt.ortswehrfuehrer.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +48,7 @@ class AbmessungenTest {
     assertEquals(a1, a2);
     assertEquals(a1.hashCode(), a2.hashCode());
     assertNotEquals(a1, a3);
-    assertNotEquals(a1, null);
+    assertNotNull(a1);
+    assertFalse(a1.equals(null));
   }
 }

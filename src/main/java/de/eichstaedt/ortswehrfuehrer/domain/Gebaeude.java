@@ -1,5 +1,6 @@
 package de.eichstaedt.ortswehrfuehrer.domain;
 
+import java.util.Objects;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.Entity;
 import org.jmolecules.ddd.annotation.Identity;
@@ -56,5 +57,22 @@ public class Gebaeude {
 
   public void setAdresse(Adresse adresse) {
     this.adresse = adresse;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Gebaeude gebaeude = (Gebaeude) o;
+    return Objects.equals(id, gebaeude.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
   }
 }

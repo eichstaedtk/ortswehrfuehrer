@@ -1,6 +1,7 @@
 package de.eichstaedt.ortswehrfuehrer.domain;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.Entity;
@@ -65,5 +66,22 @@ public class Abteilung {
     }
     this.kameraden.add(kamerad);
     return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Abteilung abteilung = (Abteilung) o;
+    return Objects.equals(id, abteilung.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
   }
 }

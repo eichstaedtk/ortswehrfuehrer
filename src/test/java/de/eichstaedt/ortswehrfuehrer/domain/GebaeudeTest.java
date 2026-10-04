@@ -2,8 +2,10 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -46,5 +48,21 @@ class GebaeudeTest {
     assertEquals("id-999", gebaeude.getId());
     assertEquals("Feuerwehrhaus Stechow", gebaeude.getBezeichnung());
     assertEquals(adresse, gebaeude.getAdresse());
+  }
+
+  @Test
+  void testEqualsUndHashCode() {
+    Adresse adresse = new Adresse("Hauptstraße", "12a", "14712", "Göttlin");
+    Gebaeude g1 = new Gebaeude("g-1", "Gerätehaus 1", adresse);
+    Gebaeude g2 = new Gebaeude("g-1", "Gerätehaus 2", adresse);
+    Gebaeude g3 = new Gebaeude("g-2", "Gerätehaus 1", adresse);
+
+    assertEquals(g1, g2);
+    assertTrue(g1.equals(g1));
+    assertEquals(g1.hashCode(), g2.hashCode());
+    assertFalse(g1.equals(g3));
+    assertNotNull(g1);
+    assertFalse(g1.equals(null));
+    assertFalse(g1.equals("other"));
   }
 }

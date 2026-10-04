@@ -113,9 +113,9 @@ class WehrTest {
 
     assertSame(wehr, result);
     assertEquals(1, wehr.getGebaeude().size());
-    assertEquals(gebaeude, wehr.getGebaeude().get(0));
-    assertEquals("Gerätehaus Göttlin", wehr.getGebaeude().get(0).getBezeichnung());
-    assertEquals(adresse, wehr.getGebaeude().get(0).getAdresse());
+    assertEquals(gebaeude, wehr.getGebaeude().getFirst());
+    assertEquals("Gerätehaus Göttlin", wehr.getGebaeude().getFirst().getBezeichnung());
+    assertEquals(adresse, wehr.getGebaeude().getFirst().getAdresse());
   }
 
   @Test
@@ -481,5 +481,20 @@ class WehrTest {
 
     wehr.fahrzeugHinzufuegen("   ");
     assertEquals(1, wehr.getFahrzeuge().size());
+  }
+
+  @Test
+  void testEqualsUndHashCode() {
+    Wehr w1 = new Wehr("w-1", "Feuerwehr A", LocalDate.of(2000, 1, 1));
+    Wehr w2 = new Wehr("w-1", "Feuerwehr B", LocalDate.of(2010, 5, 5));
+    Wehr w3 = new Wehr("w-2", "Feuerwehr A", LocalDate.of(2000, 1, 1));
+
+    assertEquals(w1, w2);
+    assertTrue(w1.equals(w1));
+    assertEquals(w1.hashCode(), w2.hashCode());
+    assertFalse(w1.equals(w3));
+    assertNotNull(w1);
+    assertFalse(w1.equals(null));
+    assertFalse(w1.equals("other"));
   }
 }

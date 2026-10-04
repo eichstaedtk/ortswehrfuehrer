@@ -46,12 +46,18 @@ class IndexWebResourceTest {
         .body(containsString("name=\"postleitzahl\""))
         .body(containsString("name=\"ort\""))
         .body(containsString("name=\"telefonnummer\""))
-        .body(containsString("name=\"emailAdresse\""));
+        .body(containsString("name=\"emailAdresse\""))
+        .body(containsString("id=\"fahrzeugModal\""))
+        .body(containsString("action=\"/fahrzeuge\""))
+        .body(containsString("name=\"kennung\""))
+        .body(containsString("name=\"fahrzeugtyp\""))
+        .body(containsString("name=\"bezeichnung\""))
+        .body(containsString("Fahrzeug hinzufügen"));
   }
 
   @Test
   @DisplayName("Startseite zeigt Erfolgsmeldung bei ?erfolg=kamerad_hinzugefuegt")
-  void testIndexMitErfolgsmeldung() {
+  void testIndexMitErfolgsmeldungKamerad() {
     given()
         .queryParam("erfolg", "kamerad_hinzugefuegt")
         .when()
@@ -63,8 +69,21 @@ class IndexWebResourceTest {
   }
 
   @Test
+  @DisplayName("Startseite zeigt Erfolgsmeldung bei ?erfolg=fahrzeug_hinzugefuegt")
+  void testIndexMitErfolgsmeldungFahrzeug() {
+    given()
+        .queryParam("erfolg", "fahrzeug_hinzugefuegt")
+        .when()
+        .get("/")
+        .then()
+        .statusCode(200)
+        .contentType(ContentType.HTML)
+        .body(containsString("Einsatzfahrzeug wurde erfolgreich angelegt"));
+  }
+
+  @Test
   @DisplayName("Startseite zeigt Fehlermeldung bei ?fehler=name_fehlt")
-  void testIndexMitFehlermeldung() {
+  void testIndexMitFehlermeldungName() {
     given()
         .queryParam("fehler", "name_fehlt")
         .when()
@@ -72,7 +91,22 @@ class IndexWebResourceTest {
         .then()
         .statusCode(200)
         .contentType(ContentType.HTML)
-        .body(containsString("Fehler beim Speichern"));
+        .body(containsString("Fehler beim Speichern"))
+        .body(containsString("mindestens Vorname und Nachname"));
+  }
+
+  @Test
+  @DisplayName("Startseite zeigt Fehlermeldung bei ?fehler=fahrzeug_kennung_fehlt")
+  void testIndexMitFehlermeldungFahrzeugKennung() {
+    given()
+        .queryParam("fehler", "fahrzeug_kennung_fehlt")
+        .when()
+        .get("/")
+        .then()
+        .statusCode(200)
+        .contentType(ContentType.HTML)
+        .body(containsString("Fehler beim Speichern"))
+        .body(containsString("Funkkennung für das Einsatzfahrzeug"));
   }
 
   @Test

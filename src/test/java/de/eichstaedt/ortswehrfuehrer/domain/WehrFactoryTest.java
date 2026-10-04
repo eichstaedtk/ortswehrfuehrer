@@ -118,7 +118,7 @@ class WehrFactoryTest {
     assertEquals(name, wehr.getName());
     assertEquals(gruendung, wehr.getGruendungsdatum());
     assertEquals(1, wehr.getGebaeude().size());
-    assertEquals(geraetehaus, wehr.getGebaeude().get(0));
+    assertEquals(geraetehaus, wehr.getGebaeude().getFirst());
     assertEquals(2, wehr.getFahrzeugIds().size());
     assertTrue(wehr.getFahrzeugIds().contains(fahrzeugId1));
     assertTrue(wehr.getFahrzeugIds().contains(fahrzeugId2));

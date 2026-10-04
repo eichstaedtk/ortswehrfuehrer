@@ -2,6 +2,7 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,6 +44,10 @@ class KameradTest {
     assertEquals("01738884932", kamerad.getTelefonnummer());
     assertEquals("max.mustermann@example.com", kamerad.getEmailAdresse());
     assertEquals("max.mustermann@example.com", kamerad.getEmail());
+
+    kamerad.setEmail("neue.email@example.com");
+    assertEquals("neue.email@example.com", kamerad.getEmailAdresse());
+    assertEquals("neue.email@example.com", kamerad.getEmail());
   }
 
   @Test
@@ -110,6 +115,12 @@ class KameradTest {
     assertEquals(adresse, kamerad.getAdresse());
     assertEquals("01738884932", kamerad.getTelefonnummer());
     assertEquals("max.mustermann@example.com", kamerad.getEmailAdresse());
+
+    Kamerad kamerad2 = Kamerad.builder()
+        .email("email1@test.de")
+        .mitEmail("email2@test.de")
+        .build();
+    assertEquals("email2@test.de", kamerad2.getEmailAdresse());
   }
 
   @Test
@@ -205,7 +216,8 @@ class KameradTest {
     assertEquals(kamerad1, kamerad2);
     assertEquals(kamerad1.hashCode(), kamerad2.hashCode());
     assertNotEquals(kamerad1, kamerad3);
-    assertNotEquals(null, kamerad1);
-    assertNotEquals(kamerad1, new Object());
+    assertNotNull(kamerad1);
+    assertFalse(kamerad1.equals(null));
+    assertFalse(kamerad1.equals(new Object()));
   }
 }
