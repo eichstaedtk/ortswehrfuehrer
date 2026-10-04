@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
@@ -685,5 +686,102 @@ class WehrTest {
     assertNotNull(w1);
     assertFalse(w1.equals(null));
     assertFalse(w1.equals("other"));
+  }
+
+  @Test
+  void testUcF03KameradAendern() {
+    // Gegeben sei eine WehrFactory
+    WehrFactory factory = new WehrFactory();
+
+    // Wenn eine Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" über die Factory erzeugt wird
+    LocalDate gruendung = LocalDate.of(1924, 5, 1);
+    Wehr wehr = factory.erzeugeWehr("Freiwillige Feuerwehr Göttlin", gruendung);
+
+    // Dann besitzt die erzeugte Wehr eine gültige UUID als ID
+    assertNotNull(wehr.getId());
+    assertDoesNotThrow(() -> UUID.fromString(wehr.getId()));
+    // Und der Name lautet "Freiwillige Feuerwehr Göttlin"
+    assertEquals("Freiwillige Feuerwehr Göttlin", wehr.getName());
+    // Und das Gründungsdatum ist der 01.05.1924
+    assertEquals(gruendung, wehr.getGruendungsdatum());
+    // Und alle Abteilungen und Kollektionen sind initialisiert
+    assertNotNull(wehr.getJugendabteilung());
+    assertNotNull(wehr.getEinsatzabteilung());
+    assertNotNull(wehr.getAltersUndEhrenabteilung());
+    assertNotNull(wehr.getGebaeude());
+    assertNotNull(wehr.getFahrzeugIds());
+    assertNotNull(wehr.getKameraden());
+
+    // Die verfügt über ein Kamerad besitzt den Vornamen "Max" und den Nachnamen "Mustermann.
+    LocalDate geburtsdatum = LocalDate.of(1990, 5, 20);
+    Adresse adresse = new Adresse("Dorfstraße", "12", "14712", "Göttlin");
+    Kamerad max = Kamerad.builder()
+        .id("kam-max-mustermann")
+        .vorname("Max")
+        .nachname("Mustermann")
+        .geburtsdatum(geburtsdatum)
+        .adresse(adresse)
+        .build();
+    wehr.kameradHinzufuegen(max);
+    assertEquals(1, wehr.getKameraden().size());
+
+    // Es wird die Funktion Kamerad aendern aufgerufen und der Name ist zu Konrad Eichstädt geändert.
+    Wehr result = wehr.kameradAendern("kam-max-mustermann", "Konrad", "Eichstädt", geburtsdatum, adresse, null, null);
+
+    assertSame(wehr, result);
+    assertEquals(1, wehr.getKameraden().size());
+    Kamerad geaendert = wehr.findeKamerad("kam-max-mustermann").orElseThrow();
+    assertEquals("Konrad", geaendert.getVorname());
+    assertEquals("Eichstädt", geaendert.getNachname());
+    assertEquals(geburtsdatum, geaendert.getGeburtsdatum());
+    assertEquals(adresse, geaendert.getAdresse());
+    assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(geaendert));
+  }
+
+  @Test
+  void testKameradAendernOrdnetAbteilungBeiGeaendertemGeburtsdatumNeuZu() {
+    Wehr wehr = new Wehr();
+    LocalDate heute = LocalDate.now();
+    Kamerad kamerad = Kamerad.builder()
+        .id("k-1")
+        .vorname("Leon")
+        .nachname("Schmidt")
+        .geburtsdatum(heute.minusYears(10))
+        .build();
+    wehr.kameradHinzufuegen(kamerad);
+    assertTrue(wehr.getJugendabteilung().getKameraden().contains(kamerad));
+
+    wehr.kameradAendern("k-1", "Leon", "Schmidt", heute.minusYears(30), null, "0170 1", "leon@example.com");
+    assertFalse(wehr.getJugendabteilung().getKameraden().contains(kamerad));
+    assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(kamerad));
+    assertEquals("0170 1", kamerad.getTelefonnummer());
+    assertEquals("leon@example.com", kamerad.getEmailAdresse());
+
+    wehr.kameradAendern(" k-1 ", "Leon", "Schmidt", heute.minusYears(70), null, null, null);
+    assertFalse(wehr.getEinsatzabteilung().getKameraden().contains(kamerad));
+    assertTrue(wehr.getAltersUndEhrenabteilung().getKameraden().contains(kamerad));
+    assertNull(kamerad.getTelefonnummer());
+
+    wehr.kameradAendern("k-1", "Leon", "Schmidt", null, null, null, null);
+    assertTrue(wehr.getEinsatzabteilung().getKameraden().contains(kamerad));
+    assertEquals(1, wehr.getKameraden().size());
+  }
+
+  @Test
+  void testKameradAendernMitUnbekannterIdOderUngueltigemNamen() {
+    Wehr wehr = new Wehr();
+    wehr.kameradHinzufuegen(Kamerad.builder().id("k-1").vorname("Max").nachname("Mustermann").build());
+
+    assertThrows(IllegalArgumentException.class,
+        () -> wehr.kameradAendern("unbekannt", "Konrad", "Eichstädt", null, null, null, null));
+    assertThrows(IllegalArgumentException.class,
+        () -> wehr.kameradAendern(null, "Konrad", "Eichstädt", null, null, null, null));
+    assertThrows(IllegalArgumentException.class,
+        () -> wehr.kameradAendern("k-1", " ", "Eichstädt", null, null, null, null));
+
+    Kamerad unveraendert = wehr.findeKamerad("k-1").orElseThrow();
+    assertEquals("Max", unveraendert.getVorname());
+    assertTrue(wehr.findeKamerad("   ").isEmpty());
+    assertTrue(wehr.findeKamerad(null).isEmpty());
   }
 }

@@ -196,6 +196,26 @@ public class Kamerad {
     this.emailAdresse = email;
   }
 
+  public Kamerad aendern(
+      String vorname,
+      String nachname,
+      LocalDate geburtsdatum,
+      Adresse adresse,
+      String telefonnummer,
+      String emailAdresse
+  ) {
+    if (vorname == null || vorname.isBlank() || nachname == null || nachname.isBlank()) {
+      throw new IllegalArgumentException("Vor- und Nachname sind Pflichtangaben.");
+    }
+    this.vorname = vorname;
+    this.nachname = nachname;
+    this.geburtsdatum = geburtsdatum;
+    this.adresse = adresse;
+    this.telefonnummer = telefonnummer;
+    this.emailAdresse = emailAdresse;
+    return this;
+  }
+
   public int berechneAlter() {
     return berechneAlter(LocalDate.now());
   }

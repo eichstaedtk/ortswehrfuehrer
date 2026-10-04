@@ -311,4 +311,65 @@ class WehrApplicationServiceTest {
     assertThrows(IllegalStateException.class, () -> service.fahrzeugAendern(fz.getId(), "K", "TSF", "B"));
     assertThrows(IllegalStateException.class, () -> service.fahrzeugAendern(fz));
   }
+
+  @Test
+  @DisplayName("Kamerad ändern aktualisiert Daten, trimmt Eingaben und ordnet Abteilung neu zu")
+  void testKameradAendern() {
+    Kamerad k = service.kameradHinzufuegen("Max", "Mustermann", LocalDate.now().minusYears(30), null, null, null);
+    assertEquals(WehrApplicationService.EINSATZABTEILUNG, service.ermittleAbteilungName(k));
+
+    Kamerad geaendert = service.kameradAendern(
+        " " + k.getId() + " ",
+        " Konrad ",
+        " Eichstädt ",
+        LocalDate.now().minusYears(70).toString(),
+        " Lindenallee ",
+        "3",
+        "",
+        "Göttlin",
+        "  ",
+        " konrad@example.com "
+    );
+
+    assertEquals(k, geaendert);
+    assertEquals(4, service.getAlleKameraden().size());
+    assertEquals("Konrad", geaendert.getVorname());
+    assertEquals("Eichstädt", geaendert.getNachname());
+    assertEquals(new Adresse("Lindenallee", "3", "", "Göttlin"), geaendert.getAdresse());
+    assertNull(geaendert.getTelefonnummer());
+    assertEquals("konrad@example.com", geaendert.getEmailAdresse());
+    assertEquals(WehrApplicationService.ALTERS_UND_EHRENABTEILUNG, service.ermittleAbteilungName(geaendert));
+    assertEquals(geaendert, service.getKamerad(k.getId()));
+
+    service.kameradAendern(k.getId(), "Konrad", "Eichstädt", null, null, null, null, null, null, null);
+    assertNull(geaendert.getGeburtsdatum());
+    assertNull(geaendert.getAdresse());
+    assertEquals(WehrApplicationService.EINSATZABTEILUNG, service.ermittleAbteilungName(geaendert));
+  }
+
+  @Test
+  @DisplayName("Kamerad ändern validiert Eingaben")
+  void testKameradAendernValidierung() {
+    Kamerad k = service.kameradHinzufuegen("Max", "Mustermann", null, null, null, null);
+
+    assertThrows(IllegalArgumentException.class,
+        () -> service.kameradAendern(null, "Konrad", "Eichstädt", null, null, null, null));
+    assertThrows(IllegalArgumentException.class,
+        () -> service.kameradAendern("  ", "Konrad", "Eichstädt", null, null, null, null));
+    assertThrows(IllegalArgumentException.class,
+        () -> service.kameradAendern(k.getId(), "", "Eichstädt", null, null, null, null));
+    assertThrows(IllegalArgumentException.class,
+        () -> service.kameradAendern(k.getId(), "Konrad", null, null, null, null, null));
+    assertThrows(IllegalArgumentException.class,
+        () -> service.kameradAendern("unbekannt", "Konrad", "Eichstädt", null, null, null, null));
+    assertEquals("Max", service.getKamerad(k.getId()).getVorname());
+
+    assertNull(service.getKamerad(null));
+    assertNull(service.getKamerad("unbekannt"));
+
+    service.setAktiveWehr(null);
+    assertNull(service.getKamerad(k.getId()));
+    assertThrows(IllegalStateException.class,
+        () -> service.kameradAendern(k.getId(), "Konrad", "Eichstädt", null, null, null, null));
+  }
 }

@@ -340,16 +340,14 @@ public class WehrApplicationService {
       String telefonnummer,
       String emailAdresse
   ) {
-    if (vorname == null || vorname.isBlank() || nachname == null || nachname.isBlank()) {
-      throw new IllegalArgumentException("Vor- und Nachname sind Pflichtangaben.");
-    }
+    pruefeName(vorname, nachname);
     Kamerad kamerad = Kamerad.builder()
         .vorname(vorname.trim())
         .nachname(nachname.trim())
         .geburtsdatum(geburtsdatum)
         .adresse(adresse)
-        .telefonnummer(telefonnummer != null && !telefonnummer.isBlank() ? telefonnummer.trim() : null)
-        .emailAdresse(emailAdresse != null && !emailAdresse.isBlank() ? emailAdresse.trim() : null)
+        .telefonnummer(trimToNull(telefonnummer))
+        .emailAdresse(trimToNull(emailAdresse))
         .build();
     return kameradHinzufuegen(kamerad);
   }
@@ -365,42 +363,111 @@ public class WehrApplicationService {
       String telefonnummer,
       String emailAdresse
   ) {
+    pruefeName(vorname, nachname);
+    return kameradHinzufuegen(
+        vorname,
+        nachname,
+        parseGeburtsdatum(geburtsdatumStr),
+        baueAdresse(strasse, hausnummer, postleitzahl, ort),
+        telefonnummer,
+        emailAdresse
+    );
+  }
+
+  public Kamerad kameradAendern(
+      String kameradId,
+      String vorname,
+      String nachname,
+      LocalDate geburtsdatum,
+      Adresse adresse,
+      String telefonnummer,
+      String emailAdresse
+  ) {
+    if (kameradId == null || kameradId.isBlank()) {
+      throw new IllegalArgumentException("Kamerad-ID darf nicht leer sein.");
+    }
+    pruefeName(vorname, nachname);
+    if (aktiveWehr == null) {
+      throw new IllegalStateException("Keine aktive Wehr vorhanden.");
+    }
+    String trimmedId = kameradId.trim();
+    aktiveWehr.kameradAendern(
+        trimmedId,
+        vorname.trim(),
+        nachname.trim(),
+        geburtsdatum,
+        adresse,
+        trimToNull(telefonnummer),
+        trimToNull(emailAdresse)
+    );
+    Kamerad kamerad = getKamerad(trimmedId);
+    log.info("Kamerad {} {} ({}) erfolgreich geändert (Abteilung: {}).",
+        kamerad.getVorname(), kamerad.getNachname(), trimmedId, ermittleAbteilungName(kamerad));
+    return kamerad;
+  }
+
+  public Kamerad kameradAendern(
+      String kameradId,
+      String vorname,
+      String nachname,
+      String geburtsdatumStr,
+      String strasse,
+      String hausnummer,
+      String postleitzahl,
+      String ort,
+      String telefonnummer,
+      String emailAdresse
+  ) {
+    return kameradAendern(
+        kameradId,
+        vorname,
+        nachname,
+        parseGeburtsdatum(geburtsdatumStr),
+        baueAdresse(strasse, hausnummer, postleitzahl, ort),
+        telefonnummer,
+        emailAdresse
+    );
+  }
+
+  public Kamerad getKamerad(String kameradId) {
+    if (aktiveWehr == null) {
+      return null;
+    }
+    return aktiveWehr.findeKamerad(kameradId).orElse(null);
+  }
+
+  private static void pruefeName(String vorname, String nachname) {
     if (vorname == null || vorname.isBlank() || nachname == null || nachname.isBlank()) {
-      throw new IllegalArgumentException("Vor- oder Nachname fehlt.");
+      throw new IllegalArgumentException("Vor- und Nachname sind Pflichtangaben.");
     }
+  }
 
-    LocalDate geburtsdatum = null;
-    if (geburtsdatumStr != null && !geburtsdatumStr.isBlank()) {
-      try {
-        geburtsdatum = LocalDate.parse(geburtsdatumStr.trim());
-      } catch (DateTimeParseException e) {
-        log.warn("Geburtsdatum konnte nicht geparst werden: '{}'.", geburtsdatumStr, e);
-      }
+  private static LocalDate parseGeburtsdatum(String geburtsdatumStr) {
+    if (geburtsdatumStr == null || geburtsdatumStr.isBlank()) {
+      return null;
     }
-
-    Adresse adresse = null;
-    if ((strasse != null && !strasse.isBlank())
-        || (hausnummer != null && !hausnummer.isBlank())
-        || (postleitzahl != null && !postleitzahl.isBlank())
-        || (ort != null && !ort.isBlank())) {
-      adresse = new Adresse(
-          strasse != null ? strasse.trim() : "",
-          hausnummer != null ? hausnummer.trim() : "",
-          postleitzahl != null ? postleitzahl.trim() : "",
-          ort != null ? ort.trim() : ""
-      );
+    try {
+      return LocalDate.parse(geburtsdatumStr.trim());
+    } catch (DateTimeParseException e) {
+      log.warn("Geburtsdatum konnte nicht geparst werden: '{}'.", geburtsdatumStr, e);
+      return null;
     }
+  }
 
-    Kamerad kamerad = Kamerad.builder()
-        .vorname(vorname.trim())
-        .nachname(nachname.trim())
-        .geburtsdatum(geburtsdatum)
-        .adresse(adresse)
-        .telefonnummer(telefonnummer != null && !telefonnummer.isBlank() ? telefonnummer.trim() : null)
-        .emailAdresse(emailAdresse != null && !emailAdresse.isBlank() ? emailAdresse.trim() : null)
-        .build();
+  private static Adresse baueAdresse(String strasse, String hausnummer, String postleitzahl, String ort) {
+    if (trimToNull(strasse) == null && trimToNull(hausnummer) == null
+        && trimToNull(postleitzahl) == null && trimToNull(ort) == null) {
+      return null;
+    }
+    return new Adresse(trimToEmpty(strasse), trimToEmpty(hausnummer), trimToEmpty(postleitzahl), trimToEmpty(ort));
+  }
 
-    return kameradHinzufuegen(kamerad);
+  private static String trimToNull(String wert) {
+    return wert != null && !wert.isBlank() ? wert.trim() : null;
+  }
+
+  private static String trimToEmpty(String wert) {
+    return wert != null ? wert.trim() : "";
   }
 
   public String ermittleAbteilungName(Kamerad kamerad) {

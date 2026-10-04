@@ -78,4 +78,40 @@ public class KameradController {
       return Response.seeOther(URI.create("/?fehler=kamerad_entfernen_fehlgeschlagen#kameraden")).build();
     }
   }
+
+  @POST
+  @Path("/aendern")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Produces(MediaType.TEXT_HTML)
+  public Response kameradAendern(
+      @FormParam("kameradId") String kameradId,
+      @FormParam("vorname") String vorname,
+      @FormParam("nachname") String nachname,
+      @FormParam("geburtsdatum") String geburtsdatumStr,
+      @FormParam("strasse") String strasse,
+      @FormParam("hausnummer") String hausnummer,
+      @FormParam("postleitzahl") String postleitzahl,
+      @FormParam("ort") String ort,
+      @FormParam("telefonnummer") String telefonnummer,
+      @FormParam("emailAdresse") String emailAdresse
+  ) {
+    try {
+      wehrService.kameradAendern(
+          kameradId,
+          vorname,
+          nachname,
+          geburtsdatumStr,
+          strasse,
+          hausnummer,
+          postleitzahl,
+          ort,
+          telefonnummer,
+          emailAdresse
+      );
+      return Response.seeOther(URI.create("/?erfolg=kamerad_geaendert#kameraden")).build();
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      log.warn("Kamerad konnte nicht geändert werden: {}", e.getMessage());
+      return Response.seeOther(URI.create("/?fehler=kamerad_aendern_fehlgeschlagen#kameraden")).build();
+    }
+  }
 }

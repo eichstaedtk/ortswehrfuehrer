@@ -220,4 +220,37 @@ class KameradTest {
     assertFalse(kamerad1.equals(null));
     assertFalse(kamerad1.equals(new Object()));
   }
+
+  @Test
+  void testAendernUebernimmtAlleDatenUndBehaeltId() {
+    Kamerad kamerad = Kamerad.builder()
+        .id("kam-1")
+        .vorname("Max")
+        .nachname("Mustermann")
+        .telefonnummer("0170 1234567")
+        .build();
+    Adresse neueAdresse = new Adresse("Lindenallee", "3", "14712", "Göttlin");
+
+    Kamerad result = kamerad.aendern("Konrad", "Eichstädt", LocalDate.of(1980, 1, 1), neueAdresse, null,
+        "konrad@example.com");
+
+    assertEquals(kamerad, result);
+    assertEquals("kam-1", kamerad.getId());
+    assertEquals("Konrad", kamerad.getVorname());
+    assertEquals("Eichstädt", kamerad.getNachname());
+    assertEquals(LocalDate.of(1980, 1, 1), kamerad.getGeburtsdatum());
+    assertEquals(neueAdresse, kamerad.getAdresse());
+    assertNull(kamerad.getTelefonnummer());
+    assertEquals("konrad@example.com", kamerad.getEmailAdresse());
+  }
+
+  @Test
+  void testAendernOhneNamenWirftException() {
+    Kamerad kamerad = Kamerad.builder().vorname("Max").nachname("Mustermann").build();
+
+    assertThrows(IllegalArgumentException.class, () -> kamerad.aendern(null, "Eichstädt", null, null, null, null));
+    assertThrows(IllegalArgumentException.class, () -> kamerad.aendern("Konrad", " ", null, null, null, null));
+    assertEquals("Max", kamerad.getVorname());
+    assertEquals("Mustermann", kamerad.getNachname());
+  }
 }

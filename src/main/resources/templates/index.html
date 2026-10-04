@@ -44,6 +44,14 @@
 </div>
 {/if}
 
+{#if erfolg == 'kamerad_geaendert'}
+<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+    <strong>Erfolg!</strong> Die Daten des Kameraden wurden erfolgreich aktualisiert.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
 {#if fehler == 'name_fehlt'}
 <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
     <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
@@ -80,6 +88,14 @@
 <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
     <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
     <strong>Fehler beim Entfernen:</strong> Der Kamerad konnte nicht entfernt werden.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
+{#if fehler == 'kamerad_aendern_fehlgeschlagen'}
+<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+    <strong>Fehler beim Ändern:</strong> Der Kamerad konnte nicht aktualisiert werden. Bitte geben Sie mindestens Vorname und Nachname an.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
 </div>
 {/if}
@@ -438,7 +454,10 @@
                                     {/if}
                                 </div>
                             </td>
-                            <td class="pe-3 text-end">
+                            <td class="pe-3 text-end text-nowrap">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" title="Kamerad bearbeiten" data-bs-toggle="modal" data-bs-target="#editKameradModal_{k.id}">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
                                 <form action="/kameraden/entfernen" method="post" class="d-inline">
                                     <input type="hidden" name="kameradId" value="{k.id}">
                                     <button type="submit" class="btn btn-outline-danger btn-sm" title="Kamerad entfernen">
@@ -451,6 +470,95 @@
                     </tbody>
                 </table>
             </div>
+
+            {#for k in kameraden}
+            <!-- Modal: Kamerad bearbeiten für {k.id} -->
+            <div class="modal fade" id="editKameradModal_{k.id}" tabindex="-1" aria-labelledby="editKameradModalLabel_{k.id}" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content border-0 shadow">
+                        <div class="modal-header bg-secondary text-white">
+                            <h5 class="modal-title fw-bold" id="editKameradModalLabel_{k.id}">
+                                <i class="bi bi-pencil-square me-2"></i>Kamerad bearbeiten
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                        </div>
+                        <form action="/kameraden/aendern" method="post">
+                            <input type="hidden" name="kameradId" value="{k.id}">
+                            <div class="modal-body p-4">
+                                <div class="alert alert-info py-2 small d-flex align-items-center mb-4" role="alert">
+                                    <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                    <span>Bei Änderung des Geburtsdatums wird die <strong>Einsatzabteilung</strong> automatisch neu ermittelt.</span>
+                                </div>
+
+                                <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                    <i class="bi bi-person-lines-fill me-1 text-danger"></i> 1. Persönliche Angaben
+                                </h6>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="editVorname_{k.id}" class="form-label fw-semibold">Vorname <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="editVorname_{k.id}" name="vorname" value="{k.vorname}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editNachname_{k.id}" class="form-label fw-semibold">Nachname <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="editNachname_{k.id}" name="nachname" value="{k.nachname}" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editGeburtsdatum_{k.id}" class="form-label fw-semibold">Geburtsdatum</label>
+                                        <input type="date" class="form-control" id="editGeburtsdatum_{k.id}" name="geburtsdatum" value="{#if k.geburtsdatum}{k.geburtsdatum}{/if}">
+                                    </div>
+                                </div>
+
+                                <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                    <i class="bi bi-house-door-fill me-1 text-success"></i> 2. Anschrift
+                                </h6>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-8">
+                                        <label for="editStrasse_{k.id}" class="form-label fw-semibold">Straße</label>
+                                        <input type="text" class="form-control" id="editStrasse_{k.id}" name="strasse" value="{#if k.adresse}{k.adresse.strasse}{/if}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="editHausnummer_{k.id}" class="form-label fw-semibold">Hausnummer</label>
+                                        <input type="text" class="form-control" id="editHausnummer_{k.id}" name="hausnummer" value="{#if k.adresse}{k.adresse.hausnummer}{/if}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="editPlz_{k.id}" class="form-label fw-semibold">Postleitzahl</label>
+                                        <input type="text" class="form-control" id="editPlz_{k.id}" name="postleitzahl" value="{#if k.adresse}{k.adresse.postleitzahl}{/if}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label for="editOrt_{k.id}" class="form-label fw-semibold">Wohnort</label>
+                                        <input type="text" class="form-control" id="editOrt_{k.id}" name="ort" value="{#if k.adresse}{k.adresse.ort}{/if}">
+                                    </div>
+                                </div>
+
+                                <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                    <i class="bi bi-telephone-fill me-1 text-primary"></i> 3. Kontaktdaten & Erreichbarkeit
+                                </h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="editTelefon_{k.id}" class="form-label fw-semibold">Telefonnummer / Mobil</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                            <input type="tel" class="form-control" id="editTelefon_{k.id}" name="telefonnummer" value="{#if k.telefonnummer}{k.telefonnummer}{/if}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="editEmail_{k.id}" class="form-label fw-semibold">E-Mail-Adresse</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                            <input type="email" class="form-control" id="editEmail_{k.id}" name="emailAdresse" value="{#if k.emailAdresse}{k.emailAdresse}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer bg-light">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Änderungen speichern</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {/for}
         {/if}
     </div>
 </div>

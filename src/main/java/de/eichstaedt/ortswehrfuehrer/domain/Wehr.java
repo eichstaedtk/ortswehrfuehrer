@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.AggregateRoot;
@@ -217,20 +218,55 @@ public class Wehr {
 
   public Wehr kameradHinzufuegen(Kamerad kamerad, LocalDate stichtag) {
     if (kamerad != null) {
-      if (kamerad.getGeburtsdatum() != null) {
-        int alter = kamerad.berechneAlter(stichtag != null ? stichtag : LocalDate.now());
-        if (alter <= 16) {
-          this.jugendabteilung.kameradHinzufuegen(kamerad);
-        } else if (alter <= 65) {
-          this.einsatzabteilung.kameradHinzufuegen(kamerad);
-        } else {
-          this.altersUndEhrenabteilung.kameradHinzufuegen(kamerad);
-        }
-      } else {
-        this.einsatzabteilung.kameradHinzufuegen(kamerad);
-      }
+      ermittleAbteilung(kamerad, stichtag).kameradHinzufuegen(kamerad);
     }
     return this;
+  }
+
+  public Optional<Kamerad> findeKamerad(String kameradId) {
+    if (kameradId == null || kameradId.isBlank()) {
+      return Optional.empty();
+    }
+    String trimmedId = kameradId.trim();
+    return getKameraden().stream()
+        .filter(k -> Objects.equals(k.getId(), trimmedId))
+        .findFirst();
+  }
+
+  public Wehr kameradAendern(
+      String kameradId,
+      String vorname,
+      String nachname,
+      LocalDate geburtsdatum,
+      Adresse adresse,
+      String telefonnummer,
+      String emailAdresse
+  ) {
+    Kamerad kamerad = findeKamerad(kameradId)
+        .orElseThrow(() -> new IllegalArgumentException(
+            "Kamerad mit ID '" + kameradId + "' wurde nicht gefunden."));
+    kamerad.aendern(vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse);
+
+    Abteilung zielAbteilung = ermittleAbteilung(kamerad, LocalDate.now());
+    if (zielAbteilung.getKameraden() == null || !zielAbteilung.getKameraden().contains(kamerad)) {
+      kameradEntfernen(kamerad);
+      zielAbteilung.kameradHinzufuegen(kamerad);
+    }
+    return this;
+  }
+
+  private Abteilung ermittleAbteilung(Kamerad kamerad, LocalDate stichtag) {
+    if (kamerad.getGeburtsdatum() == null) {
+      return this.einsatzabteilung;
+    }
+    int alter = kamerad.berechneAlter(stichtag != null ? stichtag : LocalDate.now());
+    if (alter <= 16) {
+      return this.jugendabteilung;
+    }
+    if (alter <= 65) {
+      return this.einsatzabteilung;
+    }
+    return this.altersUndEhrenabteilung;
   }
 
   public Wehr kameradEntfernen(Kamerad kamerad) {

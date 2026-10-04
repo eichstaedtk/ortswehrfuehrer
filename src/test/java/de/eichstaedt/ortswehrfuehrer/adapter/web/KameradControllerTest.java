@@ -138,6 +138,92 @@ class KameradControllerTest {
   }
 
   @Test
+  @DisplayName("POST /kameraden/aendern aktualisiert Kamerad und leitet weiter")
+  void testKameradAendernErfolgreich() {
+    Kamerad k = wehrService.kameradHinzufuegen("Max", "Aenderbar", LocalDate.of(1990, 5, 20), null, null, null);
+
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("kameradId", k.getId())
+        .formParam("vorname", "Konrad")
+        .formParam("nachname", "Eichstädt")
+        .formParam("geburtsdatum", "1990-05-20")
+        .formParam("strasse", "Dorfstraße")
+        .formParam("hausnummer", "12")
+        .formParam("postleitzahl", "14712")
+        .formParam("ort", "Göttlin")
+        .formParam("telefonnummer", "0173 8884932")
+        .formParam("emailAdresse", "konrad@example.com")
+        .when()
+        .post("/kameraden/aendern")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?erfolg=kamerad_geaendert#kameraden"));
+
+    Kamerad geaendert = wehrService.getKamerad(k.getId());
+    assertEquals("Konrad", geaendert.getVorname());
+    assertEquals("Eichstädt", geaendert.getNachname());
+    assertEquals("Göttlin", geaendert.getAdresse().ort());
+    assertEquals("0173 8884932", geaendert.getTelefonnummer());
+    assertEquals("konrad@example.com", geaendert.getEmailAdresse());
+  }
+
+  @Test
+  @DisplayName("POST /kameraden/aendern mit fehlendem Namen oder unbekannter ID leitet mit Fehlermeldung weiter")
+  void testKameradAendernFehler() {
+    Kamerad k = wehrService.kameradHinzufuegen("Max", "Unveraendert", null, null, null, null);
+
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("kameradId", k.getId())
+        .formParam("vorname", "")
+        .formParam("nachname", "Eichstädt")
+        .when()
+        .post("/kameraden/aendern")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?fehler=kamerad_aendern_fehlgeschlagen#kameraden"));
+
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("kameradId", "unbekannte-id")
+        .formParam("vorname", "Konrad")
+        .formParam("nachname", "Eichstädt")
+        .when()
+        .post("/kameraden/aendern")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?fehler=kamerad_aendern_fehlgeschlagen#kameraden"));
+
+    assertEquals("Unveraendert", wehrService.getKamerad(k.getId()).getNachname());
+  }
+
+  @Test
+  @DisplayName("Direkter Methodenaufruf kameradAendern an Controller")
+  void testDirekterMethodenaufrufAendern() {
+    WehrApplicationService mockService = new WehrApplicationService();
+    KameradController controller = new KameradController(mockService);
+    Kamerad k = mockService.kameradHinzufuegen("Max", "Mustermann", LocalDate.of(1990, 1, 1), null, null, null);
+
+    try (Response r1 = controller.kameradAendern(k.getId(), "Konrad", "Eichstädt", "1990-01-01",
+        null, null, null, null, null, null)) {
+      assertEquals(303, r1.getStatus());
+      assertEquals("/?erfolg=kamerad_geaendert#kameraden", r1.getLocation().toString());
+      assertEquals("Konrad", mockService.getKamerad(k.getId()).getVorname());
+    }
+
+    mockService.setAktiveWehr(null);
+    try (Response r2 = controller.kameradAendern(k.getId(), "Konrad", "Eichstädt", null,
+        null, null, null, null, null, null)) {
+      assertEquals(303, r2.getStatus());
+      assertEquals("/?fehler=kamerad_aendern_fehlgeschlagen#kameraden", r2.getLocation().toString());
+    }
+  }
+
+  @Test
   @DisplayName("Default-Konstruktor von KameradController")
   void testDefaultKonstruktor() {
     KameradController defaultResource = new KameradController();
