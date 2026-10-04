@@ -17,7 +17,8 @@ Entitäten (`Gebaeude`, `Kamerad`, `Abteilung`) und Wertobjekte (`Adresse`).
 - **Name (`name`)**: Vollständige Bezeichnung der Wehr (z. B. "Freiwillige Feuerwehr Göttlin").
 - **Gründungsdatum (`gruendungsdatum`)**: Historisches Datum der Gründung (`LocalDate`).
 - **Gebäude (`gebaeude`)**: Liste der zugeordneten Liegenschaften/Gerätehäuser (`List<Gebaeude>`).
-- **Fahrzeuge (`fahrzeugIds` / `getFahrzeugIds()`)**: Menge der zugeordneten Einsatzfahrzeug-IDs (`Set<String>`) nach dem DDD-Prinzip *Reference by ID*.
+- **Fahrzeuge (`fahrzeugIds` / `getFahrzeugIds()`)**: Menge der zugeordneten Einsatzfahrzeug-IDs
+  (`Set<String>`) nach dem DDD-Prinzip *Reference by ID*.
 - **Kameraden (`getKameraden()`)**: Dynamisch aggregierte Menge aller Mitglieder/Kameraden aus den
   Einsatzabteilungen (`Set<Kamerad>`).
 - **Jugendabteilung (`jugendabteilung`)**: Einsatzabteilung für Kameraden bis 16 Jahre
@@ -162,7 +163,8 @@ Dann ist der Kamerad in einer der Abteilungen enthalten.  Ein Kamerad im Alter b
 
 - **Ziel / Nutzen**: Eine Wehr hat die Möglichkeit Fahrzeuge über deren Identifikator hinzuzufügen.
 - **Nachbedingung**:
-    - Die Wehr verwaltet die eindeutigen IDs der zugeordneten Einsatzfahrzeuge (`Set<String> fahrzeugIds`).
+    - Die Wehr verwaltet die eindeutigen IDs der zugeordneten Einsatzfahrzeuge
+      (`Set<String> fahrzeugIds`).
 
 #### Szenario: Aggregat prüfen
 
@@ -185,9 +187,11 @@ Eine Wehr kann Fahrzeuge über deren ID oder Einsatzfahrzeug-Instanz zuordnen.
   für das Aggregate Root `Wehr` über ein GoF Factory Pattern (`WehrFactory`).
 - **Akteur**: Anwendungslogik / Repositories / Test-Suites.
 - **Nachbedingung**:
-    - `WehrFactory` bietet typsichere Methoden zur Neuerzeugung (`erzeugeNeueWehr()`, `erzeugeWehr(name)`, `erzeugeWehr(name, gruendungsdatum)`).
+    - `WehrFactory` bietet typsichere Methoden zur Neuerzeugung (`erzeugeNeueWehr()`,
+      `erzeugeWehr(name)`, `erzeugeWehr(name, gruendungsdatum)`).
     - `WehrFactory` bietet Rekonstruktionsmethoden (`rekonstruiereWehr(id, name, gruendungsdatum)`).
-    - `WehrFactory` ermöglicht die vollständige Assemblierung mit Gebäuden, Fahrzeug-IDs und Kameraden.
+    - `WehrFactory` ermöglicht die vollständige Assemblierung mit Gebäuden, Fahrzeug-IDs und
+      Kameraden.
 
 #### Szenario: Erzeugung einer Wehr über die Factory
 
@@ -200,7 +204,7 @@ Und das Gründungsdatum ist der 01.05.1924
 Und alle Abteilungen und Kollektionen sind initialisiert
 ```
 
-## UC-82: Kamerad loeschen
+## UC-08: Kamerad loeschen
 
 Es soll eine Möglichkeit geschaffen werden ein Kameraden zu entfernen.
 
@@ -219,7 +223,25 @@ Die verfügt über ein Kamerad besitzt den Vornamen "Max" und den Nachnamen "Mus
 Es wird die Funktion Kamerad entfernen aufgerufen. 
 ```
 
----
+## UC-F03: Kamerad aendern
+
+Es soll eine Möglichkeit geschaffen werden um Daten eines Kameraden zu aendern.
+
+**Nachbedingung**:
+
+- Die Wehr verfügt über ein Fahrzeug mehr.
+- Die Kennung ist nun HVL/5/47/1
+
+```gherkin
+Gegeben sei eine WehrFactory
+Wenn eine Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" über die Factory erzeugt wird
+Dann besitzt die erzeugte Wehr eine gültige UUID als ID
+Und der Name lautet "Freiwillige Feuerwehr Göttlin"
+Und das Gründungsdatum ist der 01.05.1924
+Und alle Abteilungen und Kollektionen sind initialisiert
+Die verfügt über ein Kamerad besitzt den Vornamen "Max" und den Nachnamen "Mustermann.
+Es wird die Funktion Kamerad aendern aufgerufen und der Name ist zu Konrad Eichstädt geändert. 
+```
 
 ---
 
@@ -227,10 +249,13 @@ Es wird die Funktion Kamerad entfernen aufgerufen.
 
 1. **Aggregatsgrenzen**: Alle Modifikationen an Gebäuden oder Kameraden erfolgen über die Methoden
    des Aggregate Roots `Wehr`.
-2. **Aggregate-Referenzierung**: Separate Aggregate Roots (`Wehr` und `Einsatzfahrzeug`) referenzieren
-   sich gemäß DDD-Regeln ausschließlich über ihre Identität (`Reference by ID`), um Transaktionsgrenzen
+2. **Aggregate-Referenzierung**: Separate Aggregate Roots (`Wehr` und `Einsatzfahrzeug`)
+   referenzieren
+   sich gemäß DDD-Regeln ausschließlich über ihre Identität (`Reference by ID`), um
+   Transaktionsgrenzen
    zu wahren.
-3. **Immutability von Wertobjekten**: Adressen und Abmessungen werden ausschließlich als unveränderliche Java
+3. **Immutability von Wertobjekten**: Adressen und Abmessungen werden ausschließlich als
+   unveränderliche Java
    `record`s modelliert.
 4. **Fluent Interface**: Zustandsändernde Methoden des Aggregats geben zur Verbesserung der
    Aufrufbarkeit stets die Aggregat-Instanz `this` zurück.
