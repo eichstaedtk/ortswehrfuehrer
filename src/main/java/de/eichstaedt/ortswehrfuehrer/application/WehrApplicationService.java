@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import org.jmolecules.ddd.annotation.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Application service orchestrating use cases for the {@link Wehr} aggregate root.
@@ -17,6 +19,8 @@ import org.jmolecules.ddd.annotation.Service;
 @Service
 @ApplicationScoped
 public class WehrApplicationService {
+
+  private static final Logger log = LoggerFactory.getLogger(WehrApplicationService.class);
 
   private final WehrFactory wehrFactory;
   private Wehr aktiveWehr;
@@ -62,6 +66,7 @@ public class WehrApplicationService {
                 .build()
         )
     );
+    log.info("Standard-Wehr '{}' erfolgreich initialisiert.", aktiveWehr.getName());
   }
 
   public Wehr getAktiveWehr() {
@@ -84,6 +89,8 @@ public class WehrApplicationService {
       throw new IllegalStateException("Keine aktive Wehr vorhanden.");
     }
     aktiveWehr.kameradHinzufuegen(kamerad);
+    log.info("Kamerad {} {} erfolgreich zur Wehr '{}' hinzugefügt (Abteilung: {}).",
+        kamerad.getVorname(), kamerad.getNachname(), aktiveWehr.getName(), ermittleAbteilungName(kamerad));
     return kamerad;
   }
 

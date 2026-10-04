@@ -14,12 +14,16 @@ import jakarta.ws.rs.core.Response;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller for managing Kameraden via web form submissions.
  */
 @Path("/kameraden")
 public class KameradWebResource {
+
+  private static final Logger log = LoggerFactory.getLogger(KameradWebResource.class);
 
   private final WehrApplicationService wehrService;
 
@@ -47,6 +51,7 @@ public class KameradWebResource {
       @FormParam("emailAdresse") String emailAdresse
   ) {
     if (vorname == null || vorname.isBlank() || nachname == null || nachname.isBlank()) {
+      log.warn("Kamerad konnte nicht aufgenommen werden: Vor- oder Nachname fehlt (vorname='{}', nachname='{}').", vorname, nachname);
       return Response.seeOther(URI.create("/?fehler=name_fehlt#kameraden")).build();
     }
 
@@ -54,8 +59,8 @@ public class KameradWebResource {
     if (geburtsdatumStr != null && !geburtsdatumStr.isBlank()) {
       try {
         geburtsdatum = LocalDate.parse(geburtsdatumStr.trim());
-      } catch (DateTimeParseException ignored) {
-        // Fallback wenn Format abweicht
+      } catch (DateTimeParseException e) {
+        log.warn("Geburtsdatum konnte nicht geparst werden: '{}'.", geburtsdatumStr, e);
       }
     }
 

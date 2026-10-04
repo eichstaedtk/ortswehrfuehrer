@@ -12,12 +12,16 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller for rendering the application's start page (dashboard) via Quarkus Qute (ADR-05).
  */
 @Path("/")
 public class IndexWebResource {
+
+  private static final Logger log = LoggerFactory.getLogger(IndexWebResource.class);
 
   @CheckedTemplate(basePath = "")
   public static class Templates {
@@ -57,6 +61,10 @@ public class IndexWebResource {
   ) {
     Wehr beispielWehr = wehrService.getAktiveWehr();
     Set<Kamerad> alleKameraden = wehrService.getAlleKameraden();
+
+    log.debug("Lade Startseite für Wehr '{}' mit {} Kameraden (erfolg={}, fehler={}).",
+        beispielWehr != null ? beispielWehr.getName() : "keine",
+        alleKameraden.size(), erfolg, fehler);
 
     return Templates.index(
         1,

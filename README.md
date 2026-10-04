@@ -185,6 +185,7 @@ Performance, Usability).*
   unerwünschter Seiteneffekte.
 - **Fluent APIs**: Konstruktive Methodenrückgaben zur Erleichterung von Aufrufketten und lesbarem
   Code.
+- **Logging**: SLF4J (`org.slf4j.Logger`) als einheitliche Logging-Facade über alle Anwendungsschichten mit strukturierter Dateiprotokollierung in `logs/ortswehrfuehrer.log` im Projektverzeichnis (Log-Rotation bei 10 MB).
 - **Architekturvalidierung**: Prüfung via ArchUnit in jedem Build-Zyklus (`./mvnw test`).
 
 ---
@@ -226,10 +227,10 @@ Performance, Usability).*
 Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`) ermittelt:
 
 - **Gesamtergebnis Tests**: 112 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
-- **Zeilenabdeckung (Line Coverage)**: **97,39 %** (559 von 574 Zeilen abgedeckt)
-- **Instruktionsabdeckung (Instruction Coverage)**: **97,27 %** (2.389 von 2.456 Instruktionen abgedeckt)
-- **Methodenabdeckung (Method Coverage)**: **96,83 %** (214 von 221 Methoden abgedeckt)
-- **Zweigabdeckung (Branch Coverage)**: **78,30 %** (166 von 212 Branches abgedeckt)
+- **Zeilenabdeckung (Line Coverage)**: **97,44 %** (570 von 585 Zeilen abgedeckt)
+- **Instruktionsabdeckung (Instruction Coverage)**: **97,32 %** (2.471 von 2.539 Instruktionen abgedeckt)
+- **Methodenabdeckung (Method Coverage)**: **96,88 %** (217 von 224 Methoden abgedeckt)
+- **Zweigabdeckung (Branch Coverage)**: **78,40 %** (167 von 213 Branches abgedeckt)
 
 ### 10.2 Qualitätsszenarien
 
