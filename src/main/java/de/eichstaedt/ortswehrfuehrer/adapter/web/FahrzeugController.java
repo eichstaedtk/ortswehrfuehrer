@@ -70,4 +70,23 @@ public class FahrzeugController {
   public Response fahrzeugEntfernen(@FormParam("fahrzeugId") String fahrzeugId) {
     return fahrzeugLoeschen(fahrzeugId);
   }
+
+  @POST
+  @Path("/aendern")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Produces(MediaType.TEXT_HTML)
+  public Response fahrzeugAendern(
+      @FormParam("fahrzeugId") String fahrzeugId,
+      @FormParam("kennung") String kennung,
+      @FormParam("fahrzeugtyp") String fahrzeugtypStr,
+      @FormParam("bezeichnung") String bezeichnung
+  ) {
+    try {
+      wehrService.fahrzeugAendern(fahrzeugId, kennung, fahrzeugtypStr, bezeichnung);
+      return Response.seeOther(URI.create("/?erfolg=fahrzeug_geaendert#fahrzeuge")).build();
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      log.warn("Einsatzfahrzeug konnte nicht geändert werden: {}", e.getMessage());
+      return Response.seeOther(URI.create("/?fehler=fahrzeug_aendern_fehlgeschlagen#fahrzeuge")).build();
+    }
+  }
 }

@@ -28,6 +28,14 @@
 </div>
 {/if}
 
+{#if erfolg == 'fahrzeug_geaendert'}
+<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+    <strong>Erfolg!</strong> Die Daten des Einsatzfahrzeugs wurden erfolgreich aktualisiert.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
 {#if erfolg == 'kamerad_entfernt' || erfolg == 'kamerad_geloescht'}
 <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
     <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
@@ -56,6 +64,14 @@
 <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
     <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
     <strong>Fehler beim Löschen:</strong> Das Einsatzfahrzeug konnte nicht entfernt werden.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
+{#if fehler == 'fahrzeug_aendern_fehlgeschlagen'}
+<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+    <strong>Fehler beim Ändern:</strong> Das Einsatzfahrzeug konnte nicht aktualisiert werden. Bitte prüfen Sie die Angaben.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
 </div>
 {/if}
@@ -252,12 +268,67 @@
                                     <small class="text-muted d-block mt-1">{fz.bezeichnung}</small>
                                     {/if}
                                 </div>
-                                <form action="/fahrzeuge/loeschen" method="post" class="ms-2">
-                                    <input type="hidden" name="fahrzeugId" value="{fz.id}">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Fahrzeug entfernen">
-                                        <i class="bi bi-trash3"></i>
+                                <div class="d-flex align-items-center gap-1 ms-2">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Fahrzeug bearbeiten" data-bs-toggle="modal" data-bs-target="#editFahrzeugModal_{fz.id}">
+                                        <i class="bi bi-pencil"></i>
                                     </button>
-                                </form>
+                                    <form action="/fahrzeuge/loeschen" method="post" class="d-inline">
+                                        <input type="hidden" name="fahrzeugId" value="{fz.id}">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Fahrzeug entfernen">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Modal: Einsatzfahrzeug bearbeiten für {fz.id} -->
+                            <div class="modal fade" id="editFahrzeugModal_{fz.id}" tabindex="-1" aria-labelledby="editFahrzeugModalLabel_{fz.id}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content border-0 shadow">
+                                        <div class="modal-header bg-secondary text-white">
+                                            <h5 class="modal-title fw-bold" id="editFahrzeugModalLabel_{fz.id}">
+                                                <i class="bi bi-pencil-square me-2"></i>Einsatzfahrzeug bearbeiten
+                                            </h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                                        </div>
+                                        <form action="/fahrzeuge/aendern" method="post">
+                                            <input type="hidden" name="fahrzeugId" value="{fz.id}">
+                                            <div class="modal-body p-4">
+                                                <div class="row g-3 mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-semibold">Funkkennung / Kennzeichen <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" name="kennung" value="{fz.kennung}" required>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label fw-semibold">Fahrzeugtyp (DIN 14530)</label>
+                                                        <select class="form-select" name="fahrzeugtyp">
+                                                            <option value="TSF" {#if fz.fahrzeugtyp == 'TSF'}selected{/if}>TSF – Tragkraftspritzenfahrzeug</option>
+                                                            <option value="TSF_W" {#if fz.fahrzeugtyp == 'TSF_W'}selected{/if}>TSF-W – Tragkraftspritzenfahrzeug mit Wasser</option>
+                                                            <option value="KLF" {#if fz.fahrzeugtyp == 'KLF'}selected{/if}>KLF – Kleinlöschfahrzeug</option>
+                                                            <option value="MLF" {#if fz.fahrzeugtyp == 'MLF'}selected{/if}>MLF – Mittleres Löschfahrzeug</option>
+                                                            <option value="HLF10" {#if fz.fahrzeugtyp == 'HLF10'}selected{/if}>HLF 10 – Hilfeleistungslöschgruppenfahrzeug 10</option>
+                                                            <option value="LF10" {#if fz.fahrzeugtyp == 'LF10'}selected{/if}>LF 10 – Löschgruppenfahrzeug 10</option>
+                                                            <option value="HLF20" {#if fz.fahrzeugtyp == 'HLF20'}selected{/if}>HLF 20 – Hilfeleistungslöschgruppenfahrzeug 20</option>
+                                                            <option value="LF20" {#if fz.fahrzeugtyp == 'LF20'}selected{/if}>LF 20 – Löschgruppenfahrzeug 20</option>
+                                                            <option value="LF20_KATS" {#if fz.fahrzeugtyp == 'LF20_KATS'}selected{/if}>LF 20 KatS – Löschgruppenfahrzeug Katastrophenschutz</option>
+                                                            <option value="TLF2000" {#if fz.fahrzeugtyp == 'TLF2000'}selected{/if}>TLF 2000 – Tanklöschfahrzeug 2000</option>
+                                                            <option value="TLF3000" {#if fz.fahrzeugtyp == 'TLF3000'}selected{/if}>TLF 3000 – Tanklöschfahrzeug 3000</option>
+                                                            <option value="TLF4000" {#if fz.fahrzeugtyp == 'TLF4000'}selected{/if}>TLF 4000 – Tanklöschfahrzeug 4000</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-semibold">Individuelle Bezeichnung (optional)</label>
+                                                    <input type="text" class="form-control" name="bezeichnung" value="{fz.bezeichnung}">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer bg-light">
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Änderungen speichern</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             {/for}
                         </div>

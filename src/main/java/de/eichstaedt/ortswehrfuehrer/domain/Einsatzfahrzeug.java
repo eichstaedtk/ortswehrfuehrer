@@ -279,6 +279,30 @@ public class Einsatzfahrzeug {
     }
   }
 
+  public Einsatzfahrzeug aendern(String bezeichnung, String kennung, Fahrzeugtyp fahrzeugtyp) {
+    if (bezeichnung != null && !bezeichnung.isBlank()) {
+      this.bezeichnung = bezeichnung;
+    }
+    if (kennung != null && !kennung.isBlank()) {
+      this.kennung = kennung;
+    }
+    if (fahrzeugtyp != null) {
+      this.fahrzeugtyp = fahrzeugtyp;
+    }
+    return this;
+  }
+
+  public Einsatzfahrzeug fahrzeugAendern(String bezeichnung, String kennung, Fahrzeugtyp fahrzeugtyp) {
+    return aendern(bezeichnung, kennung, fahrzeugtyp);
+  }
+
+  public Einsatzfahrzeug fahrzeugAendern(String kennung) {
+    if (kennung != null && !kennung.isBlank()) {
+      this.kennung = kennung;
+    }
+    return this;
+  }
+
   public String getId() {
     return id;
   }

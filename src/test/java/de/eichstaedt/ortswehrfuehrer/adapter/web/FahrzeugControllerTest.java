@@ -191,4 +191,74 @@ class FahrzeugControllerTest {
     assertEquals(Fahrzeugtyp.LF20, lf20.get().getFahrzeugtyp());
     assertEquals("LF20", lf20.get().getBezeichnung());
   }
+
+  @Test
+  @DisplayName("POST /fahrzeuge/aendern aktualisiert Fahrzeug und leitet weiter")
+  void testFahrzeugAendernErfolgreich() {
+    Einsatzfahrzeug fz = wehrService.fahrzeugHinzufuegen("Florian Vorher 1/24-1", "TSF", "Vorher TSF");
+
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("fahrzeugId", fz.getId())
+        .formParam("kennung", "Florian Nachher 1/24-2")
+        .formParam("fahrzeugtyp", "LF10")
+        .formParam("bezeichnung", "Nachher LF 10")
+        .when()
+        .post("/fahrzeuge/aendern")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?erfolg=fahrzeug_geaendert#fahrzeuge"));
+
+    Einsatzfahrzeug aktualisiert = wehrService.getFahrzeug(fz.getId());
+    assertNotNull(aktualisiert);
+    assertEquals("Florian Nachher 1/24-2", aktualisiert.getKennung());
+    assertEquals(Fahrzeugtyp.LF10, aktualisiert.getFahrzeugtyp());
+    assertEquals("Nachher LF 10", aktualisiert.getBezeichnung());
+  }
+
+  @Test
+  @DisplayName("POST /fahrzeuge/aendern mit leerer ID oder ungültiger Kennung leitet mit Fehlermeldung weiter")
+  void testFahrzeugAendernFehler() {
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("fahrzeugId", "")
+        .formParam("kennung", "Florian 1/1-1")
+        .when()
+        .post("/fahrzeuge/aendern")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?fehler=fahrzeug_aendern_fehlgeschlagen#fahrzeuge"));
+
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("fahrzeugId", "unbekannte-id")
+        .formParam("kennung", "")
+        .when()
+        .post("/fahrzeuge/aendern")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?fehler=fahrzeug_aendern_fehlgeschlagen#fahrzeuge"));
+  }
+
+  @Test
+  @DisplayName("Direkter Aufruf fahrzeugAendern an FahrzeugController")
+  void testDirekterMethodenaufrufAendern() {
+    WehrApplicationService mockService = new WehrApplicationService();
+    FahrzeugController controller = new FahrzeugController(mockService);
+
+    Einsatzfahrzeug fz = mockService.fahrzeugHinzufuegen("Florian Direct 1/1-1", "TSF", "TSF");
+
+    try (Response response = controller.fahrzeugAendern(fz.getId(), "Florian Direct 1/1-2", "TSF_W", "TSF-W")) {
+      assertEquals(303, response.getStatus());
+      assertEquals("/?erfolg=fahrzeug_geaendert#fahrzeuge", response.getLocation().toString());
+    }
+
+    try (Response response = controller.fahrzeugAendern("", "Florian Direct 1/1-2", "TSF_W", "TSF-W")) {
+      assertEquals(303, response.getStatus());
+      assertEquals("/?fehler=fahrzeug_aendern_fehlgeschlagen#fahrzeuge", response.getLocation().toString());
+    }
+  }
 }

@@ -508,6 +508,50 @@ class WehrTest {
   }
 
   @Test
+  void testUcF03EinsatzfahrzeugAendern() {
+    // Gegeben sei eine WehrFactory
+    WehrFactory factory = new WehrFactory();
+
+    // Wenn eine Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" über die Factory erzeugt wird
+    LocalDate gruendung = LocalDate.of(1924, 5, 1);
+    Wehr wehr = factory.erzeugeWehr("Freiwillige Feuerwehr Göttlin", gruendung);
+
+    // Dann besitzt die erzeugte Wehr eine gültige UUID als ID
+    assertNotNull(wehr.getId());
+    assertDoesNotThrow(() -> UUID.fromString(wehr.getId()));
+    // Und der Name lautet "Freiwillige Feuerwehr Göttlin"
+    assertEquals("Freiwillige Feuerwehr Göttlin", wehr.getName());
+    // Und das Gründungsdatum ist der 01.05.1924
+    assertEquals(gruendung, wehr.getGruendungsdatum());
+    // Und alle Abteilungen und Kollektionen sind initialisiert
+    assertNotNull(wehr.getJugendabteilung());
+    assertNotNull(wehr.getEinsatzabteilung());
+    assertNotNull(wehr.getAltersUndEhrenabteilung());
+    assertNotNull(wehr.getGebaeude());
+    assertNotNull(wehr.getFahrzeugIds());
+
+    // Die verfügt über ein Fahrzeug vom Typ TSF mit der Kennung HVL/5/47/2.
+    Einsatzfahrzeug tsf = Einsatzfahrzeug.builder()
+        .id("fz-tsf-goettlin")
+        .kennung("HVL/5/47/2")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
+        .bezeichnung("Tragkraftspritzenfahrzeug")
+        .build();
+    wehr.fahrzeugHinzufuegen(tsf);
+    assertEquals(1, wehr.getFahrzeugIds().size());
+    assertTrue(wehr.getFahrzeugIds().contains(tsf.getId()));
+
+    // Es wird die Funktion Fahrzeug aendern aufgerufen und die Kennung zu HVL/5/47/1 geändert.
+    wehr.fahrzeugAendern(tsf, "HVL/5/47/1");
+
+    // Nachbedingung:
+    // - Die Wehr verfügt über ein Fahrzeug mehr (bzw. weiterhin über das Fahrzeug).
+    // - Die Kennung ist nun HVL/5/47/1
+    assertEquals(1, wehr.getFahrzeugIds().size());
+    assertEquals("HVL/5/47/1", tsf.getKennung());
+  }
+
+  @Test
   void testUc82KameradEntfernen() {
     // Gegeben sei eine WehrFactory
     WehrFactory factory = new WehrFactory();

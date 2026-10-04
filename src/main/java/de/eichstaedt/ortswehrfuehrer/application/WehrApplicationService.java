@@ -224,6 +224,78 @@ public class WehrApplicationService {
     fahrzeugEntfernen(fahrzeug.getId());
   }
 
+  public Einsatzfahrzeug fahrzeugAendern(Einsatzfahrzeug fahrzeug) {
+    if (fahrzeug == null || fahrzeug.getId() == null || fahrzeug.getId().isBlank()) {
+      throw new IllegalArgumentException("Einsatzfahrzeug oder Fahrzeug-ID darf nicht leer sein.");
+    }
+    if (aktiveWehr == null) {
+      throw new IllegalStateException("Keine aktive Wehr vorhanden.");
+    }
+    Einsatzfahrzeug existing = fahrzeuge.get(fahrzeug.getId());
+    if (existing == null && (aktiveWehr.getFahrzeugIds() == null || !aktiveWehr.getFahrzeugIds().contains(fahrzeug.getId()))) {
+      throw new IllegalArgumentException("Fahrzeug mit ID '" + fahrzeug.getId() + "' wurde nicht gefunden.");
+    }
+    fahrzeuge.put(fahrzeug.getId(), fahrzeug);
+    aktiveWehr.fahrzeugHinzufuegen(fahrzeug.getId());
+    log.info("Fahrzeug '{}' ({}) erfolgreich aktualisiert.", fahrzeug.getKennung(), fahrzeug.getId());
+    return fahrzeug;
+  }
+
+  public Einsatzfahrzeug fahrzeugAendern(String fahrzeugId, String kennung, Fahrzeugtyp fahrzeugtyp, String bezeichnung) {
+    if (fahrzeugId == null || fahrzeugId.isBlank()) {
+      throw new IllegalArgumentException("Fahrzeug-ID darf nicht leer sein.");
+    }
+    if (kennung == null || kennung.isBlank()) {
+      throw new IllegalArgumentException("Funkkennung darf nicht leer sein.");
+    }
+    if (aktiveWehr == null) {
+      throw new IllegalStateException("Keine aktive Wehr vorhanden.");
+    }
+    String trimmedId = fahrzeugId.trim();
+    Einsatzfahrzeug fahrzeug = fahrzeuge.get(trimmedId);
+    if (fahrzeug == null) {
+      if (aktiveWehr.getFahrzeugIds() != null && aktiveWehr.getFahrzeugIds().contains(trimmedId)) {
+        fahrzeug = Einsatzfahrzeug.builder().id(trimmedId).kennung(trimmedId).build();
+        fahrzeuge.put(trimmedId, fahrzeug);
+      } else {
+        throw new IllegalArgumentException("Fahrzeug mit ID '" + trimmedId + "' wurde nicht gefunden.");
+      }
+    }
+    String trimmedKennung = kennung.trim();
+    String trimmedBezeichnung = (bezeichnung != null && !bezeichnung.isBlank())
+        ? bezeichnung.trim()
+        : (fahrzeugtyp != null ? fahrzeugtyp.name() : trimmedKennung);
+
+    fahrzeug.fahrzeugAendern(trimmedBezeichnung, trimmedKennung, fahrzeugtyp);
+    log.info("Fahrzeug '{}' ({}) erfolgreich aktualisiert.", fahrzeug.getKennung(), fahrzeug.getId());
+    return fahrzeug;
+  }
+
+  public Einsatzfahrzeug fahrzeugAendern(String fahrzeugId, String kennung, String fahrzeugtypStr, String bezeichnung) {
+    if (fahrzeugId == null || fahrzeugId.isBlank()) {
+      throw new IllegalArgumentException("Fahrzeug-ID darf nicht leer sein.");
+    }
+    if (kennung == null || kennung.isBlank()) {
+      throw new IllegalArgumentException("Funkkennung darf nicht leer sein.");
+    }
+    Fahrzeugtyp fahrzeugtyp = null;
+    if (fahrzeugtypStr != null && !fahrzeugtypStr.isBlank()) {
+      try {
+        fahrzeugtyp = Fahrzeugtyp.valueOf(fahrzeugtypStr.trim().toUpperCase());
+      } catch (IllegalArgumentException e) {
+        log.warn("Fahrzeugtyp konnte nicht zugeordnet werden: '{}'.", fahrzeugtypStr, e);
+      }
+    }
+    return fahrzeugAendern(fahrzeugId, kennung, fahrzeugtyp, bezeichnung);
+  }
+
+  public Einsatzfahrzeug getFahrzeug(String fahrzeugId) {
+    if (fahrzeugId == null || fahrzeugId.isBlank()) {
+      return null;
+    }
+    return fahrzeuge.get(fahrzeugId.trim());
+  }
+
   public void fahrzeugLoeschen(String fahrzeugId) {
     fahrzeugEntfernen(fahrzeugId);
   }

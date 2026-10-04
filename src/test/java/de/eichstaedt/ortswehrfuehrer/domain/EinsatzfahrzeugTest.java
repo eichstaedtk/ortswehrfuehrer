@@ -240,4 +240,27 @@ class EinsatzfahrzeugTest {
     assertEquals(Fahrzeugtyp.TLF_4000, Fahrzeugtyp.valueOf("TLF_4000"));
     assertEquals(Fahrzeugtyp.LF1000, Fahrzeugtyp.valueOf("LF1000"));
   }
+
+  @Test
+  void testFahrzeugAendern() {
+    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .id("fz-1")
+        .bezeichnung("Alte Bezeichnung")
+        .kennung("Florian 1/48-1")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
+        .build();
+
+    fahrzeug.fahrzeugAendern("HVL/5/47/1");
+    assertEquals("HVL/5/47/1", fahrzeug.getKennung());
+
+    fahrzeug.fahrzeugAendern("Neue Bezeichnung", "HVL/5/47/2", Fahrzeugtyp.TSF_W);
+    assertEquals("Neue Bezeichnung", fahrzeug.getBezeichnung());
+    assertEquals("HVL/5/47/2", fahrzeug.getKennung());
+    assertEquals(Fahrzeugtyp.TSF_W, fahrzeug.getFahrzeugtyp());
+
+    fahrzeug.aendern(null, null, null);
+    assertEquals("Neue Bezeichnung", fahrzeug.getBezeichnung());
+    assertEquals("HVL/5/47/2", fahrzeug.getKennung());
+    assertEquals(Fahrzeugtyp.TSF_W, fahrzeug.getFahrzeugtyp());
+  }
 }

@@ -183,6 +183,34 @@ public class Wehr {
     return fahrzeugEntfernen(fahrzeug);
   }
 
+  public Wehr fahrzeugAendern(Einsatzfahrzeug fahrzeug, String bezeichnung, String kennung, Fahrzeugtyp fahrzeugtyp) {
+    if (fahrzeug != null) {
+      if (this.fahrzeuge != null && !this.fahrzeuge.contains(fahrzeug.getId())) {
+        this.fahrzeuge.add(fahrzeug.getId());
+      }
+      fahrzeug.aendern(bezeichnung, kennung, fahrzeugtyp);
+    }
+    return this;
+  }
+
+  public Wehr fahrzeugAendern(Einsatzfahrzeug fahrzeug, String kennung) {
+    if (fahrzeug != null) {
+      if (this.fahrzeuge != null && !this.fahrzeuge.contains(fahrzeug.getId())) {
+        this.fahrzeuge.add(fahrzeug.getId());
+      }
+      fahrzeug.fahrzeugAendern(kennung);
+    }
+    return this;
+  }
+
+  public Wehr einsatzfahrzeugAendern(Einsatzfahrzeug fahrzeug, String bezeichnung, String kennung, Fahrzeugtyp fahrzeugtyp) {
+    return fahrzeugAendern(fahrzeug, bezeichnung, kennung, fahrzeugtyp);
+  }
+
+  public Wehr einsatzfahrzeugAendern(Einsatzfahrzeug fahrzeug, String kennung) {
+    return fahrzeugAendern(fahrzeug, kennung);
+  }
+
   public Wehr kameradHinzufuegen(Kamerad kamerad) {
     return kameradHinzufuegen(kamerad, LocalDate.now());
   }

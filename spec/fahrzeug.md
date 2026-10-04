@@ -68,3 +68,23 @@ Und alle Abteilungen und Kollektionen sind initialisiert
 Die verfügt über ein Fahrzeug vom Typ TSF mit der Kennung HVL/5/47/2.
 Es wird die Funktion Fahrzeug entfernen aufgerufen. 
 ```
+
+## UC-F03: Einsatzfahrzeug aendern
+
+Es soll eine Möglichkeit geschaffen werden um Daten eines Einsatzfahrzeuges zu aendern.
+
+**Nachbedingung**:
+
+- Die Wehr verfügt über ein Fahrzeug mehr.
+- Die Kennung ist nun HVL/5/47/1
+
+```gherkin
+Gegeben sei eine WehrFactory
+Wenn eine Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" über die Factory erzeugt wird
+Dann besitzt die erzeugte Wehr eine gültige UUID als ID
+Und der Name lautet "Freiwillige Feuerwehr Göttlin"
+Und das Gründungsdatum ist der 01.05.1924
+Und alle Abteilungen und Kollektionen sind initialisiert
+Die verfügt über ein Fahrzeug vom Typ TSF mit der Kennung HVL/5/47/2.
+Es wird die Funktion Fahrzeug aendern aufgerufen und die Kennung zu HVL/5/47/1 geändert. 
+```

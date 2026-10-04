@@ -268,4 +268,47 @@ class WehrApplicationServiceTest {
     assertThrows(IllegalStateException.class, () -> service.fahrzeugHinzufuegen(testFz));
     assertThrows(IllegalStateException.class, () -> service.fahrzeugEntfernen("1"));
   }
+
+  @Test
+  @DisplayName("Fahrzeug ändern aktualisiert Eigenschaften und validiert Eingaben")
+  void testFahrzeugAendern() {
+    Einsatzfahrzeug fz = service.fahrzeugHinzufuegen("Florian Alt 1/48-1", "TSF", "Altes TSF");
+    assertNotNull(fz);
+    assertEquals("Florian Alt 1/48-1", fz.getKennung());
+
+    Einsatzfahrzeug geaendert = service.fahrzeugAendern(
+        fz.getId(),
+        "Florian Neu 1/48-2",
+        "TSF_W",
+        "Neues TSF-W"
+    );
+    assertEquals("Florian Neu 1/48-2", geaendert.getKennung());
+    assertEquals(Fahrzeugtyp.TSF_W, geaendert.getFahrzeugtyp());
+    assertEquals("Neues TSF-W", geaendert.getBezeichnung());
+    assertEquals(geaendert, service.getFahrzeug(fz.getId()));
+
+    service.fahrzeugAendern(fz.getId(), "Florian Neu 1/48-3", Fahrzeugtyp.HLF10, "HLF");
+    assertEquals("Florian Neu 1/48-3", fz.getKennung());
+    assertEquals(Fahrzeugtyp.HLF10, fz.getFahrzeugtyp());
+    assertEquals("HLF", fz.getBezeichnung());
+
+    fz.setKennung("Florian Direct 1/48-4");
+    service.fahrzeugAendern(fz);
+    assertEquals("Florian Direct 1/48-4", service.getFahrzeug(fz.getId()).getKennung());
+
+    assertNull(service.getFahrzeug(null));
+    assertNull(service.getFahrzeug("  "));
+    assertNull(service.getFahrzeug("unbekannte-id"));
+
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugAendern(null, "K", "TSF", "B"));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugAendern("   ", "K", "TSF", "B"));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugAendern(fz.getId(), null, "TSF", "B"));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugAendern(fz.getId(), "   ", "TSF", "B"));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugAendern("unbekannt", "K", "TSF", "B"));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugAendern((Einsatzfahrzeug) null));
+
+    service.setAktiveWehr(null);
+    assertThrows(IllegalStateException.class, () -> service.fahrzeugAendern(fz.getId(), "K", "TSF", "B"));
+    assertThrows(IllegalStateException.class, () -> service.fahrzeugAendern(fz));
+  }
 }
