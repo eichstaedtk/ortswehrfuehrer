@@ -1,804 +1,1078 @@
 {#include base}
 
-{#title}Ortswehrführer - Startseite{/title}
+    {#title}Ortswehrführer - Startseite{/title}
 
-{#content}
-<!-- Benachrichtigungen / Alerts -->
-{#if erfolg == 'kamerad_hinzugefuegt'}
-<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
-    <strong>Erfolg!</strong> Der Kamerad / die Kameradin wurde erfolgreich aufgenommen und anhand des Alters automatisch der passenden Einsatzabteilung zugewiesen.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+    {#content}
+        <!-- Benachrichtigungen / Alerts -->
+        {#if erfolg == 'kamerad_hinzugefuegt'}
+            <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
+                 role="alert">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                <strong>Erfolg!</strong> Der Kamerad / die Kameradin wurde erfolgreich aufgenommen
+                und anhand des Alters automatisch der passenden Einsatzabteilung zugewiesen.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if erfolg == 'fahrzeug_hinzugefuegt'}
-<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
-    <strong>Erfolg!</strong> Das Einsatzfahrzeug wurde erfolgreich angelegt und der Wehr zugeordnet.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if erfolg == 'fahrzeug_hinzugefuegt'}
+            <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
+                 role="alert">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                <strong>Erfolg!</strong> Das Einsatzfahrzeug wurde erfolgreich angelegt und der Wehr
+                zugeordnet.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if erfolg == 'fahrzeug_geloescht'}
-<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
-    <strong>Erfolg!</strong> Das Einsatzfahrzeug wurde erfolgreich aus der Wehr entfernt.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if erfolg == 'fahrzeug_geloescht'}
+            <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
+                 role="alert">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                <strong>Erfolg!</strong> Das Einsatzfahrzeug wurde erfolgreich aus der Wehr
+                entfernt.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if erfolg == 'fahrzeug_geaendert'}
-<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
-    <strong>Erfolg!</strong> Die Daten des Einsatzfahrzeugs wurden erfolgreich aktualisiert.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if erfolg == 'fahrzeug_geaendert'}
+            <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
+                 role="alert">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                <strong>Erfolg!</strong> Die Daten des Einsatzfahrzeugs wurden erfolgreich
+                aktualisiert.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if erfolg == 'kamerad_entfernt' || erfolg == 'kamerad_geloescht'}
-<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
-    <strong>Erfolg!</strong> Der Kamerad wurde erfolgreich aus der Wehr entfernt.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if erfolg == 'kamerad_entfernt' || erfolg == 'kamerad_geloescht'}
+            <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
+                 role="alert">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                <strong>Erfolg!</strong> Der Kamerad wurde erfolgreich aus der Wehr entfernt.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if erfolg == 'kamerad_geaendert'}
-<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
-    <strong>Erfolg!</strong> Die Daten des Kameraden wurden erfolgreich aktualisiert.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if erfolg == 'kamerad_geaendert'}
+            <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
+                 role="alert">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                <strong>Erfolg!</strong> Die Daten des Kameraden wurden erfolgreich aktualisiert.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if fehler == 'name_fehlt'}
-<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
-    <strong>Fehler beim Speichern:</strong> Bitte geben Sie mindestens Vorname und Nachname an.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if fehler == 'name_fehlt'}
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+                <strong>Fehler beim Speichern:</strong> Bitte geben Sie mindestens Vorname und
+                Nachname an.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if fehler == 'fahrzeug_kennung_fehlt'}
-<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
-    <strong>Fehler beim Speichern:</strong> Bitte geben Sie eine Funkkennung für das Einsatzfahrzeug an.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if fehler == 'fahrzeug_kennung_fehlt'}
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+                <strong>Fehler beim Speichern:</strong> Bitte geben Sie eine Funkkennung für das
+                Einsatzfahrzeug an.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if fehler == 'fahrzeug_loeschen_fehlgeschlagen'}
-<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
-    <strong>Fehler beim Löschen:</strong> Das Einsatzfahrzeug konnte nicht entfernt werden.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if fehler == 'fahrzeug_loeschen_fehlgeschlagen'}
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+                <strong>Fehler beim Löschen:</strong> Das Einsatzfahrzeug konnte nicht entfernt
+                werden.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if fehler == 'fahrzeug_aendern_fehlgeschlagen'}
-<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
-    <strong>Fehler beim Ändern:</strong> Das Einsatzfahrzeug konnte nicht aktualisiert werden. Bitte prüfen Sie die Angaben.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if fehler == 'fahrzeug_aendern_fehlgeschlagen'}
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+                <strong>Fehler beim Ändern:</strong> Das Einsatzfahrzeug konnte nicht aktualisiert
+                werden. Bitte prüfen Sie die Angaben.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if fehler == 'kamerad_entfernen_fehlgeschlagen' || fehler == 'kamerad_loeschen_fehlgeschlagen'}
-<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
-    <strong>Fehler beim Entfernen:</strong> Der Kamerad konnte nicht entfernt werden.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if fehler == 'kamerad_entfernen_fehlgeschlagen' || fehler == 'kamerad_loeschen_fehlgeschlagen'}
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+                <strong>Fehler beim Entfernen:</strong> Der Kamerad konnte nicht entfernt werden.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-{#if fehler == 'kamerad_aendern_fehlgeschlagen'}
-<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
-    <strong>Fehler beim Ändern:</strong> Der Kamerad konnte nicht aktualisiert werden. Bitte geben Sie mindestens Vorname und Nachname an.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>
-{/if}
+        {#if fehler == 'kamerad_aendern_fehlgeschlagen'}
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+                <strong>Fehler beim Ändern:</strong> Der Kamerad konnte nicht aktualisiert werden.
+                Bitte geben Sie mindestens Vorname und Nachname an.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                        aria-label="Schließen"></button>
+            </div>
+        {/if}
 
-<!-- Hero Section -->
-<div class="hero-banner p-4 p-md-5 mb-4 shadow">
-    <div class="row align-items-center">
-        <div class="col-lg-8">
+        <!-- Hero Section -->
+        <div class="hero-banner p-4 p-md-5 mb-4 shadow">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
             <span class="badge bg-danger mb-2 px-3 py-2 text-uppercase fw-semibold letter-spacing">
                 <i class="bi bi-shield-check me-1"></i> Feuerwehr-Management
             </span>
-            <h1 class="display-5 fw-bold mb-3">Verwaltung der Ortswehr</h1>
-            <p class="lead text-light mb-4">
-                Das digitale Werkzeug für ehrenamtliche Feuerwehren: Strukturierte Erfassung von Wehren, 
-                altersgerechte Zuordnung in Einsatzabteilungen, Verwaltung genormter DIN-14530-Einsatzfahrzeuge und Liegenschaften.
-            </p>
-            <div class="d-flex flex-wrap gap-2">
-                <button type="button" class="btn btn-feuerwehr btn-lg px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#kameradModal">
-                    <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
-                </button>
-                <button type="button" class="btn btn-warning text-dark btn-lg px-4 shadow-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
-                    <i class="bi bi-truck me-1"></i> Fahrzeug hinzufügen
-                </button>
-                <a href="#kameraden" class="btn btn-outline-light btn-lg px-4">
-                    <i class="bi bi-people-fill me-1"></i> Kameradenliste ({anzahlKameraden})
-                </a>
+                    <h1 class="display-5 fw-bold mb-3">Verwaltung der
+                        Ortswehr {beispielWehr.name}</h1>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" class="btn btn-feuerwehr btn-lg px-4 shadow-sm"
+                                data-bs-toggle="modal" data-bs-target="#kameradModal">
+                            <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
+                        </button>
+                        <button type="button"
+                                class="btn btn-warning text-dark btn-lg px-4 shadow-sm fw-semibold"
+                                data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
+                            <i class="bi bi-truck me-1"></i> Fahrzeug hinzufügen
+                        </button>
+                        <a href="#kameraden" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-people-fill me-1"></i> Kameradenliste ({anzahlKameraden}
+                            )
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center d-none d-lg-block">
+                    <i class="bi bi-fire text-warning" style="font-size: 7rem; opacity: 0.9;"></i>
+                </div>
             </div>
         </div>
-        <div class="col-lg-4 text-center d-none d-lg-block">
-            <i class="bi bi-fire text-warning" style="font-size: 7rem; opacity: 0.9;"></i>
-        </div>
-    </div>
-</div>
 
-<!-- Dashboard Stats -->
-<div class="row g-4 mb-4">
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-stat h-100 shadow-sm border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted text-uppercase fw-bold small">Ortswehren</span>
-                    <span class="badge bg-danger-subtle text-danger fs-6 p-2 rounded-3">
+        <!-- Dashboard Stats -->
+        <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-stat h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted text-uppercase fw-bold small">Ortswehren</span>
+                            <span class="badge bg-danger-subtle text-danger fs-6 p-2 rounded-3">
                         <i class="bi bi-shield-shaded"></i>
                     </span>
+                        </div>
+                        <h3 class="fw-bold mb-1">{anzahlWehren}</h3>
+                        <p class="text-muted small mb-0">Aktive Einheiten im System</p>
+                    </div>
                 </div>
-                <h3 class="fw-bold mb-1">{anzahlWehren}</h3>
-                <p class="text-muted small mb-0">Aktive Einheiten im System</p>
             </div>
-        </div>
-    </div>
 
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-stat h-100 shadow-sm border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted text-uppercase fw-bold small">Kameraden</span>
-                    <span class="badge bg-primary-subtle text-primary fs-6 p-2 rounded-3">
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-stat h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted text-uppercase fw-bold small">Kameraden</span>
+                            <span class="badge bg-primary-subtle text-primary fs-6 p-2 rounded-3">
                         <i class="bi bi-people-fill"></i>
                     </span>
+                        </div>
+                        <h3 class="fw-bold mb-1">{anzahlKameraden}</h3>
+                        <p class="text-muted small mb-0">Mitglieder über alle Abteilungen</p>
+                    </div>
                 </div>
-                <h3 class="fw-bold mb-1">{anzahlKameraden}</h3>
-                <p class="text-muted small mb-0">Mitglieder über alle Abteilungen</p>
             </div>
-        </div>
-    </div>
 
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-stat h-100 shadow-sm border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted text-uppercase fw-bold small">Einsatzfahrzeuge</span>
-                    <span class="badge bg-warning-subtle text-warning-emphasis fs-6 p-2 rounded-3">
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-stat h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted text-uppercase fw-bold small">Einsatzfahrzeuge</span>
+                            <span class="badge bg-warning-subtle text-warning-emphasis fs-6 p-2 rounded-3">
                         <i class="bi bi-truck"></i>
                     </span>
+                        </div>
+                        <h3 class="fw-bold mb-1">{anzahlFahrzeuge}</h3>
+                        <p class="text-muted small mb-0">DIN 14530 konforme Flotte</p>
+                    </div>
                 </div>
-                <h3 class="fw-bold mb-1">{anzahlFahrzeuge}</h3>
-                <p class="text-muted small mb-0">DIN 14530 konforme Flotte</p>
             </div>
-        </div>
-    </div>
 
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-stat h-100 shadow-sm border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted text-uppercase fw-bold small">Gebäude</span>
-                    <span class="badge bg-success-subtle text-success fs-6 p-2 rounded-3">
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-stat h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted text-uppercase fw-bold small">Gebäude</span>
+                            <span class="badge bg-success-subtle text-success fs-6 p-2 rounded-3">
                         <i class="bi bi-building"></i>
                     </span>
+                        </div>
+                        <h3 class="fw-bold mb-1">{anzahlGebaeude}</h3>
+                        <p class="text-muted small mb-0">Gerätehäuser & Liegenschaften</p>
+                    </div>
                 </div>
-                <h3 class="fw-bold mb-1">{anzahlGebaeude}</h3>
-                <p class="text-muted small mb-0">Gerätehäuser & Liegenschaften</p>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Aktive Wehr Übersicht -->
-{#if beispielWehr}
-<div id="uebersicht-wehr" class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 fw-bold text-dark">
-            <i class="bi bi-flag-fill text-danger me-2"></i>Aktive Ortswehr: {beispielWehr.name}
-        </h5>
-        {#if beispielWehr.gruendungsdatum}
-        <span class="badge bg-secondary-subtle text-secondary-emphasis">
+        <!-- Aktive Wehr Übersicht -->
+        {#if beispielWehr}
+            <div id="uebersicht-wehr" class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-dark">
+                        <i class="bi bi-flag-fill text-danger me-2"></i>Aktive
+                        Ortswehr: {beispielWehr.name}
+                    </h5>
+                    {#if beispielWehr.gruendungsdatum}
+                        <span class="badge bg-secondary-subtle text-secondary-emphasis">
             <i class="bi bi-calendar-event me-1"></i> Gegründet: {beispielWehr.gruendungsdatum}
         </span>
-        {/if}
-    </div>
-    <div class="card-body">
-        <div class="row g-4">
-            <!-- Abteilungen -->
-            <div class="col-lg-4">
-                <div class="border rounded-3 p-3 bg-light h-100">
-                    <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center">
-                        <i class="bi bi-diagram-3 me-2 text-danger"></i>Einsatzabteilungen
-                    </h6>
-                    <ul class="list-group list-group-flush bg-transparent">
-                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
-                            <span><i class="bi bi-person-heart me-2 text-info"></i>Jugendabteilung (bis 16 Jahre)</span>
-                            <span class="badge bg-primary rounded-pill">{beispielWehr.jugendabteilung.kameraden.size}</span>
-                        </li>
-                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
-                            <span><i class="bi bi-person-check-fill me-2 text-danger"></i>Einsatzabteilung (17–65 Jahre)</span>
-                            <span class="badge bg-danger rounded-pill">{beispielWehr.einsatzabteilung.kameraden.size}</span>
-                        </li>
-                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
-                            <span><i class="bi bi-award me-2 text-warning"></i>Alters- & Ehrenabteilung (&gt;65 Jahre)</span>
-                            <span class="badge bg-secondary rounded-pill">{beispielWehr.altersUndEhrenabteilung.kameraden.size}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Liegenschaften & Gebäude -->
-            <div class="col-lg-4">
-                <div class="border rounded-3 p-3 bg-light h-100">
-                    <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center">
-                        <i class="bi bi-geo-alt-fill me-2 text-success"></i>Liegenschaften & Standorte
-                    </h6>
-                    {#if beispielWehr.gebaeude.isEmpty}
-                        <p class="text-muted small mb-0">Keine Gebäude eingetragen.</p>
-                    {#else}
-                        <div class="list-group list-group-flush bg-transparent">
-                            {#for g in beispielWehr.gebaeude}
-                            <div class="list-group-item bg-transparent px-0">
-                                <div class="fw-semibold">{g.bezeichnung}</div>
-                                {#if g.adresse}
-                                <small class="text-muted">
-                                    <i class="bi bi-pin-map me-1"></i>{g.adresse.strasse} {g.adresse.hausnummer}, {g.adresse.postleitzahl} {g.adresse.ort}
-                                </small>
-                                {/if}
-                            </div>
-                            {/for}
-                        </div>
                     {/if}
                 </div>
-            </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <!-- Abteilungen -->
+                        <div class="col-lg-4">
+                            <div class="border rounded-3 p-3 bg-light h-100">
+                                <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center">
+                                    <i class="bi bi-diagram-3 me-2 text-danger"></i>Einsatzabteilungen
+                                </h6>
+                                <ul class="list-group list-group-flush bg-transparent">
+                                    <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
+                                        <span><i class="bi bi-person-heart me-2 text-info"></i>Jugendabteilung (bis 16 Jahre)</span>
+                                        <span class="badge bg-primary rounded-pill">{beispielWehr.jugendabteilung.kameraden.size}</span>
+                                    </li>
+                                    <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
+                                        <span><i class="bi bi-person-check-fill me-2 text-danger"></i>Einsatzabteilung (17–65 Jahre)</span>
+                                        <span class="badge bg-danger rounded-pill">{beispielWehr.einsatzabteilung.kameraden.size}</span>
+                                    </li>
+                                    <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
+                                        <span><i class="bi bi-award me-2 text-warning"></i>Alters- & Ehrenabteilung (&gt;65 Jahre)</span>
+                                        <span class="badge bg-secondary rounded-pill">{beispielWehr.altersUndEhrenabteilung.kameraden.size}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
-            <!-- Zugeordnete Einsatzfahrzeuge -->
-            <div id="fahrzeuge" class="col-lg-4">
-                <div class="border rounded-3 p-3 bg-light h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h6 class="fw-bold text-secondary mb-0 d-flex align-items-center">
-                            <i class="bi bi-truck me-2 text-warning"></i>Zugeordnete Einsatzfahrzeuge
-                        </h6>
-                        <button type="button" class="btn btn-sm btn-outline-warning text-dark fw-semibold" data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
-                            <i class="bi bi-plus-lg me-1"></i>Hinzufügen
-                        </button>
-                    </div>
-                    {#if fahrzeuge.isEmpty}
-                        <p class="text-muted small mb-0">Keine Fahrzeuge zugeordnet.</p>
-                    {#else}
-                        <div class="list-group list-group-flush bg-transparent">
-                            {#for fz in fahrzeuge}
-                            <div class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-semibold text-dark d-flex align-items-center flex-wrap gap-2">
+                        <!-- Liegenschaften & Gebäude -->
+                        <div class="col-lg-4">
+                            <div class="border rounded-3 p-3 bg-light h-100">
+                                <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center">
+                                    <i class="bi bi-geo-alt-fill me-2 text-success"></i>Liegenschaften
+                                    & Standorte
+                                </h6>
+                                {#if beispielWehr.gebaeude.isEmpty}
+                                    <p class="text-muted small mb-0">Keine Gebäude eingetragen.</p>
+                                {#else}
+                                    <div class="list-group list-group-flush bg-transparent">
+                                        {#for g in beispielWehr.gebaeude}
+                                            <div class="list-group-item bg-transparent px-0">
+                                                <div class="fw-semibold">{g.bezeichnung}</div>
+                                                {#if g.adresse}
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-pin-map me-1"></i>{g.adresse.strasse} {g.adresse.hausnummer}
+                                                        , {g.adresse.postleitzahl} {g.adresse.ort}
+                                                    </small>
+                                                {/if}
+                                            </div>
+                                        {/for}
+                                    </div>
+                                {/if}
+                            </div>
+                        </div>
+
+                        <!-- Zugeordnete Einsatzfahrzeuge -->
+                        <div id="fahrzeuge" class="col-lg-4">
+                            <div class="border rounded-3 p-3 bg-light h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bold text-secondary mb-0 d-flex align-items-center">
+                                        <i class="bi bi-truck me-2 text-warning"></i>Zugeordnete
+                                        Einsatzfahrzeuge
+                                    </h6>
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-warning text-dark fw-semibold"
+                                            data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
+                                        <i class="bi bi-plus-lg me-1"></i>Hinzufügen
+                                    </button>
+                                </div>
+                                {#if fahrzeuge.isEmpty}
+                                    <p class="text-muted small mb-0">Keine Fahrzeuge zugeordnet.</p>
+                                {#else}
+                                    <div class="list-group list-group-flush bg-transparent">
+                                        {#for fz in fahrzeuge}
+                                            <div class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <div class="fw-semibold text-dark d-flex align-items-center flex-wrap gap-2">
                                         <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
                                             {#if fz.fahrzeugtyp}{fz.fahrzeugtyp}{#else}Typ n. v.{/if}
                                         </span>
-                                        <span>{fz.kennung}</span>
+                                                        <span>{fz.kennung}</span>
+                                                    </div>
+                                                    {#if fz.bezeichnung}
+                                                        <small class="text-muted d-block mt-1">{fz.bezeichnung}</small>
+                                                    {/if}
+                                                </div>
+                                                <div class="d-flex align-items-center gap-1 ms-2">
+                                                    <button type="button"
+                                                            class="btn btn-outline-secondary btn-sm"
+                                                            title="Fahrzeug bearbeiten"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editFahrzeugModal_{fz.id}">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <form action="/fahrzeuge/loeschen" method="post"
+                                                          class="d-inline">
+                                                        <input type="hidden" name="fahrzeugId"
+                                                               value="{fz.id}">
+                                                        <button type="submit"
+                                                                class="btn btn-outline-danger btn-sm"
+                                                                title="Fahrzeug entfernen">
+                                                            <i class="bi bi-trash3"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal: Einsatzfahrzeug bearbeiten für {fz.id} -->
+                                            <div class="modal fade" id="editFahrzeugModal_{fz.id}"
+                                                 tabindex="-1"
+                                                 aria-labelledby="editFahrzeugModalLabel_{fz.id}"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                    <div class="modal-content border-0 shadow">
+                                                        <div class="modal-header bg-secondary text-white">
+                                                            <h5 class="modal-title fw-bold"
+                                                                id="editFahrzeugModalLabel_{fz.id}">
+                                                                <i class="bi bi-pencil-square me-2"></i>Einsatzfahrzeug
+                                                                bearbeiten
+                                                            </h5>
+                                                            <button type="button"
+                                                                    class="btn-close btn-close-white"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Schließen"></button>
+                                                        </div>
+                                                        <form action="/fahrzeuge/aendern"
+                                                              method="post">
+                                                            <input type="hidden" name="fahrzeugId"
+                                                                   value="{fz.id}">
+                                                            <div class="modal-body p-4">
+                                                                <div class="row g-3 mb-3">
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label fw-semibold">Funkkennung
+                                                                            / Kennzeichen <span
+                                                                                    class="text-danger">*</span></label>
+                                                                        <input type="text"
+                                                                               class="form-control"
+                                                                               name="kennung"
+                                                                               value="{fz.kennung}"
+                                                                               required>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label fw-semibold">Fahrzeugtyp
+                                                                            (DIN 14530)</label>
+                                                                        <select class="form-select"
+                                                                                name="fahrzeugtyp">
+                                                                            <option value="TSF"
+                                                                                    {#if fz.fahrzeugtyp == 'TSF'}selected{/if}>
+                                                                                TSF –
+                                                                                Tragkraftspritzenfahrzeug
+                                                                            </option>
+                                                                            <option value="TSF_W"
+                                                                                    {#if fz.fahrzeugtyp == 'TSF_W'}selected{/if}>
+                                                                                TSF-W –
+                                                                                Tragkraftspritzenfahrzeug
+                                                                                mit Wasser
+                                                                            </option>
+                                                                            <option value="KLF"
+                                                                                    {#if fz.fahrzeugtyp == 'KLF'}selected{/if}>
+                                                                                KLF –
+                                                                                Kleinlöschfahrzeug
+                                                                            </option>
+                                                                            <option value="MLF"
+                                                                                    {#if fz.fahrzeugtyp == 'MLF'}selected{/if}>
+                                                                                MLF – Mittleres
+                                                                                Löschfahrzeug
+                                                                            </option>
+                                                                            <option value="HLF10"
+                                                                                    {#if fz.fahrzeugtyp == 'HLF10'}selected{/if}>
+                                                                                HLF 10 –
+                                                                                Hilfeleistungslöschgruppenfahrzeug
+                                                                                10
+                                                                            </option>
+                                                                            <option value="LF10"
+                                                                                    {#if fz.fahrzeugtyp == 'LF10'}selected{/if}>
+                                                                                LF 10 –
+                                                                                Löschgruppenfahrzeug
+                                                                                10
+                                                                            </option>
+                                                                            <option value="HLF20"
+                                                                                    {#if fz.fahrzeugtyp == 'HLF20'}selected{/if}>
+                                                                                HLF 20 –
+                                                                                Hilfeleistungslöschgruppenfahrzeug
+                                                                                20
+                                                                            </option>
+                                                                            <option value="LF20"
+                                                                                    {#if fz.fahrzeugtyp == 'LF20'}selected{/if}>
+                                                                                LF 20 –
+                                                                                Löschgruppenfahrzeug
+                                                                                20
+                                                                            </option>
+                                                                            <option value="LF20_KATS"
+                                                                                    {#if fz.fahrzeugtyp == 'LF20_KATS'}selected{/if}>
+                                                                                LF 20 KatS –
+                                                                                Löschgruppenfahrzeug
+                                                                                Katastrophenschutz
+                                                                            </option>
+                                                                            <option value="TLF2000"
+                                                                                    {#if fz.fahrzeugtyp == 'TLF2000'}selected{/if}>
+                                                                                TLF 2000 –
+                                                                                Tanklöschfahrzeug
+                                                                                2000
+                                                                            </option>
+                                                                            <option value="TLF3000"
+                                                                                    {#if fz.fahrzeugtyp == 'TLF3000'}selected{/if}>
+                                                                                TLF 3000 –
+                                                                                Tanklöschfahrzeug
+                                                                                3000
+                                                                            </option>
+                                                                            <option value="TLF4000"
+                                                                                    {#if fz.fahrzeugtyp == 'TLF4000'}selected{/if}>
+                                                                                TLF 4000 –
+                                                                                Tanklöschfahrzeug
+                                                                                4000
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-semibold">Individuelle
+                                                                        Bezeichnung
+                                                                        (optional)</label>
+                                                                    <input type="text"
+                                                                           class="form-control"
+                                                                           name="bezeichnung"
+                                                                           value="{fz.bezeichnung}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer bg-light">
+                                                                <button type="button"
+                                                                        class="btn btn-outline-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Abbrechen
+                                                                </button>
+                                                                <button type="submit"
+                                                                        class="btn btn-primary"><i
+                                                                            class="bi bi-save me-1"></i>Änderungen
+                                                                    speichern
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {/for}
                                     </div>
-                                    {#if fz.bezeichnung}
-                                    <small class="text-muted d-block mt-1">{fz.bezeichnung}</small>
-                                    {/if}
-                                </div>
-                                <div class="d-flex align-items-center gap-1 ms-2">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Fahrzeug bearbeiten" data-bs-toggle="modal" data-bs-target="#editFahrzeugModal_{fz.id}">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <form action="/fahrzeuge/loeschen" method="post" class="d-inline">
-                                        <input type="hidden" name="fahrzeugId" value="{fz.id}">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Fahrzeug entfernen">
-                                            <i class="bi bi-trash3"></i>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {/if}
+
+        <!-- Kameraden-Übersicht & Tabelle -->
+        <div id="kameraden" class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h5 class="mb-0 fw-bold text-dark">
+                        <i class="bi bi-people-fill text-primary me-2"></i>Kameradinnen & Kameraden
+                        ({anzahlKameraden})
+                    </h5>
+                    <small class="text-muted">Mitgliederübersicht mit automatischer
+                        Abteilungseinteilung nach Alter</small>
+                </div>
+                <button type="button" class="btn btn-feuerwehr shadow-sm" data-bs-toggle="modal"
+                        data-bs-target="#kameradModal">
+                    <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
+                </button>
+            </div>
+            <div class="card-body p-0">
+                {#if kameraden.isEmpty}
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-person-slash fs-1 d-block mb-2 text-secondary"></i>
+                        <p class="mb-0">Noch keine Kameradinnen und Kameraden erfasst.</p>
+                    </div>
+                {#else}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="ps-3">Name</th>
+                                <th scope="col">Einsatzabteilung</th>
+                                <th scope="col">Alter / Geburtsdatum</th>
+                                <th scope="col">Wohnadresse</th>
+                                <th scope="col">Kontaktdaten</th>
+                                <th scope="col" class="pe-3 text-end">Aktionen</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {#for k in kameraden}
+                                <tr>
+                                    <td class="ps-3">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="rounded-circle bg-secondary-subtle text-secondary d-flex align-items-center justify-content-center"
+                                                 style="width: 38px; height: 38px; font-weight: 600;">
+                                                {k.vorname.substring(0, 1)}{k.nachname.substring(0, 1)}
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-dark">{k.vorname} {k.nachname}</div>
+                                                <small class="text-muted font-monospace"
+                                                       style="font-size: 0.75rem;">ID: {k.id}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {#if beispielWehr.jugendabteilung.kameraden.contains(k)}
+                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                                        <i class="bi bi-person-heart me-1"></i>Jugendabteilung
+                                    </span>
+                                        {#else if beispielWehr.einsatzabteilung.kameraden.contains(k)}
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
+                                        <i class="bi bi-person-check-fill me-1"></i>Einsatzabteilung
+                                    </span>
+                                        {#else if beispielWehr.altersUndEhrenabteilung.kameraden.contains(k)}
+                                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1">
+                                        <i class="bi bi-award me-1"></i>Alters- & Ehrenabteilung
+                                    </span>
+                                        {#else}
+                                            <span class="badge bg-light text-dark border">
+                                        Mitglied
+                                    </span>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        {#if k.geburtsdatum}
+                                            <div class="fw-semibold">{k.berechneAlter()} Jahre</div>
+                                            <small class="text-muted"><i
+                                                        class="bi bi-calendar-event me-1"></i>{k.geburtsdatum}
+                                            </small>
+                                        {#else}
+                                            <span class="text-muted small">Nicht angegeben</span>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        {#if k.adresse}
+                                            <div>{k.adresse.strasse} {k.adresse.hausnummer}</div>
+                                            <small class="text-muted">{k.adresse.postleitzahl} {k.adresse.ort}</small>
+                                        {#else}
+                                            <span class="text-muted small">Keine Adresse</span>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column gap-1 small">
+                                            {#if k.telefonnummer}
+                                                <a href="tel:{k.telefonnummer}"
+                                                   class="text-decoration-none text-dark">
+                                                    <i class="bi bi-telephone text-primary me-1"></i>{k.telefonnummer}
+                                                </a>
+                                            {/if}
+                                            {#if k.emailAdresse}
+                                                <a href="mailto:{k.emailAdresse}"
+                                                   class="text-decoration-none text-muted">
+                                                    <i class="bi bi-envelope text-danger me-1"></i>{k.emailAdresse}
+                                                </a>
+                                            {/if}
+                                            {#if ! k.telefonnummer && ! k.emailAdresse}
+                                                <span class="text-muted small">–</span>
+                                            {/if}
+                                        </div>
+                                    </td>
+                                    <td class="pe-3 text-end text-nowrap">
+                                        <button type="button"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                title="Kamerad bearbeiten" data-bs-toggle="modal"
+                                                data-bs-target="#editKameradModal_{k.id}">
+                                            <i class="bi bi-pencil"></i>
                                         </button>
+                                        <form action="/kameraden/entfernen" method="post"
+                                              class="d-inline">
+                                            <input type="hidden" name="kameradId" value="{k.id}">
+                                            <button type="submit"
+                                                    class="btn btn-outline-danger btn-sm"
+                                                    title="Kamerad entfernen">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {/for}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {#for k in kameraden}
+                        <!-- Modal: Kamerad bearbeiten für {k.id} -->
+                        <div class="modal fade" id="editKameradModal_{k.id}" tabindex="-1"
+                             aria-labelledby="editKameradModalLabel_{k.id}" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content border-0 shadow">
+                                    <div class="modal-header bg-secondary text-white">
+                                        <h5 class="modal-title fw-bold"
+                                            id="editKameradModalLabel_{k.id}">
+                                            <i class="bi bi-pencil-square me-2"></i>Kamerad
+                                            bearbeiten
+                                        </h5>
+                                        <button type="button" class="btn-close btn-close-white"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Schließen"></button>
+                                    </div>
+                                    <form action="/kameraden/aendern" method="post">
+                                        <input type="hidden" name="kameradId" value="{k.id}">
+                                        <div class="modal-body p-4">
+                                            <div class="alert alert-info py-2 small d-flex align-items-center mb-4"
+                                                 role="alert">
+                                                <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                                <span>Bei Änderung des Geburtsdatums wird die <strong>Einsatzabteilung</strong> automatisch neu ermittelt.</span>
+                                            </div>
+
+                                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                                <i class="bi bi-person-lines-fill me-1 text-danger"></i>
+                                                1. Persönliche Angaben
+                                            </h6>
+                                            <div class="row g-3 mb-4">
+                                                <div class="col-md-6">
+                                                    <label for="editVorname_{k.id}"
+                                                           class="form-label fw-semibold">Vorname
+                                                        <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control"
+                                                           id="editVorname_{k.id}" name="vorname"
+                                                           value="{k.vorname}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editNachname_{k.id}"
+                                                           class="form-label fw-semibold">Nachname
+                                                        <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control"
+                                                           id="editNachname_{k.id}" name="nachname"
+                                                           value="{k.nachname}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editGeburtsdatum_{k.id}"
+                                                           class="form-label fw-semibold">Geburtsdatum</label>
+                                                    <input type="date" class="form-control"
+                                                           id="editGeburtsdatum_{k.id}"
+                                                           name="geburtsdatum"
+                                                           value="{#if k.geburtsdatum}{k.geburtsdatum}{/if}">
+                                                </div>
+                                            </div>
+
+                                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                                <i class="bi bi-house-door-fill me-1 text-success"></i>
+                                                2. Anschrift
+                                            </h6>
+                                            <div class="row g-3 mb-4">
+                                                <div class="col-md-8">
+                                                    <label for="editStrasse_{k.id}"
+                                                           class="form-label fw-semibold">Straße</label>
+                                                    <input type="text" class="form-control"
+                                                           id="editStrasse_{k.id}" name="strasse"
+                                                           value="{#if k.adresse}{k.adresse.strasse}{/if}">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="editHausnummer_{k.id}"
+                                                           class="form-label fw-semibold">Hausnummer</label>
+                                                    <input type="text" class="form-control"
+                                                           id="editHausnummer_{k.id}"
+                                                           name="hausnummer"
+                                                           value="{#if k.adresse}{k.adresse.hausnummer}{/if}">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="editPlz_{k.id}"
+                                                           class="form-label fw-semibold">Postleitzahl</label>
+                                                    <input type="text" class="form-control"
+                                                           id="editPlz_{k.id}" name="postleitzahl"
+                                                           value="{#if k.adresse}{k.adresse.postleitzahl}{/if}">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <label for="editOrt_{k.id}"
+                                                           class="form-label fw-semibold">Wohnort</label>
+                                                    <input type="text" class="form-control"
+                                                           id="editOrt_{k.id}" name="ort"
+                                                           value="{#if k.adresse}{k.adresse.ort}{/if}">
+                                                </div>
+                                            </div>
+
+                                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                                <i class="bi bi-telephone-fill me-1 text-primary"></i>
+                                                3. Kontaktdaten & Erreichbarkeit
+                                            </h6>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label for="editTelefon_{k.id}"
+                                                           class="form-label fw-semibold">Telefonnummer
+                                                        / Mobil</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i
+                                                                    class="bi bi-telephone"></i></span>
+                                                        <input type="tel" class="form-control"
+                                                               id="editTelefon_{k.id}"
+                                                               name="telefonnummer"
+                                                               value="{#if k.telefonnummer}{k.telefonnummer}{/if}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editEmail_{k.id}"
+                                                           class="form-label fw-semibold">E-Mail-Adresse</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i
+                                                                    class="bi bi-envelope"></i></span>
+                                                        <input type="email" class="form-control"
+                                                               id="editEmail_{k.id}"
+                                                               name="emailAdresse"
+                                                               value="{#if k.emailAdresse}{k.emailAdresse}{/if}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer bg-light">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                    data-bs-dismiss="modal">Abbrechen
+                                            </button>
+                                            <button type="submit" class="btn btn-primary"><i
+                                                        class="bi bi-save me-1"></i>Änderungen
+                                                speichern
+                                            </button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
-
-                            <!-- Modal: Einsatzfahrzeug bearbeiten für {fz.id} -->
-                            <div class="modal fade" id="editFahrzeugModal_{fz.id}" tabindex="-1" aria-labelledby="editFahrzeugModalLabel_{fz.id}" aria-hidden="true">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
-                                    <div class="modal-content border-0 shadow">
-                                        <div class="modal-header bg-secondary text-white">
-                                            <h5 class="modal-title fw-bold" id="editFahrzeugModalLabel_{fz.id}">
-                                                <i class="bi bi-pencil-square me-2"></i>Einsatzfahrzeug bearbeiten
-                                            </h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Schließen"></button>
-                                        </div>
-                                        <form action="/fahrzeuge/aendern" method="post">
-                                            <input type="hidden" name="fahrzeugId" value="{fz.id}">
-                                            <div class="modal-body p-4">
-                                                <div class="row g-3 mb-3">
-                                                    <div class="col-md-6">
-                                                        <label class="form-label fw-semibold">Funkkennung / Kennzeichen <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" name="kennung" value="{fz.kennung}" required>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label class="form-label fw-semibold">Fahrzeugtyp (DIN 14530)</label>
-                                                        <select class="form-select" name="fahrzeugtyp">
-                                                            <option value="TSF" {#if fz.fahrzeugtyp == 'TSF'}selected{/if}>TSF – Tragkraftspritzenfahrzeug</option>
-                                                            <option value="TSF_W" {#if fz.fahrzeugtyp == 'TSF_W'}selected{/if}>TSF-W – Tragkraftspritzenfahrzeug mit Wasser</option>
-                                                            <option value="KLF" {#if fz.fahrzeugtyp == 'KLF'}selected{/if}>KLF – Kleinlöschfahrzeug</option>
-                                                            <option value="MLF" {#if fz.fahrzeugtyp == 'MLF'}selected{/if}>MLF – Mittleres Löschfahrzeug</option>
-                                                            <option value="HLF10" {#if fz.fahrzeugtyp == 'HLF10'}selected{/if}>HLF 10 – Hilfeleistungslöschgruppenfahrzeug 10</option>
-                                                            <option value="LF10" {#if fz.fahrzeugtyp == 'LF10'}selected{/if}>LF 10 – Löschgruppenfahrzeug 10</option>
-                                                            <option value="HLF20" {#if fz.fahrzeugtyp == 'HLF20'}selected{/if}>HLF 20 – Hilfeleistungslöschgruppenfahrzeug 20</option>
-                                                            <option value="LF20" {#if fz.fahrzeugtyp == 'LF20'}selected{/if}>LF 20 – Löschgruppenfahrzeug 20</option>
-                                                            <option value="LF20_KATS" {#if fz.fahrzeugtyp == 'LF20_KATS'}selected{/if}>LF 20 KatS – Löschgruppenfahrzeug Katastrophenschutz</option>
-                                                            <option value="TLF2000" {#if fz.fahrzeugtyp == 'TLF2000'}selected{/if}>TLF 2000 – Tanklöschfahrzeug 2000</option>
-                                                            <option value="TLF3000" {#if fz.fahrzeugtyp == 'TLF3000'}selected{/if}>TLF 3000 – Tanklöschfahrzeug 3000</option>
-                                                            <option value="TLF4000" {#if fz.fahrzeugtyp == 'TLF4000'}selected{/if}>TLF 4000 – Tanklöschfahrzeug 4000</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label fw-semibold">Individuelle Bezeichnung (optional)</label>
-                                                    <input type="text" class="form-control" name="bezeichnung" value="{fz.bezeichnung}">
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer bg-light">
-                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                                                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Änderungen speichern</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            {/for}
                         </div>
-                    {/if}
-                </div>
+                    {/for}
+                {/if}
             </div>
         </div>
-    </div>
-</div>
-{/if}
 
-<!-- Kameraden-Übersicht & Tabelle -->
-<div id="kameraden" class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <div>
-            <h5 class="mb-0 fw-bold text-dark">
-                <i class="bi bi-people-fill text-primary me-2"></i>Kameradinnen & Kameraden ({anzahlKameraden})
-            </h5>
-            <small class="text-muted">Mitgliederübersicht mit automatischer Abteilungseinteilung nach Alter</small>
-        </div>
-        <button type="button" class="btn btn-feuerwehr shadow-sm" data-bs-toggle="modal" data-bs-target="#kameradModal">
-            <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
-        </button>
-    </div>
-    <div class="card-body p-0">
-        {#if kameraden.isEmpty}
-            <div class="text-center py-5 text-muted">
-                <i class="bi bi-person-slash fs-1 d-block mb-2 text-secondary"></i>
-                <p class="mb-0">Noch keine Kameradinnen und Kameraden erfasst.</p>
-            </div>
-        {#else}
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col" class="ps-3">Name</th>
-                            <th scope="col">Einsatzabteilung</th>
-                            <th scope="col">Alter / Geburtsdatum</th>
-                            <th scope="col">Wohnadresse</th>
-                            <th scope="col">Kontaktdaten</th>
-                            <th scope="col" class="pe-3 text-end">Aktionen</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {#for k in kameraden}
-                        <tr>
-                            <td class="ps-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="rounded-circle bg-secondary-subtle text-secondary d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; font-weight: 600;">
-                                        {k.vorname.substring(0, 1)}{k.nachname.substring(0, 1)}
-                                    </div>
-                                    <div>
-                                        <div class="fw-bold text-dark">{k.vorname} {k.nachname}</div>
-                                        <small class="text-muted font-monospace" style="font-size: 0.75rem;">ID: {k.id}</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                {#if beispielWehr.jugendabteilung.kameraden.contains(k)}
-                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
-                                        <i class="bi bi-person-heart me-1"></i>Jugendabteilung
-                                    </span>
-                                {#else if beispielWehr.einsatzabteilung.kameraden.contains(k)}
-                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
-                                        <i class="bi bi-person-check-fill me-1"></i>Einsatzabteilung
-                                    </span>
-                                {#else if beispielWehr.altersUndEhrenabteilung.kameraden.contains(k)}
-                                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1">
-                                        <i class="bi bi-award me-1"></i>Alters- & Ehrenabteilung
-                                    </span>
-                                {#else}
-                                    <span class="badge bg-light text-dark border">
-                                        Mitglied
-                                    </span>
-                                {/if}
-                            </td>
-                            <td>
-                                {#if k.geburtsdatum}
-                                    <div class="fw-semibold">{k.berechneAlter()} Jahre</div>
-                                    <small class="text-muted"><i class="bi bi-calendar-event me-1"></i>{k.geburtsdatum}</small>
-                                {#else}
-                                    <span class="text-muted small">Nicht angegeben</span>
-                                {/if}
-                            </td>
-                            <td>
-                                {#if k.adresse}
-                                    <div>{k.adresse.strasse} {k.adresse.hausnummer}</div>
-                                    <small class="text-muted">{k.adresse.postleitzahl} {k.adresse.ort}</small>
-                                {#else}
-                                    <span class="text-muted small">Keine Adresse</span>
-                                {/if}
-                            </td>
-                            <td>
-                                <div class="d-flex flex-column gap-1 small">
-                                    {#if k.telefonnummer}
-                                        <a href="tel:{k.telefonnummer}" class="text-decoration-none text-dark">
-                                            <i class="bi bi-telephone text-primary me-1"></i>{k.telefonnummer}
-                                        </a>
-                                    {/if}
-                                    {#if k.emailAdresse}
-                                        <a href="mailto:{k.emailAdresse}" class="text-decoration-none text-muted">
-                                            <i class="bi bi-envelope text-danger me-1"></i>{k.emailAdresse}
-                                        </a>
-                                    {/if}
-                                    {#if !k.telefonnummer && !k.emailAdresse}
-                                        <span class="text-muted small">–</span>
-                                    {/if}
-                                </div>
-                            </td>
-                            <td class="pe-3 text-end text-nowrap">
-                                <button type="button" class="btn btn-outline-secondary btn-sm" title="Kamerad bearbeiten" data-bs-toggle="modal" data-bs-target="#editKameradModal_{k.id}">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <form action="/kameraden/entfernen" method="post" class="d-inline">
-                                    <input type="hidden" name="kameradId" value="{k.id}">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Kamerad entfernen">
-                                        <i class="bi bi-trash3"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {/for}
-                    </tbody>
-                </table>
-            </div>
-
-            {#for k in kameraden}
-            <!-- Modal: Kamerad bearbeiten für {k.id} -->
-            <div class="modal fade" id="editKameradModal_{k.id}" tabindex="-1" aria-labelledby="editKameradModalLabel_{k.id}" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content border-0 shadow">
-                        <div class="modal-header bg-secondary text-white">
-                            <h5 class="modal-title fw-bold" id="editKameradModalLabel_{k.id}">
-                                <i class="bi bi-pencil-square me-2"></i>Kamerad bearbeiten
-                            </h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Schließen"></button>
-                        </div>
-                        <form action="/kameraden/aendern" method="post">
-                            <input type="hidden" name="kameradId" value="{k.id}">
-                            <div class="modal-body p-4">
-                                <div class="alert alert-info py-2 small d-flex align-items-center mb-4" role="alert">
-                                    <i class="bi bi-info-circle-fill me-2 fs-5"></i>
-                                    <span>Bei Änderung des Geburtsdatums wird die <strong>Einsatzabteilung</strong> automatisch neu ermittelt.</span>
-                                </div>
-
-                                <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                    <i class="bi bi-person-lines-fill me-1 text-danger"></i> 1. Persönliche Angaben
-                                </h6>
-                                <div class="row g-3 mb-4">
-                                    <div class="col-md-6">
-                                        <label for="editVorname_{k.id}" class="form-label fw-semibold">Vorname <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="editVorname_{k.id}" name="vorname" value="{k.vorname}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="editNachname_{k.id}" class="form-label fw-semibold">Nachname <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="editNachname_{k.id}" name="nachname" value="{k.nachname}" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="editGeburtsdatum_{k.id}" class="form-label fw-semibold">Geburtsdatum</label>
-                                        <input type="date" class="form-control" id="editGeburtsdatum_{k.id}" name="geburtsdatum" value="{#if k.geburtsdatum}{k.geburtsdatum}{/if}">
-                                    </div>
-                                </div>
-
-                                <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                    <i class="bi bi-house-door-fill me-1 text-success"></i> 2. Anschrift
-                                </h6>
-                                <div class="row g-3 mb-4">
-                                    <div class="col-md-8">
-                                        <label for="editStrasse_{k.id}" class="form-label fw-semibold">Straße</label>
-                                        <input type="text" class="form-control" id="editStrasse_{k.id}" name="strasse" value="{#if k.adresse}{k.adresse.strasse}{/if}">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="editHausnummer_{k.id}" class="form-label fw-semibold">Hausnummer</label>
-                                        <input type="text" class="form-control" id="editHausnummer_{k.id}" name="hausnummer" value="{#if k.adresse}{k.adresse.hausnummer}{/if}">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="editPlz_{k.id}" class="form-label fw-semibold">Postleitzahl</label>
-                                        <input type="text" class="form-control" id="editPlz_{k.id}" name="postleitzahl" value="{#if k.adresse}{k.adresse.postleitzahl}{/if}">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <label for="editOrt_{k.id}" class="form-label fw-semibold">Wohnort</label>
-                                        <input type="text" class="form-control" id="editOrt_{k.id}" name="ort" value="{#if k.adresse}{k.adresse.ort}{/if}">
-                                    </div>
-                                </div>
-
-                                <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                    <i class="bi bi-telephone-fill me-1 text-primary"></i> 3. Kontaktdaten & Erreichbarkeit
-                                </h6>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="editTelefon_{k.id}" class="form-label fw-semibold">Telefonnummer / Mobil</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                            <input type="tel" class="form-control" id="editTelefon_{k.id}" name="telefonnummer" value="{#if k.telefonnummer}{k.telefonnummer}{/if}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="editEmail_{k.id}" class="form-label fw-semibold">E-Mail-Adresse</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                            <input type="email" class="form-control" id="editEmail_{k.id}" name="emailAdresse" value="{#if k.emailAdresse}{k.emailAdresse}{/if}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer bg-light">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Änderungen speichern</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            {/for}
-        {/if}
-    </div>
-</div>
-
-<!-- Schnellstart / Aktionsbereich -->
-<div id="aktionen" class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-white py-3 border-bottom">
-        <h5 class="mb-0 fw-bold text-dark">
-            <i class="bi bi-lightning-charge-fill text-warning me-2"></i>Schnellstart & Verwaltungsfunktionen
-        </h5>
-    </div>
-    <div class="card-body">
-        <div class="row g-3">
-            <div class="col-md-3">
-                <div class="p-3 border rounded-3 text-center h-100">
-                    <i class="bi bi-plus-square text-danger fs-1 mb-2"></i>
-                    <h6 class="fw-bold">Wehr gründen</h6>
-                    <p class="text-muted small">Neue Feuerwehr-Einheit mit Gründungsdatum anlegen.</p>
-                    <button class="btn btn-sm btn-outline-danger w-100 disabled" title="In Kürze verfügbar">Gründen</button>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="p-3 border rounded-3 text-center h-100">
-                    <i class="bi bi-person-plus text-primary fs-1 mb-2"></i>
-                    <h6 class="fw-bold">Kamerad aufnehmen</h6>
-                    <p class="text-muted small">Mitglied mit Adresse, Geburtsdatum und Kontaktdaten erfassen.</p>
-                    <button type="button" class="btn btn-sm btn-primary w-100" data-bs-toggle="modal" data-bs-target="#kameradModal">
-                        <i class="bi bi-plus-circle me-1"></i> Aufnehmen
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="p-3 border rounded-3 text-center h-100">
-                    <i class="bi bi-truck-front text-warning fs-1 mb-2"></i>
-                    <h6 class="fw-bold">Fahrzeug zuweisen</h6>
-                    <p class="text-muted small">DIN-14530-Einsatzfahrzeug der Wehr zuordnen.</p>
-                    <button type="button" class="btn btn-sm btn-warning text-dark fw-semibold w-100" data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
-                        <i class="bi bi-plus-circle me-1"></i> Hinzufügen
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="p-3 border rounded-3 text-center h-100">
-                    <i class="bi bi-building-add text-success fs-1 mb-2"></i>
-                    <h6 class="fw-bold">Gebäude anlegen</h6>
-                    <p class="text-muted small">Gerätehaus oder Liegenschaft mit Adresse hinterlegen.</p>
-                    <button class="btn btn-sm btn-outline-success w-100 disabled" title="In Kürze verfügbar">Anlegen</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal: Kamerad aufnehmen -->
-<div class="modal fade" id="kameradModal" tabindex="-1" aria-labelledby="kameradModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-feuerwehr text-white">
-                <h5 class="modal-title fw-bold" id="kameradModalLabel">
-                    <i class="bi bi-person-plus-fill me-2"></i>Neuen Kameraden / Kameradin aufnehmen
+        <!-- Schnellstart / Aktionsbereich -->
+        <div id="aktionen" class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h5 class="mb-0 fw-bold text-dark">
+                    <i class="bi bi-lightning-charge-fill text-warning me-2"></i>Schnellstart &
+                    Verwaltungsfunktionen
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Schließen"></button>
             </div>
-            <form action="/kameraden" method="post" id="formKameradAufnehmen">
-                <div class="modal-body p-4">
-                    <div class="alert alert-info py-2 small d-flex align-items-center mb-4" role="alert">
-                        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
-                        <span>Die Zuordnung zur passenden <strong>Einsatzabteilung</strong> (Jugendwehr bis 16 Jahre, Einsatzabteilung 17–65 Jahre, Alters- und Ehrenabteilung &gt;65 Jahre) erfolgt vollautomatisch anhand des Geburtsdatums.</span>
-                    </div>
-
-                    <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                        <i class="bi bi-person-lines-fill me-1 text-danger"></i> 1. Persönliche Angaben
-                    </h6>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <label for="inputVorname" class="form-label fw-semibold">Vorname <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="inputVorname" name="vorname" placeholder="z. B. Julia" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="inputNachname" class="form-label fw-semibold">Nachname <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="inputNachname" name="nachname" placeholder="z. B. Meier" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="inputGeburtsdatum" class="form-label fw-semibold">Geburtsdatum</label>
-                            <input type="date" class="form-control" id="inputGeburtsdatum" name="geburtsdatum">
-                            <div class="form-text small">Wird zur automatischen Abteilungsberechnung benötigt.</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="p-3 border rounded-3 text-center h-100">
+                            <i class="bi bi-plus-square text-danger fs-1 mb-2"></i>
+                            <h6 class="fw-bold">Wehr gründen</h6>
+                            <p class="text-muted small">Neue Feuerwehr-Einheit mit Gründungsdatum
+                                anlegen.</p>
+                            <button class="btn btn-sm btn-outline-danger w-100 disabled"
+                                    title="In Kürze verfügbar">Gründen
+                            </button>
                         </div>
                     </div>
-
-                    <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                        <i class="bi bi-house-door-fill me-1 text-success"></i> 2. Anschrift
-                    </h6>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-8">
-                            <label for="inputStrasse" class="form-label fw-semibold">Straße</label>
-                            <input type="text" class="form-control" id="inputStrasse" name="strasse" placeholder="z. B. Lindenallee">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="inputHausnummer" class="form-label fw-semibold">Hausnummer</label>
-                            <input type="text" class="form-control" id="inputHausnummer" name="hausnummer" placeholder="z. B. 12a">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="inputPlz" class="form-label fw-semibold">Postleitzahl</label>
-                            <input type="text" class="form-control" id="inputPlz" name="postleitzahl" placeholder="z. B. 12345">
-                        </div>
-                        <div class="col-md-8">
-                            <label for="inputOrt" class="form-label fw-semibold">Wohnort</label>
-                            <input type="text" class="form-control" id="inputOrt" name="ort" placeholder="z. B. Musterstadt">
+                    <div class="col-md-3">
+                        <div class="p-3 border rounded-3 text-center h-100">
+                            <i class="bi bi-person-plus text-primary fs-1 mb-2"></i>
+                            <h6 class="fw-bold">Kamerad aufnehmen</h6>
+                            <p class="text-muted small">Mitglied mit Adresse, Geburtsdatum und
+                                Kontaktdaten erfassen.</p>
+                            <button type="button" class="btn btn-sm btn-primary w-100"
+                                    data-bs-toggle="modal" data-bs-target="#kameradModal">
+                                <i class="bi bi-plus-circle me-1"></i> Aufnehmen
+                            </button>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="p-3 border rounded-3 text-center h-100">
+                            <i class="bi bi-truck-front text-warning fs-1 mb-2"></i>
+                            <h6 class="fw-bold">Fahrzeug zuweisen</h6>
+                            <p class="text-muted small">DIN-14530-Einsatzfahrzeug der Wehr
+                                zuordnen.</p>
+                            <button type="button"
+                                    class="btn btn-sm btn-warning text-dark fw-semibold w-100"
+                                    data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
+                                <i class="bi bi-plus-circle me-1"></i> Hinzufügen
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 border rounded-3 text-center h-100">
+                            <i class="bi bi-building-add text-success fs-1 mb-2"></i>
+                            <h6 class="fw-bold">Gebäude anlegen</h6>
+                            <p class="text-muted small">Gerätehaus oder Liegenschaft mit Adresse
+                                hinterlegen.</p>
+                            <button class="btn btn-sm btn-outline-success w-100 disabled"
+                                    title="In Kürze verfügbar">Anlegen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                        <i class="bi bi-telephone-fill me-1 text-primary"></i> 3. Kontaktdaten & Erreichbarkeit
-                    </h6>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="inputTelefon" class="form-label fw-semibold">Telefonnummer / Mobil</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input type="tel" class="form-control" id="inputTelefon" name="telefonnummer" placeholder="z. B. 0171 9876543">
+        <!-- Modal: Kamerad aufnehmen -->
+        <div class="modal fade" id="kameradModal" tabindex="-1" aria-labelledby="kameradModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-feuerwehr text-white">
+                        <h5 class="modal-title fw-bold" id="kameradModalLabel">
+                            <i class="bi bi-person-plus-fill me-2"></i>Neuen Kameraden / Kameradin
+                            aufnehmen
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white"
+                                data-bs-dismiss="modal" aria-label="Schließen"></button>
+                    </div>
+                    <form action="/kameraden" method="post" id="formKameradAufnehmen">
+                        <div class="modal-body p-4">
+                            <div class="alert alert-info py-2 small d-flex align-items-center mb-4"
+                                 role="alert">
+                                <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                <span>Die Zuordnung zur passenden <strong>Einsatzabteilung</strong> (Jugendwehr bis 16 Jahre, Einsatzabteilung 17–65 Jahre, Alters- und Ehrenabteilung &gt;65 Jahre) erfolgt vollautomatisch anhand des Geburtsdatums.</span>
+                            </div>
+
+                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                <i class="bi bi-person-lines-fill me-1 text-danger"></i> 1.
+                                Persönliche Angaben
+                            </h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="inputVorname" class="form-label fw-semibold">Vorname
+                                        <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="inputVorname"
+                                           name="vorname" placeholder="z. B. Julia" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inputNachname" class="form-label fw-semibold">Nachname
+                                        <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="inputNachname"
+                                           name="nachname" placeholder="z. B. Meier" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inputGeburtsdatum" class="form-label fw-semibold">Geburtsdatum</label>
+                                    <input type="date" class="form-control" id="inputGeburtsdatum"
+                                           name="geburtsdatum">
+                                    <div class="form-text small">Wird zur automatischen
+                                        Abteilungsberechnung benötigt.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                <i class="bi bi-house-door-fill me-1 text-success"></i> 2. Anschrift
+                            </h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-8">
+                                    <label for="inputStrasse"
+                                           class="form-label fw-semibold">Straße</label>
+                                    <input type="text" class="form-control" id="inputStrasse"
+                                           name="strasse" placeholder="z. B. Lindenallee">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputHausnummer" class="form-label fw-semibold">Hausnummer</label>
+                                    <input type="text" class="form-control" id="inputHausnummer"
+                                           name="hausnummer" placeholder="z. B. 12a">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputPlz" class="form-label fw-semibold">Postleitzahl</label>
+                                    <input type="text" class="form-control" id="inputPlz"
+                                           name="postleitzahl" placeholder="z. B. 12345">
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="inputOrt"
+                                           class="form-label fw-semibold">Wohnort</label>
+                                    <input type="text" class="form-control" id="inputOrt" name="ort"
+                                           placeholder="z. B. Musterstadt">
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+                                <i class="bi bi-telephone-fill me-1 text-primary"></i> 3.
+                                Kontaktdaten & Erreichbarkeit
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="inputTelefon" class="form-label fw-semibold">Telefonnummer
+                                        / Mobil</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i
+                                                    class="bi bi-telephone"></i></span>
+                                        <input type="tel" class="form-control" id="inputTelefon"
+                                               name="telefonnummer"
+                                               placeholder="z. B. 0171 9876543">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inputEmail" class="form-label fw-semibold">E-Mail-Adresse</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i
+                                                    class="bi bi-envelope"></i></span>
+                                        <input type="email" class="form-control" id="inputEmail"
+                                               name="emailAdresse"
+                                               placeholder="z. B. julia.meier@feuerwehr.de">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="inputEmail" class="form-label fw-semibold">E-Mail-Adresse</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" id="inputEmail" name="emailAdresse" placeholder="z. B. julia.meier@feuerwehr.de">
+                        <div class="modal-footer bg-light">
+                            <button type="button" class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal">Abbrechen
+                            </button>
+                            <button type="submit" class="btn btn-feuerwehr shadow-sm px-4">
+                                <i class="bi bi-check-lg me-1"></i> Kamerad aufnehmen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Einsatzfahrzeug hinzufügen -->
+        <div class="modal fade" id="fahrzeugModal" tabindex="-1"
+             aria-labelledby="fahrzeugModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-warning text-dark">
+                        <h5 class="modal-title fw-bold" id="fahrzeugModalLabel">
+                            <i class="bi bi-truck me-2"></i>Neues Einsatzfahrzeug zur Wehr
+                            hinzufügen
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Schließen"></button>
+                    </div>
+                    <form action="/fahrzeuge" method="post" id="formFahrzeugHinzufuegen">
+                        <div class="modal-body p-4">
+                            <div class="alert alert-info py-2 small d-flex align-items-center mb-4"
+                                 role="alert">
+                                <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                <span>Einsatzfahrzeuge werden gemäß <strong>DIN 14530</strong> typisiert. Technische Eigenschaften (Löschwasser, Besatzung, Pumpe etc.) werden automatisch vom gewählten Typ abgeleitet.</span>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="inputKennung" class="form-label fw-semibold">Funkkennung
+                                        / Kennzeichen <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="inputKennung"
+                                           name="kennung"
+                                           placeholder="z. B. Florian Musterstadt 1/48-1" required>
+                                    <div class="form-text small">Eindeutiger Funkrufname oder
+                                        behördliche Kennung.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="selectFahrzeugtyp" class="form-label fw-semibold">Fahrzeugtyp
+                                        (DIN 14530)</label>
+                                    <select class="form-select" id="selectFahrzeugtyp"
+                                            name="fahrzeugtyp">
+                                        <option value="TSF_W" selected>TSF-W –
+                                            Tragkraftspritzenfahrzeug mit Wasser
+                                        </option>
+                                        <option value="HLF10">HLF 10 –
+                                            Hilfeleistungslöschgruppenfahrzeug 10
+                                        </option>
+                                        <option value="LF10">LF 10 – Löschgruppenfahrzeug 10
+                                        </option>
+                                        <option value="HLF20">HLF 20 –
+                                            Hilfeleistungslöschgruppenfahrzeug 20
+                                        </option>
+                                        <option value="LF20">LF 20 – Löschgruppenfahrzeug 20
+                                        </option>
+                                        <option value="LF20_KATS">LF 20 KatS – Löschgruppenfahrzeug
+                                            Katastrophenschutz
+                                        </option>
+                                        <option value="TLF2000">TLF 2000 – Tanklöschfahrzeug 2000
+                                        </option>
+                                        <option value="TLF3000">TLF 3000 – Tanklöschfahrzeug 3000
+                                        </option>
+                                        <option value="TLF4000">TLF 4000 – Tanklöschfahrzeug 4000
+                                        </option>
+                                        <option value="TSF">TSF – Tragkraftspritzenfahrzeug</option>
+                                        <option value="KLF">KLF – Kleinlöschfahrzeug</option>
+                                        <option value="MLF">MLF – Mittleres Löschfahrzeug</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputBezeichnung" class="form-label fw-semibold">Bezeichnung
+                                        / Freitext</label>
+                                    <input type="text" class="form-control" id="inputBezeichnung"
+                                           name="bezeichnung"
+                                           placeholder="z. B. Tragkraftspritzenfahrzeug mit Wasser (TSF-W)">
+                                    <div class="form-text small">Optionale einsatztaktische
+                                        Benennung oder Zusatzangabe.
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" class="btn btn-feuerwehr shadow-sm px-4">
-                        <i class="bi bi-check-lg me-1"></i> Kamerad aufnehmen
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Modal: Einsatzfahrzeug hinzufügen -->
-<div class="modal fade" id="fahrzeugModal" tabindex="-1" aria-labelledby="fahrzeugModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-warning text-dark">
-                <h5 class="modal-title fw-bold" id="fahrzeugModalLabel">
-                    <i class="bi bi-truck me-2"></i>Neues Einsatzfahrzeug zur Wehr hinzufügen
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
-            </div>
-            <form action="/fahrzeuge" method="post" id="formFahrzeugHinzufuegen">
-                <div class="modal-body p-4">
-                    <div class="alert alert-info py-2 small d-flex align-items-center mb-4" role="alert">
-                        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
-                        <span>Einsatzfahrzeuge werden gemäß <strong>DIN 14530</strong> typisiert. Technische Eigenschaften (Löschwasser, Besatzung, Pumpe etc.) werden automatisch vom gewählten Typ abgeleitet.</span>
-                    </div>
-
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label for="inputKennung" class="form-label fw-semibold">Funkkennung / Kennzeichen <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="inputKennung" name="kennung" placeholder="z. B. Florian Musterstadt 1/48-1" required>
-                            <div class="form-text small">Eindeutiger Funkrufname oder behördliche Kennung.</div>
+                        <div class="modal-footer bg-light px-4 py-3">
+                            <button type="button" class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal">Abbrechen
+                            </button>
+                            <button type="submit"
+                                    class="btn btn-warning text-dark fw-semibold px-4">
+                                <i class="bi bi-plus-circle me-1"></i> Fahrzeug hinzufügen
+                            </button>
                         </div>
-                        <div class="col-md-6">
-                            <label for="selectFahrzeugtyp" class="form-label fw-semibold">Fahrzeugtyp (DIN 14530)</label>
-                            <select class="form-select" id="selectFahrzeugtyp" name="fahrzeugtyp">
-                                <option value="TSF_W" selected>TSF-W – Tragkraftspritzenfahrzeug mit Wasser</option>
-                                <option value="HLF10">HLF 10 – Hilfeleistungslöschgruppenfahrzeug 10</option>
-                                <option value="LF10">LF 10 – Löschgruppenfahrzeug 10</option>
-                                <option value="HLF20">HLF 20 – Hilfeleistungslöschgruppenfahrzeug 20</option>
-                                <option value="LF20">LF 20 – Löschgruppenfahrzeug 20</option>
-                                <option value="LF20_KATS">LF 20 KatS – Löschgruppenfahrzeug Katastrophenschutz</option>
-                                <option value="TLF2000">TLF 2000 – Tanklöschfahrzeug 2000</option>
-                                <option value="TLF3000">TLF 3000 – Tanklöschfahrzeug 3000</option>
-                                <option value="TLF4000">TLF 4000 – Tanklöschfahrzeug 4000</option>
-                                <option value="TSF">TSF – Tragkraftspritzenfahrzeug</option>
-                                <option value="KLF">KLF – Kleinlöschfahrzeug</option>
-                                <option value="MLF">MLF – Mittleres Löschfahrzeug</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label for="inputBezeichnung" class="form-label fw-semibold">Bezeichnung / Freitext</label>
-                            <input type="text" class="form-control" id="inputBezeichnung" name="bezeichnung" placeholder="z. B. Tragkraftspritzenfahrzeug mit Wasser (TSF-W)">
-                            <div class="form-text small">Optionale einsatztaktische Benennung oder Zusatzangabe.</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light px-4 py-3">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Abbrechen</button>
-                    <button type="submit" class="btn btn-warning text-dark fw-semibold px-4">
-                        <i class="bi bi-plus-circle me-1"></i> Fahrzeug hinzufügen
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Architektur- & Technologie-Infobox -->
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card shadow-sm border-0 h-100">
-            <div class="card-body">
-                <h6 class="fw-bold mb-3 d-flex align-items-center">
-                    <i class="bi bi-shield-lock-fill text-danger me-2"></i>Architektur & DDD-Design
-                </h6>
-                <p class="text-muted small">
-                    Die Anwendung basiert auf <strong>Clean Architecture</strong> und <strong>Domain-Driven Design</strong>.
-                    Zwei separate Aggregate Roots (<code>Wehr</code> & <code>Einsatzfahrzeug</code>) interagieren lose gekoppelt über Identifikatoren (<code>fahrzeugIds</code>).
-                </p>
-                <div class="d-flex flex-wrap gap-1">
-                    <span class="badge bg-secondary">Quarkus 3</span>
-                    <span class="badge bg-secondary">Java 21</span>
-                    <span class="badge bg-secondary">jMolecules DDD</span>
-                    <span class="badge bg-secondary">ArchUnit</span>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card shadow-sm border-0 h-100">
-            <div class="card-body">
-                <h6 class="fw-bold mb-3 d-flex align-items-center">
-                    <i class="bi bi-window-fullscreen text-info me-2"></i>UI-Architektur (ADR-05)
-                </h6>
-                <p class="text-muted small">
-                    Server-Side Rendering mit <strong>Quarkus Qute</strong> und dynamische Interaktionen über <strong>HTMX</strong>. 
-                    Kein aufwändiger Node/NPM-Build erforderlich – typsicher, extrem schnell und für GraalVM Native Images optimiert.
-                </p>
-                <div class="d-flex flex-wrap gap-1">
-                    <span class="badge bg-info text-dark">Quarkus Qute</span>
-                    <span class="badge bg-info text-dark">HTMX 1.9</span>
-                    <span class="badge bg-info text-dark">Bootstrap 5.3</span>
+
+        <!-- Architektur- & Technologie-Infobox -->
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-3 d-flex align-items-center">
+                            <i class="bi bi-shield-lock-fill text-danger me-2"></i>Architektur &
+                            DDD-Design
+                        </h6>
+                        <p class="text-muted small">
+                            Die Anwendung basiert auf <strong>Clean Architecture</strong> und
+                            <strong>Domain-Driven Design</strong>.
+                            Zwei separate Aggregate Roots (<code>Wehr</code> &
+                            <code>Einsatzfahrzeug</code>) interagieren lose gekoppelt über
+                            Identifikatoren (<code>fahrzeugIds</code>).
+                        </p>
+                        <div class="d-flex flex-wrap gap-1">
+                            <span class="badge bg-secondary">Quarkus 3</span>
+                            <span class="badge bg-secondary">Java 21</span>
+                            <span class="badge bg-secondary">jMolecules DDD</span>
+                            <span class="badge bg-secondary">ArchUnit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-3 d-flex align-items-center">
+                            <i class="bi bi-window-fullscreen text-info me-2"></i>UI-Architektur
+                            (ADR-05)
+                        </h6>
+                        <p class="text-muted small">
+                            Server-Side Rendering mit <strong>Quarkus Qute</strong> und dynamische
+                            Interaktionen über <strong>HTMX</strong>.
+                            Kein aufwändiger Node/NPM-Build erforderlich – typsicher, extrem schnell
+                            und für GraalVM Native Images optimiert.
+                        </p>
+                        <div class="d-flex flex-wrap gap-1">
+                            <span class="badge bg-info text-dark">Quarkus Qute</span>
+                            <span class="badge bg-info text-dark">HTMX 1.9</span>
+                            <span class="badge bg-info text-dark">Bootstrap 5.3</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-{/content}
+    {/content}
 
 {/include}

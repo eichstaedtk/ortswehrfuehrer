@@ -49,49 +49,49 @@ public class WehrApplicationService {
 
   public final void initialisiereStandardWehr() {
     Einsatzfahrzeug tsfw = Einsatzfahrzeug.builder()
-        .id("fz-tsfw-01")
-        .bezeichnung("Tragkraftspritzenfahrzeug mit Wasser")
-        .kennung("Florian Musterstadt 1/48-1")
-        .fahrzeugtyp(Fahrzeugtyp.TSF_W)
+        .id("tsf472")
+        .bezeichnung("Tragkraftspritzenfahrzeug")
+        .kennung("HVL/5/467/2")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
         .build();
 
-    Einsatzfahrzeug hlf10 = Einsatzfahrzeug.builder()
-        .id("fz-hlf10-02")
-        .bezeichnung("Hilfeleistungslöschgruppenfahrzeug 10")
-        .kennung("Florian Musterstadt 1/43-1")
-        .fahrzeugtyp(Fahrzeugtyp.HLF10)
+    Einsatzfahrzeug tlf1646 = Einsatzfahrzeug.builder()
+        .id("fz-tlf1646-02")
+        .bezeichnung("Tanklöschfahrzeug 14/46")
+        .kennung("HVL/5/24/3")
+        .fahrzeugtyp(Fahrzeugtyp.TLF4000)
         .build();
 
     this.fahrzeuge.clear();
     this.fahrzeuge.put(tsfw.getId(), tsfw);
-    this.fahrzeuge.put(hlf10.getId(), hlf10);
+    this.fahrzeuge.put(tlf1646.getId(), tlf1646);
 
     this.aktiveWehr = wehrFactory.erzeugeWehr(
-        "Freiwillige Feuerwehr Musterstadt",
+        "Freiwillige Feuerwehr Göttlin",
         LocalDate.of(1924, 5, 1),
         List.of(
-            new Gebaeude("Gerätehaus Mitte",
-                new Adresse("Hauptstraße", "1", "12345", "Musterstadt"))
+            new Gebaeude("Gerätehaus Göttliner Chaussee",
+                new Adresse("Göttliner Chaussee", "10", "14712", "Rathenow"))
         ),
-        Set.of(tsfw.getId(), hlf10.getId()),
+        Set.of(tsfw.getId(), tlf1646.getId()),
         List.of(
             Kamerad.builder()
                 .vorname("Max")
-                .nachname("Mustermann")
+                .nachname("Gens")
                 .geburtsdatum(LocalDate.of(1995, 3, 15))
                 .emailAdresse("max.mustermann@feuerwehr.de")
                 .telefonnummer("0170 1234567")
                 .adresse(new Adresse("Hauptstraße", "12", "12345", "Musterstadt"))
                 .build(),
             Kamerad.builder()
-                .vorname("Leon")
-                .nachname("Schmidt")
+                .vorname("Apard")
+                .nachname("Mezaros")
                 .geburtsdatum(LocalDate.of(2012, 8, 20))
                 .adresse(new Adresse("Rosenweg", "4", "12345", "Musterstadt"))
                 .build(),
             Kamerad.builder()
-                .vorname("Hans")
-                .nachname("Weber")
+                .vorname("Steffen")
+                .nachname("Schröder")
                 .geburtsdatum(LocalDate.of(1950, 11, 2))
                 .adresse(new Adresse("Am Wald", "8", "12345", "Musterstadt"))
                 .build()
@@ -159,7 +159,8 @@ public class WehrApplicationService {
     return fahrzeug;
   }
 
-  public Einsatzfahrzeug fahrzeugHinzufuegen(String kennung, Fahrzeugtyp fahrzeugtyp, String bezeichnung) {
+  public Einsatzfahrzeug fahrzeugHinzufuegen(String kennung, Fahrzeugtyp fahrzeugtyp,
+      String bezeichnung) {
     if (kennung == null || kennung.isBlank()) {
       throw new IllegalArgumentException("Funkkennung fehlt.");
     }
@@ -176,7 +177,8 @@ public class WehrApplicationService {
     return fahrzeugHinzufuegen(fahrzeug);
   }
 
-  public Einsatzfahrzeug fahrzeugHinzufuegen(String kennung, String fahrzeugtypStr, String bezeichnung) {
+  public Einsatzfahrzeug fahrzeugHinzufuegen(String kennung, String fahrzeugtypStr,
+      String bezeichnung) {
     if (kennung == null || kennung.isBlank()) {
       throw new IllegalArgumentException("Funkkennung fehlt.");
     }
@@ -214,7 +216,8 @@ public class WehrApplicationService {
     String trimmedId = fahrzeugId.trim();
     aktiveWehr.fahrzeugEntfernen(trimmedId);
     fahrzeuge.remove(trimmedId);
-    log.info("Fahrzeug mit ID '{}' erfolgreich aus Wehr '{}' entfernt.", trimmedId, aktiveWehr.getName());
+    log.info("Fahrzeug mit ID '{}' erfolgreich aus Wehr '{}' entfernt.", trimmedId,
+        aktiveWehr.getName());
   }
 
   public void fahrzeugEntfernen(Einsatzfahrzeug fahrzeug) {
@@ -232,16 +235,20 @@ public class WehrApplicationService {
       throw new IllegalStateException("Keine aktive Wehr vorhanden.");
     }
     Einsatzfahrzeug existing = fahrzeuge.get(fahrzeug.getId());
-    if (existing == null && (aktiveWehr.getFahrzeugIds() == null || !aktiveWehr.getFahrzeugIds().contains(fahrzeug.getId()))) {
-      throw new IllegalArgumentException("Fahrzeug mit ID '" + fahrzeug.getId() + "' wurde nicht gefunden.");
+    if (existing == null && (aktiveWehr.getFahrzeugIds() == null || !aktiveWehr.getFahrzeugIds()
+        .contains(fahrzeug.getId()))) {
+      throw new IllegalArgumentException(
+          "Fahrzeug mit ID '" + fahrzeug.getId() + "' wurde nicht gefunden.");
     }
     fahrzeuge.put(fahrzeug.getId(), fahrzeug);
     aktiveWehr.fahrzeugHinzufuegen(fahrzeug.getId());
-    log.info("Fahrzeug '{}' ({}) erfolgreich aktualisiert.", fahrzeug.getKennung(), fahrzeug.getId());
+    log.info("Fahrzeug '{}' ({}) erfolgreich aktualisiert.", fahrzeug.getKennung(),
+        fahrzeug.getId());
     return fahrzeug;
   }
 
-  public Einsatzfahrzeug fahrzeugAendern(String fahrzeugId, String kennung, Fahrzeugtyp fahrzeugtyp, String bezeichnung) {
+  public Einsatzfahrzeug fahrzeugAendern(String fahrzeugId, String kennung, Fahrzeugtyp fahrzeugtyp,
+      String bezeichnung) {
     if (fahrzeugId == null || fahrzeugId.isBlank()) {
       throw new IllegalArgumentException("Fahrzeug-ID darf nicht leer sein.");
     }
@@ -258,7 +265,8 @@ public class WehrApplicationService {
         fahrzeug = Einsatzfahrzeug.builder().id(trimmedId).kennung(trimmedId).build();
         fahrzeuge.put(trimmedId, fahrzeug);
       } else {
-        throw new IllegalArgumentException("Fahrzeug mit ID '" + trimmedId + "' wurde nicht gefunden.");
+        throw new IllegalArgumentException(
+            "Fahrzeug mit ID '" + trimmedId + "' wurde nicht gefunden.");
       }
     }
     String trimmedKennung = kennung.trim();
@@ -267,11 +275,13 @@ public class WehrApplicationService {
         : (fahrzeugtyp != null ? fahrzeugtyp.name() : trimmedKennung);
 
     fahrzeug.fahrzeugAendern(trimmedBezeichnung, trimmedKennung, fahrzeugtyp);
-    log.info("Fahrzeug '{}' ({}) erfolgreich aktualisiert.", fahrzeug.getKennung(), fahrzeug.getId());
+    log.info("Fahrzeug '{}' ({}) erfolgreich aktualisiert.", fahrzeug.getKennung(),
+        fahrzeug.getId());
     return fahrzeug;
   }
 
-  public Einsatzfahrzeug fahrzeugAendern(String fahrzeugId, String kennung, String fahrzeugtypStr, String bezeichnung) {
+  public Einsatzfahrzeug fahrzeugAendern(String fahrzeugId, String kennung, String fahrzeugtypStr,
+      String bezeichnung) {
     if (fahrzeugId == null || fahrzeugId.isBlank()) {
       throw new IllegalArgumentException("Fahrzeug-ID darf nicht leer sein.");
     }
@@ -309,7 +319,8 @@ public class WehrApplicationService {
     }
     aktiveWehr.kameradHinzufuegen(kamerad);
     log.info("Kamerad {} {} erfolgreich zur Wehr '{}' hinzugefügt (Abteilung: {}).",
-        kamerad.getVorname(), kamerad.getNachname(), aktiveWehr.getName(), ermittleAbteilungName(kamerad));
+        kamerad.getVorname(), kamerad.getNachname(), aktiveWehr.getName(),
+        ermittleAbteilungName(kamerad));
     return kamerad;
   }
 
@@ -322,7 +333,8 @@ public class WehrApplicationService {
     }
     String trimmedId = kameradId.trim();
     aktiveWehr.kameradEntfernen(trimmedId);
-    log.info("Kamerad mit ID '{}' erfolgreich aus Wehr '{}' entfernt.", trimmedId, aktiveWehr.getName());
+    log.info("Kamerad mit ID '{}' erfolgreich aus Wehr '{}' entfernt.", trimmedId,
+        aktiveWehr.getName());
   }
 
   public void kameradEntfernen(Kamerad kamerad) {
@@ -454,12 +466,14 @@ public class WehrApplicationService {
     }
   }
 
-  private static Adresse baueAdresse(String strasse, String hausnummer, String postleitzahl, String ort) {
+  private static Adresse baueAdresse(String strasse, String hausnummer, String postleitzahl,
+      String ort) {
     if (trimToNull(strasse) == null && trimToNull(hausnummer) == null
         && trimToNull(postleitzahl) == null && trimToNull(ort) == null) {
       return null;
     }
-    return new Adresse(trimToEmpty(strasse), trimToEmpty(hausnummer), trimToEmpty(postleitzahl), trimToEmpty(ort));
+    return new Adresse(trimToEmpty(strasse), trimToEmpty(hausnummer), trimToEmpty(postleitzahl),
+        trimToEmpty(ort));
   }
 
   private static String trimToNull(String wert) {
