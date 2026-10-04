@@ -1,7 +1,9 @@
 package de.eichstaedt.ortswehrfuehrer.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -128,6 +130,40 @@ class WehrApplicationServiceTest {
   }
 
   @Test
+  @DisplayName("Einsatzfahrzeug entfernen und löschen")
+  void testFahrzeugEntfernen() {
+    Einsatzfahrzeug tlf = Einsatzfahrzeug.builder()
+        .id("fz-tlf-entfernen")
+        .bezeichnung("Tanklöschfahrzeug 3000")
+        .kennung("Florian Musterstadt 1/24-99")
+        .fahrzeugtyp(Fahrzeugtyp.TLF3000)
+        .build();
+
+    service.fahrzeugHinzufuegen(tlf);
+    assertEquals(3, service.getFahrzeugeDerAktivenWehr().size());
+
+    service.fahrzeugEntfernen(tlf.getId());
+    assertEquals(2, service.getFahrzeugeDerAktivenWehr().size());
+    assertFalse(service.getFahrzeugeDerAktivenWehr().contains(tlf));
+
+    service.fahrzeugHinzufuegen(tlf);
+    assertEquals(3, service.getFahrzeugeDerAktivenWehr().size());
+
+    service.fahrzeugEntfernen(tlf);
+    assertEquals(2, service.getFahrzeugeDerAktivenWehr().size());
+
+    service.fahrzeugHinzufuegen(tlf);
+    assertEquals(3, service.getFahrzeugeDerAktivenWehr().size());
+
+    service.fahrzeugLoeschen(tlf.getId());
+    assertEquals(2, service.getFahrzeugeDerAktivenWehr().size());
+
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugEntfernen((String) null));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugEntfernen("   "));
+    assertThrows(IllegalArgumentException.class, () -> service.fahrzeugEntfernen((Einsatzfahrzeug) null));
+  }
+
+  @Test
   @DisplayName("Einsatzfahrzeug über String-Parameter hinzufügen mit Fallback und ungültigem Typ")
   void testFahrzeugHinzufuegenMitStringParametern() {
     Einsatzfahrzeug fzMitTyp = service.fahrzeugHinzufuegen("Florian Test 1/10-1", "KLF", "");
@@ -137,7 +173,7 @@ class WehrApplicationServiceTest {
 
     Einsatzfahrzeug fzUngueltig = service.fahrzeugHinzufuegen("Florian Test 1/11-1", "UNGUELTIG", "");
     assertNotNull(fzUngueltig);
-    assertEquals(null, fzUngueltig.getFahrzeugtyp());
+    assertNull(fzUngueltig.getFahrzeugtyp());
     assertEquals("Florian Test 1/11-1", fzUngueltig.getBezeichnung());
   }
 
@@ -173,8 +209,8 @@ class WehrApplicationServiceTest {
         ""
     );
     assertNotNull(k2);
-    assertEquals(null, k2.getGeburtsdatum());
-    assertEquals(null, k2.getAdresse());
+    assertNull(k2.getGeburtsdatum());
+    assertNull(k2.getAdresse());
 
     assertThrows(IllegalArgumentException.class, () -> service.kameradHinzufuegen("", "Nachname", "2000-01-01", "", "", "", "", "", ""));
     assertThrows(IllegalArgumentException.class, () -> service.kameradHinzufuegen("Vorname", "", "2000-01-01", "", "", "", "", "", ""));
@@ -209,5 +245,6 @@ class WehrApplicationServiceTest {
 
     Einsatzfahrzeug testFz = Einsatzfahrzeug.builder().id("1").kennung("K").build();
     assertThrows(IllegalStateException.class, () -> service.fahrzeugHinzufuegen(testFz));
+    assertThrows(IllegalStateException.class, () -> service.fahrzeugEntfernen("1"));
   }
 }

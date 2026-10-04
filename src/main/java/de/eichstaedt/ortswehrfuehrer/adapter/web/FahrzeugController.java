@@ -48,4 +48,26 @@ public class FahrzeugController {
       return Response.seeOther(URI.create("/?fehler=fahrzeug_kennung_fehlt#fahrzeuge")).build();
     }
   }
+
+  @POST
+  @Path("/loeschen")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Produces(MediaType.TEXT_HTML)
+  public Response fahrzeugLoeschen(@FormParam("fahrzeugId") String fahrzeugId) {
+    try {
+      wehrService.fahrzeugEntfernen(fahrzeugId);
+      return Response.seeOther(URI.create("/?erfolg=fahrzeug_geloescht#fahrzeuge")).build();
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      log.warn("Einsatzfahrzeug konnte nicht gelöscht werden: {}", e.getMessage());
+      return Response.seeOther(URI.create("/?fehler=fahrzeug_loeschen_fehlgeschlagen#fahrzeuge")).build();
+    }
+  }
+
+  @POST
+  @Path("/entfernen")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Produces(MediaType.TEXT_HTML)
+  public Response fahrzeugEntfernen(@FormParam("fahrzeugId") String fahrzeugId) {
+    return fahrzeugLoeschen(fahrzeugId);
+  }
 }

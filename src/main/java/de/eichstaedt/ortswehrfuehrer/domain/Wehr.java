@@ -175,6 +175,14 @@ public class Wehr {
     return this;
   }
 
+  public Wehr einsatzfahrzeugEntfernen(String fahrzeugId) {
+    return fahrzeugEntfernen(fahrzeugId);
+  }
+
+  public Wehr einsatzfahrzeugEntfernen(Einsatzfahrzeug fahrzeug) {
+    return fahrzeugEntfernen(fahrzeug);
+  }
+
   public Wehr kameradHinzufuegen(Kamerad kamerad) {
     return kameradHinzufuegen(kamerad, LocalDate.now());
   }

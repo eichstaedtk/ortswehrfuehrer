@@ -204,6 +204,30 @@ public class WehrApplicationService {
     return fahrzeugHinzufuegen(fahrzeug);
   }
 
+  public void fahrzeugEntfernen(String fahrzeugId) {
+    if (fahrzeugId == null || fahrzeugId.isBlank()) {
+      throw new IllegalArgumentException("Fahrzeug-ID darf nicht leer sein.");
+    }
+    if (aktiveWehr == null) {
+      throw new IllegalStateException("Keine aktive Wehr vorhanden.");
+    }
+    String trimmedId = fahrzeugId.trim();
+    aktiveWehr.fahrzeugEntfernen(trimmedId);
+    fahrzeuge.remove(trimmedId);
+    log.info("Fahrzeug mit ID '{}' erfolgreich aus Wehr '{}' entfernt.", trimmedId, aktiveWehr.getName());
+  }
+
+  public void fahrzeugEntfernen(Einsatzfahrzeug fahrzeug) {
+    if (fahrzeug == null) {
+      throw new IllegalArgumentException("Einsatzfahrzeug darf nicht null sein.");
+    }
+    fahrzeugEntfernen(fahrzeug.getId());
+  }
+
+  public void fahrzeugLoeschen(String fahrzeugId) {
+    fahrzeugEntfernen(fahrzeugId);
+  }
+
   public Kamerad kameradHinzufuegen(Kamerad kamerad) {
     if (kamerad == null) {
       throw new IllegalArgumentException("Kamerad darf nicht null sein.");

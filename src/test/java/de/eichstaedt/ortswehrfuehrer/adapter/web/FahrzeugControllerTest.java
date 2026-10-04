@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.eichstaedt.ortswehrfuehrer.application.WehrApplicationService;
@@ -63,6 +64,84 @@ class FahrzeugControllerTest {
   }
 
   @Test
+  @DisplayName("POST /fahrzeuge/loeschen löscht Einsatzfahrzeug und leitet weiter")
+  void testFahrzeugLoeschenErfolgreich() {
+    Einsatzfahrzeug fz = wehrService.fahrzeugHinzufuegen("Florian Loeschen 1/48-1", Fahrzeugtyp.TSF, "TSF Loeschen");
+    assertTrue(wehrService.getFahrzeugeDerAktivenWehr().contains(fz));
+
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("fahrzeugId", fz.getId())
+        .when()
+        .post("/fahrzeuge/loeschen")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?erfolg=fahrzeug_geloescht#fahrzeuge"));
+
+    assertTrue(wehrService.getFahrzeugeDerAktivenWehr().stream().noneMatch(f -> f.getId().equals(fz.getId())));
+  }
+
+  @Test
+  @DisplayName("POST /fahrzeuge/entfernen entfernt Einsatzfahrzeug und leitet weiter")
+  void testFahrzeugEntfernenErfolgreich() {
+    Einsatzfahrzeug fz = wehrService.fahrzeugHinzufuegen("Florian Entfernen 1/48-2", Fahrzeugtyp.TSF, "TSF Entfernen");
+    assertTrue(wehrService.getFahrzeugeDerAktivenWehr().contains(fz));
+
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("fahrzeugId", fz.getId())
+        .when()
+        .post("/fahrzeuge/entfernen")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?erfolg=fahrzeug_geloescht#fahrzeuge"));
+
+    assertTrue(wehrService.getFahrzeugeDerAktivenWehr().stream().noneMatch(f -> f.getId().equals(fz.getId())));
+  }
+
+  @Test
+  @DisplayName("POST /fahrzeuge/loeschen mit leerer ID leitet mit Fehlermeldung weiter")
+  void testFahrzeugLoeschenFehlerLeereId() {
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("fahrzeugId", "")
+        .when()
+        .post("/fahrzeuge/loeschen")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?fehler=fahrzeug_loeschen_fehlgeschlagen#fahrzeuge"));
+  }
+
+  @Test
+  @DisplayName("Direkter Methodenaufruf fahrzeugLoeschen und fahrzeugEntfernen an Controller")
+  void testDirekterMethodenaufrufLoeschen() {
+    WehrApplicationService mockService = new WehrApplicationService();
+    FahrzeugController controller = new FahrzeugController(mockService);
+
+    Einsatzfahrzeug fz = mockService.fahrzeugHinzufuegen("Florian Direct 1/1-1", Fahrzeugtyp.LF10, "LF 10");
+    assertEquals(3, mockService.getFahrzeugeDerAktivenWehr().size());
+
+    try (Response r1 = controller.fahrzeugLoeschen(fz.getId())) {
+      assertEquals(303, r1.getStatus());
+      assertEquals(2, mockService.getFahrzeugeDerAktivenWehr().size());
+    }
+
+    Einsatzfahrzeug fz2 = mockService.fahrzeugHinzufuegen("Florian Direct 1/1-2", Fahrzeugtyp.LF10, "LF 10");
+    try (Response r2 = controller.fahrzeugEntfernen(fz2.getId())) {
+      assertEquals(303, r2.getStatus());
+      assertEquals(2, mockService.getFahrzeugeDerAktivenWehr().size());
+    }
+
+    try (Response r3 = controller.fahrzeugLoeschen("")) {
+      assertEquals(303, r3.getStatus());
+      assertEquals("/?fehler=fahrzeug_loeschen_fehlgeschlagen#fahrzeuge", r3.getLocation().toString());
+    }
+  }
+
+  @Test
   @DisplayName("Default-Konstruktor von FahrzeugController")
   void testDefaultKonstruktor() {
     FahrzeugController defaultResource = new FahrzeugController();
@@ -75,19 +154,19 @@ class FahrzeugControllerTest {
     WehrApplicationService mockService = new WehrApplicationService();
     FahrzeugController resource = new FahrzeugController(mockService);
 
-    Response response = resource.fahrzeugHinzufuegen(
+    try (Response response = resource.fahrzeugHinzufuegen(
         "Florian Test 1/11-1",
         "UNGUELTIGER_TYP",
         ""
-    );
-
-    assertEquals(303, response.getStatus());
+    )) {
+      assertEquals(303, response.getStatus());
+    }
     Optional<Einsatzfahrzeug> testFz = mockService.getFahrzeugeDerAktivenWehr().stream()
         .filter(f -> "Florian Test 1/11-1".equals(f.getKennung()))
         .findFirst();
 
     assertTrue(testFz.isPresent());
-    assertEquals(null, testFz.get().getFahrzeugtyp());
+    assertNull(testFz.get().getFahrzeugtyp());
     assertEquals("Florian Test 1/11-1", testFz.get().getBezeichnung());
   }
 
@@ -97,13 +176,13 @@ class FahrzeugControllerTest {
     WehrApplicationService mockService = new WehrApplicationService();
     FahrzeugController resource = new FahrzeugController(mockService);
 
-    Response response = resource.fahrzeugHinzufuegen(
+    try (Response response = resource.fahrzeugHinzufuegen(
         "Florian Test 1/44-1",
         "LF20",
         ""
-    );
-
-    assertEquals(303, response.getStatus());
+    )) {
+      assertEquals(303, response.getStatus());
+    }
     Optional<Einsatzfahrzeug> lf20 = mockService.getFahrzeugeDerAktivenWehr().stream()
         .filter(f -> "Florian Test 1/44-1".equals(f.getKennung()))
         .findFirst();

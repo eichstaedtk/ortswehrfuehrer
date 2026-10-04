@@ -443,6 +443,71 @@ class WehrTest {
   }
 
   @Test
+  void testEinsatzfahrzeugEntfernenAlias() {
+    Wehr wehr = new Wehr();
+    Einsatzfahrzeug fahrzeug = Einsatzfahrzeug.builder()
+        .id("fz-alias-1")
+        .bezeichnung("TSF")
+        .kennung("Florian 1")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
+        .build();
+
+    wehr.einsatzfahrzeugHinzufuegen(fahrzeug);
+    assertEquals(1, wehr.getFahrzeugIds().size());
+
+    wehr.einsatzfahrzeugEntfernen(fahrzeug);
+    assertTrue(wehr.getFahrzeugIds().isEmpty());
+
+    wehr.einsatzfahrzeugHinzufuegen("fz-alias-2");
+    assertEquals(1, wehr.getFahrzeugIds().size());
+
+    wehr.einsatzfahrzeugEntfernen("fz-alias-2");
+    assertTrue(wehr.getFahrzeugIds().isEmpty());
+  }
+
+  @Test
+  void testUcF02EinsatzfahrzeugLoeschen() {
+    // Gegeben sei eine WehrFactory
+    WehrFactory factory = new WehrFactory();
+
+    // Wenn eine Wehr mit dem Namen "Freiwillige Feuerwehr Göttlin" und dem Gründungsdatum "01.05.1924" über die Factory erzeugt wird
+    LocalDate gruendung = LocalDate.of(1924, 5, 1);
+    Wehr wehr = factory.erzeugeWehr("Freiwillige Feuerwehr Göttlin", gruendung);
+
+    // Dann besitzt die erzeugte Wehr eine gültige UUID als ID
+    assertNotNull(wehr.getId());
+    assertDoesNotThrow(() -> UUID.fromString(wehr.getId()));
+    // Und der Name lautet "Freiwillige Feuerwehr Göttlin"
+    assertEquals("Freiwillige Feuerwehr Göttlin", wehr.getName());
+    // Und das Gründungsdatum ist der 01.05.1924
+    assertEquals(gruendung, wehr.getGruendungsdatum());
+    // Und alle Abteilungen und Kollektionen sind initialisiert
+    assertNotNull(wehr.getJugendabteilung());
+    assertNotNull(wehr.getEinsatzabteilung());
+    assertNotNull(wehr.getAltersUndEhrenabteilung());
+    assertNotNull(wehr.getGebaeude());
+    assertNotNull(wehr.getFahrzeugIds());
+
+    // Die verfügt über ein Fahrzeug vom Typ TSF mit der Kennung HVL/5/47/2.
+    Einsatzfahrzeug tsf = Einsatzfahrzeug.builder()
+        .id("fz-tsf-goettlin")
+        .kennung("HVL/5/47/2")
+        .fahrzeugtyp(Fahrzeugtyp.TSF)
+        .bezeichnung("Tragkraftspritzenfahrzeug")
+        .build();
+    wehr.fahrzeugHinzufuegen(tsf);
+    assertEquals(1, wehr.getFahrzeugIds().size());
+    assertTrue(wehr.getFahrzeugIds().contains(tsf.getId()));
+
+    // Es wird die Funktion Fahrzeug entfernen aufgerufen.
+    wehr.fahrzeugEntfernen(tsf);
+
+    // Nachbedingung: Die Wehr verfügt über keine Fahrzeuge mehr.
+    assertTrue(wehr.getFahrzeugIds().isEmpty());
+    assertTrue(wehr.getFahrzeuge().isEmpty());
+  }
+
+  @Test
   void testSetFahrzeugeUndSetFahrzeugIds() {
     Wehr wehr = new Wehr();
 

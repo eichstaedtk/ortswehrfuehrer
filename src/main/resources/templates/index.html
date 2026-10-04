@@ -20,6 +20,14 @@
 </div>
 {/if}
 
+{#if erfolg == 'fahrzeug_geloescht'}
+<div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+    <strong>Erfolg!</strong> Das Einsatzfahrzeug wurde erfolgreich aus der Wehr entfernt.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
 {#if fehler == 'name_fehlt'}
 <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
     <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
@@ -32,6 +40,14 @@
 <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
     <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
     <strong>Fehler beim Speichern:</strong> Bitte geben Sie eine Funkkennung für das Einsatzfahrzeug an.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+</div>
+{/if}
+
+{#if fehler == 'fahrzeug_loeschen_fehlgeschlagen'}
+<div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+    <strong>Fehler beim Löschen:</strong> Das Einsatzfahrzeug konnte nicht entfernt werden.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
 </div>
 {/if}
@@ -208,16 +224,24 @@
                     {#else}
                         <div class="list-group list-group-flush bg-transparent">
                             {#for fz in fahrzeuge}
-                            <div class="list-group-item bg-transparent px-0">
-                                <div class="fw-semibold text-dark d-flex align-items-center flex-wrap gap-2">
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
-                                        {#if fz.fahrzeugtyp}{fz.fahrzeugtyp}{#else}Typ n. v.{/if}
-                                    </span>
-                                    <span>{fz.kennung}</span>
+                            <div class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-semibold text-dark d-flex align-items-center flex-wrap gap-2">
+                                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">
+                                            {#if fz.fahrzeugtyp}{fz.fahrzeugtyp}{#else}Typ n. v.{/if}
+                                        </span>
+                                        <span>{fz.kennung}</span>
+                                    </div>
+                                    {#if fz.bezeichnung}
+                                    <small class="text-muted d-block mt-1">{fz.bezeichnung}</small>
+                                    {/if}
                                 </div>
-                                {#if fz.bezeichnung}
-                                <small class="text-muted d-block mt-1">{fz.bezeichnung}</small>
-                                {/if}
+                                <form action="/fahrzeuge/loeschen" method="post" class="ms-2">
+                                    <input type="hidden" name="fahrzeugId" value="{fz.id}">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Fahrzeug entfernen">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
                             </div>
                             {/for}
                         </div>
