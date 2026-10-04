@@ -5,19 +5,49 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import de.eichstaedt.ortswehrfuehrer.application.AnmeldungApplicationService;
+import de.eichstaedt.ortswehrfuehrer.domain.Benutzer;
+import de.eichstaedt.ortswehrfuehrer.domain.Rolle;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import jakarta.inject.Inject;
+import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 class IndexControllerTest {
 
+  @Inject
+  AnmeldungApplicationService anmeldungService;
+
+  private String sitzungsId;
+
+  @BeforeEach
+  void setUp() {
+    Benutzer benutzer = new Benutzer("owf", "Ortswehrführer Meier", Set.of(Rolle.ORTSWEHRFUEHRER));
+    sitzungsId = anmeldungService.erstelleSitzung(benutzer);
+  }
+
   @Test
-  @DisplayName("Startseite liefert Status 200 und HTML-Inhalt mit Dashboard-, Fahrzeug- und Kameraden-Elementen")
+  @DisplayName("Unauthentifizierter Zugriff auf Startseite leitet zu /anmeldung um")
+  void testIndexUnauthenticatedRedirect() {
+    given()
+        .redirects().follow(false)
+        .when()
+        .get("/")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/anmeldung"));
+  }
+
+  @Test
+  @DisplayName("Startseite liefert Status 200 und HTML-Inhalt mit Dashboard-, Fahrzeug- und Kameraden-Elementen für authentifizierten Benutzer")
   void testIndexEndpoint() {
     given()
+        .cookie(AnmeldungController.SITZUNG_COOKIE_NAME, sitzungsId)
         .when()
         .get("/")
         .then()
@@ -49,29 +79,31 @@ class IndexControllerTest {
         .body(containsString("name=\"emailAdresse\""))
         .body(containsString("id=\"fahrzeugModal\""))
         .body(containsString("action=\"/fahrzeuge\""))
+        .body(containsString("name=\"bezeichnung\""))
         .body(containsString("name=\"kennung\""))
         .body(containsString("name=\"fahrzeugtyp\""))
-        .body(containsString("name=\"bezeichnung\""))
-        .body(containsString("Fahrzeug hinzufügen"));
+        .body(containsString("Neues Einsatzfahrzeug zur Wehr hinzufügen"));
   }
 
   @Test
   @DisplayName("Startseite zeigt Erfolgsmeldung bei ?erfolg=kamerad_hinzugefuegt")
   void testIndexMitErfolgsmeldungKamerad() {
     given()
+        .cookie(AnmeldungController.SITZUNG_COOKIE_NAME, sitzungsId)
         .queryParam("erfolg", "kamerad_hinzugefuegt")
         .when()
         .get("/")
         .then()
         .statusCode(200)
         .contentType(ContentType.HTML)
-        .body(containsString("erfolgreich aufgenommen"));
+        .body(containsString("Kamerad / die Kameradin wurde erfolgreich aufgenommen"));
   }
 
   @Test
   @DisplayName("Startseite zeigt Erfolgsmeldung bei ?erfolg=fahrzeug_hinzugefuegt")
   void testIndexMitErfolgsmeldungFahrzeug() {
     given()
+        .cookie(AnmeldungController.SITZUNG_COOKIE_NAME, sitzungsId)
         .queryParam("erfolg", "fahrzeug_hinzugefuegt")
         .when()
         .get("/")
@@ -85,6 +117,7 @@ class IndexControllerTest {
   @DisplayName("Startseite zeigt Fehlermeldung bei ?fehler=name_fehlt")
   void testIndexMitFehlermeldungName() {
     given()
+        .cookie(AnmeldungController.SITZUNG_COOKIE_NAME, sitzungsId)
         .queryParam("fehler", "name_fehlt")
         .when()
         .get("/")
@@ -99,6 +132,7 @@ class IndexControllerTest {
   @DisplayName("Startseite zeigt Fehlermeldung bei ?fehler=fahrzeug_kennung_fehlt")
   void testIndexMitFehlermeldungFahrzeugKennung() {
     given()
+        .cookie(AnmeldungController.SITZUNG_COOKIE_NAME, sitzungsId)
         .queryParam("fehler", "fahrzeug_kennung_fehlt")
         .when()
         .get("/")

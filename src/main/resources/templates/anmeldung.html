@@ -1,0 +1,91 @@
+{#include base}
+
+{#title}Ortswehrführer - Anmeldung{/title}
+
+{#content}
+<div class="row justify-content-center my-5">
+    <div class="col-12 col-md-8 col-lg-5">
+        <div class="card shadow border-0">
+            <div class="card-header bg-feuerwehr text-white text-center py-4">
+                <i class="bi bi-shield-lock-fill fs-1 d-block mb-2 text-warning"></i>
+                <h3 class="h4 mb-0 fw-bold">Ortswehrführer Anmeldung</h3>
+                <p class="small text-white-50 mb-0 mt-1">Bitte melden Sie sich an, um fortzufahren</p>
+            </div>
+            <div class="card-body p-4 p-md-5 bg-white">
+
+                <!-- Fehler-Feedback -->
+                {#if fehler}
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+                    {#if fehler == 'ungueltige_anmeldedaten'}
+                        <strong>Anmeldung fehlgeschlagen:</strong> Ungültige Anmeldedaten.
+                    {#else if fehler == 'fehlende_eingabe'}
+                        <strong>Eingabe unvollständig:</strong> Bitte Benutzername und Passwort angeben.
+                    {#else if fehler == 'service_nicht_verfuegbar'}
+                        <strong>Dienst offline:</strong> Authentifizierungsdienst steht aktuell nicht zur Verfügung.
+                    {#else}
+                        <strong>Fehler:</strong> {fehler}
+                    {/if}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+                </div>
+                {/if}
+
+                <!-- Erfolgs-Feedback (z.B. nach Logout) -->
+                {#if erfolg}
+                <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                    {#if erfolg == 'abgemeldet'}
+                        Sie wurden erfolgreich abgemeldet.
+                    {#else}
+                        {erfolg}
+                    {/if}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+                </div>
+                {/if}
+
+                <form id="anmeldeFormular" action="/anmeldung" method="POST">
+                    <div class="mb-3">
+                        <label for="benutzername" class="form-label fw-semibold">
+                            <i class="bi bi-person me-1"></i> Benutzername <span class="text-danger">*</span>
+                        </label>
+                        <input type="text"
+                               class="form-control form-control-lg"
+                               id="benutzername"
+                               name="benutzername"
+                               placeholder="z. B. owf oder kamerad"
+                               required
+                               autofocus>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="passwort" class="form-label fw-semibold">
+                            <i class="bi bi-key me-1"></i> Passwort <span class="text-danger">*</span>
+                        </label>
+                        <input type="password"
+                               class="form-control form-control-lg"
+                               id="passwort"
+                               name="passwort"
+                               placeholder="••••••••"
+                               required>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-between pt-2">
+                        <a href="/anmeldung/abbrechen" id="btnAbbrechen" class="btn btn-outline-secondary btn-lg px-4 order-2 order-md-1">
+                            <i class="bi bi-x-circle me-1"></i> Abbrechen
+                        </a>
+                        <button type="submit" id="btnAnmelden" class="btn btn-feuerwehr btn-lg px-4 order-1 order-md-2">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Anmelden (OK)
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="card-footer bg-light text-center py-3 text-muted small border-top">
+                Unterstützt Rollen: <strong>Ortswehrführer</strong>, <strong>Kamerad</strong>, <strong>Administrator</strong>
+            </div>
+        </div>
+    </div>
+</div>
+{/content}
+
+{/include}
