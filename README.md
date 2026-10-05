@@ -10,9 +10,11 @@ gewährleisten.
 
 ### 1.1 Aufgabenstellung
 
+Die Feuerwehr in Deutschland ist zum einen auf Basis von Berufsfeuerwehren und zum großen Teil auf
+Basis von ehrenamtlichen Feuerwehren organisiert.
 Ziel dieser Anwendung soll es sein, dass ehrenamtliche Feuerwehren einfach und komfortable Ihre
-Ortswehr verwalten können.
-Dazu soll die Anwendung die grundlegenden Funktionen einer Feuerwehrverwaltung bieten. Zu diesen
+Ortswehr verwalten können. Dazu soll die Anwendung die grundlegenden Funktionen einer
+Feuerwehrverwaltung bieten. Zu diesen
 Funktionen gehört es:
 
 * Gründung einer Ortswehr zu unterstützen
@@ -26,11 +28,12 @@ Funktionen gehört es:
 *Priorisierte Übersicht der wichtigsten Qualitätsziele (z. B. Zuverlässigkeit, Wartbarkeit,
 Performance, Usability).*
 
-| Priorität | Qualitätsziel                 | Motivation & Nutzen                                                                 |
-|-----------|-------------------------------|-------------------------------------------------------------------------------------|
-| 1         | Wartbarkeit & Erweiterbarkeit | Saubere DDD-Struktur und ArchUnit-Validierung minimieren künftige Wartungsaufwände. |
-| 2         | Robustheit & Korrektheit      | Fehlerfreie Erfassung und Verwaltung von Wehren, Gebäuden und Kameraden.            |
-| 3         | Performance & Ressourcen      | Schlanke Laufzeit und schnelle Startzeiten durch Quarkus und Java 21.               |
+| Priorität | Qualitätsziel                 | Motivation & Nutzen                                                                                    |
+|-----------|-------------------------------|--------------------------------------------------------------------------------------------------------|
+| 1         | Wartbarkeit & Erweiterbarkeit | Saubere DDD-Struktur und ArchUnit-Validierung minimieren künftige Wartungsaufwände.                    |
+| 2         | Robustheit & Korrektheit      | Fehlerfreie Erfassung und Verwaltung von Wehren, Gebäuden und Kameraden.                               |
+| 3         | Performance & Ressourcen      | Schlanke Laufzeit und schnelle Startzeiten durch Quarkus und Java 21.                                  |
+| 4         | Benutzbarkeit                 | Die Benutzeroberfläche muss den Anforderungen der Barrierefreiheit nach WCAG 2.1 und BITV entsprechen. |
 
 ### 1.3 Stakeholder
 
@@ -149,8 +152,10 @@ Performance, Usability).*
 ### 6.2 Szenario 2: Hinzufügen von Gebäuden, Fahrzeugen und Kameraden
 
 1. Erstellung der Entität `Gebaeude`, `Einsatzfahrzeug` bzw. `Kamerad` mit eindeutiger ID.
-2. Zuweisung über das Aggregate Root (`gebaeudeHinzufuegen`, `fahrzeugHinzufuegen`, `kameradHinzufuegen`).
-3. Automatische Zuordnung von Kameraden zu den Einsatzabteilungen (Jugendabteilung, Einsatzabteilung, Alters- und Ehrenabteilung) basierend auf dem Alter.
+2. Zuweisung über das Aggregate Root (`gebaeudeHinzufuegen`, `fahrzeugHinzufuegen`,
+   `kameradHinzufuegen`).
+3. Automatische Zuordnung von Kameraden zu den Einsatzabteilungen (Jugendabteilung,
+   Einsatzabteilung, Alters- und Ehrenabteilung) basierend auf dem Alter.
 
 ---
 
@@ -186,42 +191,60 @@ Performance, Usability).*
   unerwünschter Seiteneffekte.
 - **Fluent APIs**: Konstruktive Methodenrückgaben zur Erleichterung von Aufrufketten und lesbarem
   Code.
-- **Logging**: SLF4J (`org.slf4j.Logger`) als einheitliche Logging-Facade über alle Anwendungsschichten mit strukturierter Dateiprotokollierung in `logs/ortswehrfuehrer.log` im Projektverzeichnis (Log-Rotation bei 10 MB).
+- **Logging**: SLF4J (`org.slf4j.Logger`) als einheitliche Logging-Facade über alle
+  Anwendungsschichten mit strukturierter Dateiprotokollierung in `logs/ortswehrfuehrer.log` im
+  Projektverzeichnis (Log-Rotation bei 10 MB).
 - **Architekturvalidierung**: Prüfung via ArchUnit in jedem Build-Zyklus (`./mvnw test`).
 
 ---
 
 ## 9. Architekturentscheidungen
 
-| ADR    | Titel                                      | Status     | Begründung & Nutzen                                                                   |
-|--------|--------------------------------------------|------------|---------------------------------------------------------------------------------------|
-| ADR-01 | Einsatz von Quarkus & Java 21              | Angenommen | Hohe Ausführungsgeschwindigkeit, geringer Speicherverbrauch, moderne Sprachmittel.    |
-| ADR-02 | DDD-Modellierung mit jMolecules            | Angenommen | Strukturierte Domänentrennung und automatische Erkennung von Architekturverletzungen. |
-| ADR-03 | Value Objects als Java Records             | Angenommen | Garantierte Unveränderlichkeit, kein Boilerplate-Code, maximale Fehlervermeidung.     |
-| ADR-04 | Aggregate-Referenzierung via ID            | Angenommen | Entkopplung von Aggregate Roots (`Wehr` & `Einsatzfahrzeug`) zur Wahrung von Transaktionsgrenzen nach DDD. |
-| ADR-05 | Web-UI-Architektur (Quarkus Qute & HTMX)   | Angenommen | Server-Side Rendering (SSR) mit typsicheren Templates (`quarkus-qute`), minimalem Ressourcenbedarf, nativer Build-Unterstützung und reaktiver Dynamik via HTMX. |
+| ADR    | Titel                                    | Status     | Begründung & Nutzen                                                                                                                                             |
+|--------|------------------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ADR-01 | Einsatz von Quarkus & Java 21            | Angenommen | Hohe Ausführungsgeschwindigkeit, geringer Speicherverbrauch, moderne Sprachmittel.                                                                              |
+| ADR-02 | DDD-Modellierung mit jMolecules          | Angenommen | Strukturierte Domänentrennung und automatische Erkennung von Architekturverletzungen.                                                                           |
+| ADR-03 | Value Objects als Java Records           | Angenommen | Garantierte Unveränderlichkeit, kein Boilerplate-Code, maximale Fehlervermeidung.                                                                               |
+| ADR-04 | Aggregate-Referenzierung via ID          | Angenommen | Entkopplung von Aggregate Roots (`Wehr` & `Einsatzfahrzeug`) zur Wahrung von Transaktionsgrenzen nach DDD.                                                      |
+| ADR-05 | Web-UI-Architektur (Quarkus Qute & HTMX) | Angenommen | Server-Side Rendering (SSR) mit typsicheren Templates (`quarkus-qute`), minimalem Ressourcenbedarf, nativer Build-Unterstützung und reaktiver Dynamik via HTMX. |
 
 ### 9.1 Detailansicht ADR-05: Auswahl der UI-Technologie
 
 * **Kontext**:
-  Die Anwendung *Ortswehrführer* benötigt eine intuitive, benutzerfreundliche Weboberfläche zur Verwaltung von Wehren, Liegenschaften, Einsatzfahrzeugen und Kameraden. Die Oberfläche muss leichtgewichtig, ressourcenschonend und nahtlos in den Quarkus-Stack sowie die Clean-Architecture-Schichten integrierbar sein.
+  Die Anwendung *Ortswehrführer* benötigt eine intuitive, benutzerfreundliche Weboberfläche zur
+  Verwaltung von Wehren, Liegenschaften, Einsatzfahrzeugen und Kameraden. Die Oberfläche muss
+  leichtgewichtig, ressourcenschonend und nahtlos in den Quarkus-Stack sowie die
+  Clean-Architecture-Schichten integrierbar sein.
 * **Betrachtete Alternativen**:
-  1. *Quarkus Qute + HTMX / TailwindCSS / Bootstrap*: Typsichere Server-Side-Rendering-Engine mit voller Quarkus- und GraalVM-Native-Unterstützung. HTMX ermöglicht moderne Single-Page-App-Interaktivität ohne komplexen JavaScript-Build-Stack (Node/NPM).
-  2. *Single Page Application (SPA, z. B. React / Vue / Angular / Svelte) mit Quarkus REST API*: Hohe Flexibilität und clientseitige Entkopplung, erfordert jedoch zusätzliche Build-Pipelines, Tooling (Node, npm/vite), separates State-Management und doppelten DTO-Synchronisationsaufwand.
-  3. *Vaadin Flow (Java-basierte Komponenten)*: Reine Java-Entwicklung für UI-Komponenten, jedoch höherer Speicherverbrauch und sessionbasierter Server-State, was der Cloud-Native-/Stateless-Ausrichtung von Quarkus entgegensteht.
+    1. *Quarkus Qute + HTMX / TailwindCSS / Bootstrap*: Typsichere Server-Side-Rendering-Engine mit
+       voller Quarkus- und GraalVM-Native-Unterstützung. HTMX ermöglicht moderne
+       Single-Page-App-Interaktivität ohne komplexen JavaScript-Build-Stack (Node/NPM).
+    2. *Single Page Application (SPA, z. B. React / Vue / Angular / Svelte) mit Quarkus REST API*:
+       Hohe Flexibilität und clientseitige Entkopplung, erfordert jedoch zusätzliche
+       Build-Pipelines, Tooling (Node, npm/vite), separates State-Management und doppelten
+       DTO-Synchronisationsaufwand.
+    3. *Vaadin Flow (Java-basierte Komponenten)*: Reine Java-Entwicklung für UI-Komponenten, jedoch
+       höherer Speicherverbrauch und sessionbasierter Server-State, was der
+       Cloud-Native-/Stateless-Ausrichtung von Quarkus entgegensteht.
 * **Entscheidung**:
-  Einsatz von **Quarkus Qute in Kombination mit HTMX und einem schlanken CSS-Framework (z. B. Bootstrap 5 oder TailwindCSS)** als primäre UI-Technologie.
+  Einsatz von **Quarkus Qute in Kombination mit HTMX und einem schlanken CSS-Framework (z. B.
+  Bootstrap 5 oder TailwindCSS)** als primäre UI-Technologie.
 * **Konsequenzen / Nutzen**:
-  - **Zero-Node-Overhead**: Kein separater Frontend-Build-Prozess notwendig; Standard-Maven-Workflow (`./mvnw quarkus:dev`) genügt für Frontend und Backend.
-  - **Typsicherheit**: Qute validiert Templates zur Compile-Zeit (`@CheckedTemplate`), wodurch Template-Laufzeitfehler vermieden werden.
-  - **Performance & Footprint**: Perfekte Unterstützung für Native-Image-Kompilierung mit minimalen Startzeiten und geringem RAM-Verbrauch.
-  - **Schichtenarchitektur**: UI-Controller/Ressourcen nutzen Application Services oder Aggregate direkt über Adapter/View-Models, ohne die Domäne zu verunreinigen.
+    - **Zero-Node-Overhead**: Kein separater Frontend-Build-Prozess notwendig;
+      Standard-Maven-Workflow (`./mvnw quarkus:dev`) genügt für Frontend und Backend.
+    - **Typsicherheit**: Qute validiert Templates zur Compile-Zeit (`@CheckedTemplate`), wodurch
+      Template-Laufzeitfehler vermieden werden.
+    - **Performance & Footprint**: Perfekte Unterstützung für Native-Image-Kompilierung mit
+      minimalen Startzeiten und geringem RAM-Verbrauch.
+    - **Schichtenarchitektur**: UI-Controller/Ressourcen nutzen Application Services oder Aggregate
+      direkt über Adapter/View-Models, ohne die Domäne zu verunreinigen.
 
 ---
 
 ## 10. Qualitätsanforderungen
 
-*Konkrete Szenarien zur Bewertung der Qualitätsziele aus Kapitel 1.2 sowie aktuelle Qualitätsmetriken.*
+*Konkrete Szenarien zur Bewertung der Qualitätsziele aus Kapitel 1.2 sowie aktuelle
+Qualitätsmetriken.*
 
 ### 10.1 Aktuelle Testabdeckung & Metriken
 
@@ -229,16 +252,17 @@ Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`
 
 - **Gesamtergebnis Tests**: 123 Tests (100 % erfolgreich, 0 Fehler, 0 Fehlschläge)
 - **Zeilenabdeckung (Line Coverage)**: **95,98 %** (644 von 671 Zeilen abgedeckt)
-- **Instruktionsabdeckung (Instruction Coverage)**: **95,91 %** (2.742 von 2.859 Instruktionen abgedeckt)
+- **Instruktionsabdeckung (Instruction Coverage)**: **95,91 %** (2.742 von 2.859 Instruktionen
+  abgedeckt)
 - **Methodenabdeckung (Method Coverage)**: **96,96 %** (223 von 230 Methoden abgedeckt)
 - **Zweigabdeckung (Branch Coverage)**: **73,41 %** (185 von 252 Branches abgedeckt)
 
 ### 10.2 Qualitätsszenarien
 
-| ID  | Qualitätsmerkmal | Szenario                              | Erwartete Reaktion                        |
-|-----|------------------|---------------------------------------|-------------------------------------------|
-| Q-1 | Wartbarkeit      | Verletzung von DDD-Regeln im Code     | Build schlägt in `ArchitectureTest` fehl. |
-| Q-2 | Robustheit       | Wehr-Erstellung mit ungültigen Werten | Saubere Fehlerbehandlung / Validierung.   |
+| ID  | Qualitätsmerkmal | Szenario                                 | Erwartete Reaktion                                                     |
+|-----|------------------|------------------------------------------|------------------------------------------------------------------------|
+| Q-1 | Wartbarkeit      | Verletzung von DDD-Regeln im Code        | Build schlägt in `ArchitectureTest` fehl.                              |
+| Q-2 | Robustheit       | Wehr-Erstellung mit ungültigen Werten    | Saubere Fehlerbehandlung / Validierung.                                |
 | Q-3 | Testabdeckung    | Ausführung der Testsuite (`./mvnw test`) | Automatische Erstellung des JaCoCo-Reports mit > 90 % Zeilenabdeckung. |
 
 ---
@@ -254,16 +278,16 @@ Die Testabdeckung wird automatisiert über JaCoCo bei jedem Build (`./mvnw test`
 
 ## 12. Glossar
 
-| Begriff            | Definition                                                                                                           |
-|--------------------|----------------------------------------------------------------------------------------------------------------------|
-| **Wehr**           | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden, Fahrzeug-IDs und Kameraden.  |
-| **WehrFactory**    | GoF Factory (`@Factory`) zur Erzeugung, Rekonstruktion und Standardinitialisierung von `Wehr`-Aggregaten.           |
-| **Einsatzfahrzeug**| Aggregate Root, repräsentiert ein Feuerwehr-Fahrzeug mit ID, Bezeichnung, Kennung und DIN-14530-Attributen.         |
-| **Gebäude**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                               |
-| **Kamerad**        | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                                         |
-| **Abteilung**      | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Einsatzabteilungen (Jugend, Einsatz, Ehren).                  |
-| **Fahrzeugtyp**    | Enum der genormten Feuerwehrfahrzeugtypen nach DIN 14530 (z. B. KLF, TSF, TSF-W, MLF, LF 10, HLF 10, LF 20, TLF).   |
-| **Adresse**        | Value Object (Java Record) bestehend aus Straße, Hausnummer, PLZ und Ort.                                            |
-| **Abmessungen**    | Value Object (Java Record) für maximale Fahrzeugabmessungen (Länge × Breite × Höhe in Metern).                      |
-| **jMolecules**     | Bibliothek zur expliziten Annotation von DDD-Konzepten im Quellcode.                                                 |
-| **ArchUnit**       | Testwerkzeug zur automatisierten Absicherung von Architektur- und Designregeln.                                      |
+| Begriff             | Definition                                                                                                           |
+|---------------------|----------------------------------------------------------------------------------------------------------------------|
+| **Wehr**            | Aggregate Root, repräsentiert eine Feuerwehr-Einheit mit Name, Gründungsdatum, Gebäuden, Fahrzeug-IDs und Kameraden. |
+| **WehrFactory**     | GoF Factory (`@Factory`) zur Erzeugung, Rekonstruktion und Standardinitialisierung von `Wehr`-Aggregaten.            |
+| **Einsatzfahrzeug** | Aggregate Root, repräsentiert ein Feuerwehr-Fahrzeug mit ID, Bezeichnung, Kennung und DIN-14530-Attributen.          |
+| **Gebäude**         | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Liegenschaften.                                               |
+| **Kamerad**         | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Feuerwehrmitgliedern.                                         |
+| **Abteilung**       | Entity innerhalb des Wehr-Aggregats zur Verwaltung von Einsatzabteilungen (Jugend, Einsatz, Ehren).                  |
+| **Fahrzeugtyp**     | Enum der genormten Feuerwehrfahrzeugtypen nach DIN 14530 (z. B. KLF, TSF, TSF-W, MLF, LF 10, HLF 10, LF 20, TLF).    |
+| **Adresse**         | Value Object (Java Record) bestehend aus Straße, Hausnummer, PLZ und Ort.                                            |
+| **Abmessungen**     | Value Object (Java Record) für maximale Fahrzeugabmessungen (Länge × Breite × Höhe in Metern).                       |
+| **jMolecules**      | Bibliothek zur expliziten Annotation von DDD-Konzepten im Quellcode.                                                 |
+| **ArchUnit**        | Testwerkzeug zur automatisierten Absicherung von Architektur- und Designregeln.                                      |

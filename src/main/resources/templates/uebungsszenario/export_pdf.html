@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÜBUNG - {szenario.titel} - Feuerwehr-Übungsunterlage</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .uebung-header-banner {
+            background: repeating-linear-gradient(
+                45deg,
+                #d32f2f,
+                #d32f2f 15px,
+                #b71c1c 15px,
+                #b71c1c 30px
+            );
+            color: white;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-align: center;
+            padding: 10px 0;
+            text-transform: uppercase;
+        }
+        .watermark {
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-35deg);
+            font-size: 8rem;
+            font-weight: 900;
+            color: rgba(211, 47, 47, 0.08);
+            pointer-events: none;
+            z-index: 1000;
+            text-transform: uppercase;
+            letter-spacing: 1.5rem;
+            user-select: none;
+        }
+        .trupp-karte {
+            border: 2px dashed #6c757d;
+            border-radius: 8px;
+            padding: 16px;
+            background-color: white;
+            page-break-inside: avoid;
+        }
+        @media print {
+            body {
+                background-color: white !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .card {
+                border: 1px solid #dee2e6 !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="p-0">
+
+    <div class="watermark">ÜBUNG</div>
+
+    <!-- Top Watermark Header -->
+    <div class="uebung-header-banner">
+        ⚠️ ÜBUNG – NUR ZU AUSBILDUNGSZWECKEN – KEIN ECHTEINSATZ ⚠️
+    </div>
+
+    <!-- Print Navigation Bar -->
+    <div class="container my-3 no-print">
+        <div class="d-flex justify-content-between align-items-center p-3 bg-white border rounded shadow-sm">
+            <div>
+                <a href="/uebungen/{szenario.id}" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left me-1"></i> Zurück zum Szenario
+                </a>
+            </div>
+            <div class="d-flex gap-2">
+                <button onclick="window.print()" class="btn btn-danger shadow-sm">
+                    <i class="bi bi-printer me-1"></i> Als PDF drucken / speichern
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Exercise Document -->
+    <main class="container my-4 bg-white p-5 border shadow-sm">
+        <!-- Document Title -->
+        <div class="border-bottom pb-4 mb-4">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <span class="badge bg-danger mb-2 font-monospace fs-6">FEUERWEHR-ÜBUNGSDIENST (FwDV 3 / FwDV 2)</span>
+                    <h1 class="display-6 fw-bold text-dark mb-1">{szenario.titel}</h1>
+                    <div class="text-danger fw-bold fs-5">Alarmstichwort: {szenario.alarmstichwort}</div>
+                </div>
+                <div class="text-end small text-muted">
+                    <div><strong>Status:</strong> {szenario.status.bezeichnung}</div>
+                    <div><strong>Erstellt von:</strong> {szenario.ersteller}</div>
+                    <div><strong>Gliederung:</strong> {szenario.taktischeEinheit.bezeichnung} ({szenario.taktischeEinheit.staerke})</div>
+                    <div><strong>Dauer:</strong> {szenario.parameter.dauerMinuten} Minuten</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Lageübersicht -->
+        <section class="mb-5">
+            <h2 class="h5 fw-bold text-danger border-bottom pb-2">1. Ausgangs- & Schadenslage</h2>
+            <div class="p-3 bg-light rounded border mb-3">
+                <strong>Ersteintreffende Lage:</strong>
+                <p class="mb-0 mt-1">{szenario.ausgangslage}</p>
+            </div>
+            {#if szenario.schadenslage}
+            <div class="p-3 bg-light rounded border">
+                <strong>Schadensbild & Gefahren:</strong>
+                <p class="mb-0 mt-1">{szenario.schadenslage}</p>
+            </div>
+            {/if}
+        </section>
+
+        <!-- Section 2: FwDV 3 Einsatzbefehle -->
+        <section class="mb-5">
+            <h2 class="h5 fw-bold text-danger border-bottom pb-2">2. Einsatzaufträge nach FwDV 3 (Einheit, Auftrag, Mittel, Ziel, Weg)</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 20%;">Einheit</th>
+                            <th style="width: 80%;">FwDV-3-Befehl & Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#for a in szenario.einsatzauftraege}
+                        <tr>
+                            <td class="fw-bold text-danger">{a.einheit}</td>
+                            <td>
+                                <div class="fw-bold font-monospace text-dark mb-1">"{a.formatiereBefehl}"</div>
+                                <div class="small text-muted">
+                                    Auftrag: {a.auftrag} | Mittel: {a.mittel} | Ziel: {a.ziel} | Weg: {a.weg}
+                                </div>
+                            </td>
+                        </tr>
+                        {/for}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 3: Dynamische Lageentwicklung -->
+        <section class="mb-5">
+            <h2 class="h5 fw-bold text-danger border-bottom pb-2">3. Zeitgesteuerte Lageentwicklung (Einspielungen für Übungsleiter)</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 15%;">Zeitpunkt</th>
+                            <th style="width: 45%;">Einspielung / Ereignis</th>
+                            <th style="width: 40%;">Erwartete Reaktion der Mannschaft</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#for l in szenario.lageentwicklungen}
+                        <tr>
+                            <td class="fw-bold text-danger">+{l.nachMinuten} min</td>
+                            <td>{l.ereignis}</td>
+                            <td class="text-secondary small">{l.erwarteteMassnahme}</td>
+                        </tr>
+                        {/for}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 4: UVV & Sicherheitsregeln -->
+        <section class="mb-5">
+            <h2 class="h5 fw-bold text-danger border-bottom pb-2">4. Sicherheitsregeln & UVV (DGUV Vorschrift 49 / FwDV 7)</h2>
+            <div class="row g-3">
+                {#for s in szenario.sicherheitshinweise}
+                <div class="col-md-6">
+                    <div class="p-3 border rounded bg-light h-100">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="fw-bold text-dark">{s.kategorie}</span>
+                            <span class="badge bg-secondary font-monospace">{s.vorschrift}</span>
+                        </div>
+                        <div class="small text-danger fw-semibold">{s.hinweisText}</div>
+                    </div>
+                </div>
+                {/for}
+            </div>
+        </section>
+
+        <!-- Section 5: Bewertungskriterien -->
+        <section class="mb-5">
+            <h2 class="h5 fw-bold text-danger border-bottom pb-2">5. Beobachtungs- & Bewertungskriterien</h2>
+            <ul class="list-group">
+                {#for b in szenario.bewertungspunkte}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{b.kategorie}:</strong> {b.kriterien}
+                    </div>
+                    <span class="badge bg-danger rounded-pill">{b.punkte} Punkte</span>
+                </li>
+                {/for}
+            </ul>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- Section 6: Rollen- & Truppkarten -->
+        <section class="mt-5">
+            <div class="uebung-header-banner mb-4">
+                ✂️ ROLLENKARTEN FÜR TRUPPS & MASCHINIST (ZUM AUSSCHNEIDEN) ✂️
+            </div>
+            
+            <div class="row g-4">
+                {#for a in szenario.einsatzauftraege}
+                <div class="col-md-6">
+                    <div class="trupp-karte shadow-sm h-100">
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                            <h3 class="h6 fw-bold text-danger mb-0 text-uppercase">
+                                <i class="bi bi-person-badge me-1"></i> {a.einheit}
+                            </h3>
+                            <span class="badge bg-dark font-monospace">ÜBUNG</span>
+                        </div>
+                        <div class="p-2 bg-light rounded border font-monospace small mb-3">
+                            <strong>Einsatzbefehl:</strong><br>"{a.formatiereBefehl}"
+                        </div>
+                        <div class="small text-muted mb-2">
+                            <div><strong>Auftrag:</strong> {a.auftrag}</div>
+                            <div><strong>Mittel:</strong> {a.mittel}</div>
+                            <div><strong>Ziel:</strong> {a.ziel}</div>
+                            <div><strong>Weg:</strong> {a.weg}</div>
+                        </div>
+                        <div class="border-top pt-2 mt-2 small text-danger">
+                            <i class="bi bi-shield-exclamation me-1"></i> Eigensicherung & UVV beachten!
+                        </div>
+                    </div>
+                </div>
+                {/for}
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Watermark Footer -->
+    <div class="uebung-header-banner mt-5">
+        ⚠️ ÜBUNG – NUR ZU AUSBILDUNGSZWECKEN – KEIN ECHTEINSATZ ⚠️
+    </div>
+
+</body>
+</html>

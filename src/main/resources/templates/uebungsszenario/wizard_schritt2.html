@@ -1,0 +1,161 @@
+{#include base}
+{#title}Übungsszenario - Schritt 2: Besetzung & Qualifikationen{/title}
+
+{#content}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="/uebungen">Übungsdienst</a></li>
+        <li class="breadcrumb-item"><a href="/uebungen/{szenario.id}">Szenario</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Schritt 2: Besetzung</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-feuerwehr text-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="h5 mb-0 fw-bold">
+                        <i class="bi bi-2-circle-fill me-2" aria-hidden="true"></i> Schritt 2: Besetzungsmatrix nach FwDV 3
+                    </h1>
+                    <span class="badge bg-white text-dark">Schritt 2 von 3</span>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form action="/uebungen/{szenario.id}/besetzung" method="POST" id="besetzungsForm">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fw-bold text-dark">
+                            Gliederung: <span class="badge bg-secondary">{szenario.taktischeEinheit.bezeichnung} ({szenario.taktischeEinheit.staerke})</span>
+                        </span>
+                        <span class="small text-muted">
+                            Art: <strong>{szenario.art.bezeichnung}</strong>
+                        </span>
+                    </div>
+
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered align-middle mb-0" aria-label="Besetzungsmatrix">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col" style="width: 30%;">Taktische Funktion</th>
+                                    <th scope="col" style="width: 45%;">Kamerad zuweisen</th>
+                                    <th scope="col" style="width: 25%;">Erforderliche Qualifikation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {#for f in szenario.taktischeEinheit.erforderlicheFunktionen}
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold text-dark">{f.bezeichnung}</div>
+                                        <span class="badge bg-light text-secondary border font-monospace">{f.kuerzel}</span>
+                                        {#if f.fuehrungsfunktion}
+                                        <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">Führung</span>
+                                        {/if}
+                                        {#if f.istAtemschutzRelevant}
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle">AGT</span>
+                                        {/if}
+                                        <input type="hidden" name="funktionen" value="{f.name}">
+                                    </td>
+                                    <td>
+                                        <select class="form-select form-select-sm" name="kameradIds">
+                                            <option value="">-- Nicht besetzt / Offen --</option>
+                                            {#for k in verfuegbareKameraden}
+                                            <option value="{k.id}">
+                                                {k.vorname} {k.nachname}
+                                                {#if !k.ausbildungen.isEmpty}
+                                                ({#for a in k.ausbildungen}{a.bezeichnung}{#if !a_hasNext}, {/if}{/for})
+                                                {/if}
+                                            </option>
+                                            {/for}
+                                        </select>
+                                    </td>
+                                    <td class="small text-muted">
+                                        {#if f.name == "EINHEITSFUEHRER"}
+                                        <span class="text-primary fw-semibold">Gruppenführer / Truppführer</span>
+                                        {#else if f.name == "MASCHINIST"}
+                                        <span class="text-primary fw-semibold">Maschinist</span>
+                                        {#else if f.istAtemschutzRelevant}
+                                        <span class="text-danger fw-semibold">Atemschutzgeräteträger</span>
+                                        {#else}
+                                        <span>Truppmann Teil 1/2</span>
+                                        {/if}
+                                    </td>
+                                </tr>
+                                {/for}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <a href="/uebungen/neu" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Zurück zu Schritt 1
+                        </a>
+                        <button type="submit" class="btn btn-feuerwehr px-4 shadow-sm" id="btnWeiterSchritt3">
+                            Weiter zu Schritt 3: Parameter <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Guardrail Status Box -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 sticky-top" style="top: 2rem;">
+            <div class="card-header bg-dark text-white py-3">
+                <h2 class="h6 mb-0 fw-bold d-flex align-items-center">
+                    <i class="bi bi-shield-check text-warning me-2" aria-hidden="true"></i> Taktische Guardrail-Prüfung
+                </h2>
+            </div>
+            <div class="card-body p-3">
+                {#if bericht??}
+                    {#if bericht.hatFehler}
+                    <div class="alert alert-danger py-2 px-3 small mb-3">
+                        <div class="fw-bold mb-1"><i class="bi bi-x-circle-fill me-1" aria-hidden="true"></i> Ausschlusskriterien (Fehler):</div>
+                        <ul class="mb-0 ps-3">
+                            {#for err in bericht.fehler}
+                            <li>{err}</li>
+                            {/for}
+                        </ul>
+                    </div>
+                    {/if}
+
+                    {#if bericht.hatWarnungen}
+                    <div class="alert alert-warning py-2 px-3 small mb-3">
+                        <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1" aria-hidden="true"></i> Taktische Hinweise & Warnungen:</div>
+                        <ul class="mb-0 ps-3">
+                            {#for w in bericht.warnungen}
+                            <li>{w}</li>
+                            {/for}
+                        </ul>
+                    </div>
+                    {/if}
+
+                    {#if bericht.hatEmpfehlungen}
+                    <div class="alert alert-info py-2 px-3 small mb-0">
+                        <div class="fw-bold mb-1"><i class="bi bi-lightbulb-fill me-1" aria-hidden="true"></i> Empfehlungen für den Übungsleiter:</div>
+                        <ul class="mb-0 ps-3">
+                            {#for emp in bericht.empfehlungen}
+                            <li>{emp}</li>
+                            {/for}
+                        </ul>
+                    </div>
+                    {/if}
+
+                    {#if !bericht.hatFehler && !bericht.hatWarnungen && !bericht.hatEmpfehlungen}
+                    <div class="text-center py-4 text-success">
+                        <i class="bi bi-check-circle-fill fs-2 d-block mb-2" aria-hidden="true"></i>
+                        <span class="fw-bold d-block">Besetzung vollständig & vorschriftenkonform</span>
+                        <span class="text-muted small">Alle Qualifikationen nach FwDV 2 und FwDV 3 erfüllt.</span>
+                    </div>
+                    {/if}
+                {#else}
+                <div class="text-muted small text-center py-3">
+                    Weisen Sie Kameraden den Positionen zu, um die Qualifikationsprüfung auszulösen.
+                </div>
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>
+{/content}
+{/include}

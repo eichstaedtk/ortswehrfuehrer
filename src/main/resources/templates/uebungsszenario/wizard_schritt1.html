@@ -1,0 +1,117 @@
+{#include base}
+{#title}Neues Übungsszenario - Schritt 1: Art & Fahrzeuge{/title}
+
+{#content}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="/uebungen">Übungsdienst</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Schritt 1: Art & Fahrzeuge</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-feuerwehr text-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="h5 mb-0 fw-bold">
+                        <i class="bi bi-1-circle-fill me-2" aria-hidden="true"></i> Schritt 1: Übungsart & Fahrzeugauswahl
+                    </h1>
+                    <span class="badge bg-white text-dark">Schritt 1 von 3</span>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form action="/uebungen/start" method="POST" id="wizardSchritt1Form">
+                    <!-- Übungsart -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-dark d-block">1. Übungsart auswählen <span class="text-danger">*</span></label>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-check card p-3 h-100 border cursor-pointer">
+                                    <input class="form-check-input" type="radio" name="art" id="artLoesch" value="LOESCHUEBUNG" checked>
+                                    <label class="form-check-label ms-2 cursor-pointer" for="artLoesch">
+                                        <span class="d-flex align-items-center gap-2 fw-bold text-danger mb-1">
+                                            <i class="bi bi-fire fs-5" aria-hidden="true"></i> Löschübung (Brandbekämpfung)
+                                        </span>
+                                        <span class="text-muted small d-block">
+                                            Löschangriff nach FwDV 3, Innen-/Außenangriff, Wasserförderung und Atemschutzeinsatz nach FwDV 7.
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check card p-3 h-100 border cursor-pointer">
+                                    <input class="form-check-input" type="radio" name="art" id="artTh" value="TECHNISCHE_HILFELEISTUNG">
+                                    <label class="form-check-label ms-2 cursor-pointer" for="artTh">
+                                        <span class="d-flex align-items-center gap-2 fw-bold text-primary mb-1">
+                                            <i class="bi bi-tools fs-5" aria-hidden="true"></i> Technische Hilfeleistung (TH)
+                                        </span>
+                                        <span class="text-muted small d-block">
+                                            Verkehrsunfall mit Menschenrettung (FwDV 3), Schneid-/Spreizgeräte, Sturmschäden und Ausleuchtung.
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fahrzeugauswahl -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-dark d-block">2. Verfügbare Einsatzfahrzeuge auswählen <span class="text-danger">*</span></label>
+                        <p class="text-muted small mb-2">Wählen Sie die für die Übung bereitstehenden Fahrzeuge aus dem Bestand der Wehr.</p>
+                        
+                        {#if verfuegbareFahrzeuge.isEmpty}
+                        <div class="alert alert-warning mb-0 small">
+                            <i class="bi bi-exclamation-triangle me-1" aria-hidden="true"></i> Keine Fahrzeuge hinterlegt. Bitte legen Sie zuerst Einsatzfahrzeuge an.
+                        </div>
+                        {#else}
+                        <div class="list-group">
+                            {#for f in verfuegbareFahrzeuge}
+                            <label class="list-group-item d-flex justify-content-between align-items-center gap-3 py-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <input class="form-check-input flex-shrink-0" type="checkbox" name="fahrzeugIds" value="{f.id}" checked>
+                                    <div>
+                                        <div class="fw-bold text-dark">{f.bezeichnung} <span class="text-muted font-monospace small">({f.kennung})</span></div>
+                                        <div class="text-muted small">
+                                            {#if f.fahrzeugtyp}
+                                            <span class="badge bg-light text-dark border me-1">{f.fahrzeugtyp.name}</span>
+                                            Norm: {f.dinNorm} | Besatzung: {f.besatzung} | Wasser: {f.loeschwasser}
+                                            {#else}
+                                            <span class="badge bg-light text-secondary border">Fahrzeugtyp nicht spezifiziert</span>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-secondary-subtle text-secondary border">Aktiv</span>
+                            </label>
+                            {/for}
+                        </div>
+                        {/if}
+                    </div>
+
+                    <!-- Taktische Einheit -->
+                    <div class="mb-4">
+                        <label for="taktischeEinheit" class="form-label fw-bold text-dark">3. Taktische Gliederung / Sollstärke nach FwDV 3</label>
+                        <select class="form-select" id="taktischeEinheit" name="taktischeEinheit">
+                            <option value="GRUPPE" selected>Gruppe (1/8/9 - 9 Einsatzkräfte)</option>
+                            <option value="STAFFEL">Staffel (1/5/6 - 6 Einsatzkräfte)</option>
+                            <option value="SELBSTSTAENDIGER_TRUPP">Selbstständiger Trupp (0/1/2/3 - 3 Einsatzkräfte)</option>
+                        </select>
+                        <div class="form-text small">Wird standardmäßig anhand des Fahrzeugtyps ermittelt, kann bei Personalmangel angepasst werden.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <a href="/uebungen" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-lg me-1" aria-hidden="true"></i> Abbrechen
+                        </a>
+                        <button type="submit" class="btn btn-feuerwehr px-4 shadow-sm" id="btnWeiterSchritt2">
+                            Weiter zu Schritt 2: Besetzung <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/content}
+{/include}

@@ -1,0 +1,77 @@
+{#include base}
+{#title}Übungsszenario - Schritt 3: Rahmenparameter{/title}
+
+{#content}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="/uebungen">Übungsdienst</a></li>
+        <li class="breadcrumb-item"><a href="/uebungen/{szenario.id}">Szenario</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Schritt 3: Rahmenparameter</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-feuerwehr text-white py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="h5 mb-0 fw-bold">
+                        <i class="bi bi-3-circle-fill me-2" aria-hidden="true"></i> Schritt 3: Rahmenparameter & Lernziele
+                    </h1>
+                    <span class="badge bg-white text-dark">Schritt 3 von 3</span>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form action="/uebungen/{szenario.id}/parameter" method="POST" id="parameterForm">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="dauerMinuten" class="form-label fw-bold text-dark">Geplante Übungsdauer (Minuten)</label>
+                            <input type="number" class="form-control" id="dauerMinuten" name="dauerMinuten" value="{szenario.parameter.dauerMinuten}" min="30" max="240" step="15" required>
+                            <div class="form-text small">Reguläre Ausbildungsdienst-Dauer (z. B. 90 Minuten).</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="schwierigkeit" class="form-label fw-bold text-dark">Schwierigkeitsgrad</label>
+                            <select class="form-select" id="schwierigkeit" name="schwierigkeit">
+                                <option value="LEICHT" {#if szenario.parameter.schwierigkeit.name == "LEICHT"}selected{/if}>Leicht (Standardabläufe & Grundlagen)</option>
+                                <option value="MITTEL" {#if szenario.parameter.schwierigkeit.name == "MITTEL"}selected{/if}>Mittel (Erweiterte Lage mit Hindernissen)</option>
+                                <option value="ANSPRUCHSVOLL" {#if szenario.parameter.schwierigkeit.name == "ANSPRUCHSVOLL"}selected{/if}>Anspruchsvoll (Komplexe Lage & Dynamik)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="tageszeit" class="form-label fw-bold text-dark">Tageszeit / Lichtverhältnisse</label>
+                            <select class="form-select" id="tageszeit" name="tageszeit">
+                                <option value="TAG" {#if szenario.parameter.tageszeit.name == "TAG"}selected{/if}>Tag / Tageslicht</option>
+                                <option value="DAEMMERUNG" {#if szenario.parameter.tageszeit.name == "DAEMMERUNG"}selected{/if}>Dämmerung / Eingeschränkte Sicht</option>
+                                <option value="NACHT" {#if szenario.parameter.tageszeit.name == "NACHT"}selected{/if}>Nacht (Ausleuchtung zwingend erforderlich)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ortObjekt" class="form-label fw-bold text-dark">Übungsobjekt / Örtlichkeit</label>
+                            <input type="text" class="form-control" id="ortObjekt" name="ortObjekt" value="{szenario.parameter.ortObjekt}" placeholder="z. B. Gerätehaus Göttlin, Dorfstraße 12">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="lernziele" class="form-label fw-bold text-dark">Ausbildungsschwerpunkte & Lernziele (kommagetrennt)</label>
+                        <textarea class="form-control" id="lernziele" name="lernziele" rows="3" placeholder="z. B. FwDV-3-Befehlsschema, Atemschutzüberwachung FwDV 7, Riegelstellung, Funkdisziplin">{#for l in szenario.parameter.lernziele}{l}{#if !l_hasNext}, {/if}{/for}</textarea>
+                        <div class="form-text small">Spezifische Lernziele werden in den Bewertungskriterien des Übungsleiters berücksichtigt.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <a href="/uebungen/{szenario.id}/besetzung" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Zurück zu Schritt 2
+                        </a>
+                        <button type="submit" class="btn btn-feuerwehr px-4 shadow-sm" id="btnGenerieren">
+                            <i class="bi bi-magic me-1" aria-hidden="true"></i> Übungsszenario jetzt generieren
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/content}
+{/include}
