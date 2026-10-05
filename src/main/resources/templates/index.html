@@ -515,6 +515,7 @@
                             <tr>
                                 <th scope="col" class="ps-3">Name</th>
                                 <th scope="col">Einsatzabteilung</th>
+                                <th scope="col">Ausbildungen (FwDV 2)</th>
                                 <th scope="col">Alter / Geburtsdatum</th>
                                 <th scope="col">Wohnadresse</th>
                                 <th scope="col">Kontaktdaten</th>
@@ -554,6 +555,33 @@
                                             <span class="badge bg-light text-dark border">
                                         Mitglied
                                     </span>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        {#if k.ausbildungen && !k.ausbildungen.isEmpty}
+                                            <div class="d-flex flex-wrap gap-1" style="max-width: 280px;">
+                                                {#for a in k.ausbildungen}
+                                                    {#if a.kategorie.name == 'TRUPPAUSBILDUNG'}
+                                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle" title="{a.bezeichnung} ({a.fwdv2}, {a.mindeststunden} Std.)">
+                                                            {a.ziffer} {a.bezeichnung}
+                                                        </span>
+                                                    {#else if a.kategorie.name == 'TECHNISCHE_AUSBILDUNG'}
+                                                        <span class="badge bg-warning-subtle text-dark border border-warning-subtle" title="{a.bezeichnung} ({a.fwdv2}, {a.mindeststunden} Std.)">
+                                                            {a.ziffer} {a.bezeichnung}
+                                                        </span>
+                                                    {#else if a.kategorie.name == 'FUEHRUNGSAUSBILDUNG'}
+                                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle" title="{a.bezeichnung} ({a.fwdv2}, {a.mindeststunden} Std.)">
+                                                            {a.ziffer} {a.bezeichnung}
+                                                        </span>
+                                                    {#else}
+                                                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle" title="{a.bezeichnung} ({a.fwdv2})">
+                                                            {a.ziffer} {a.bezeichnung}
+                                                        </span>
+                                                    {/if}
+                                                {/for}
+                                            </div>
+                                        {#else}
+                                            <span class="text-muted small">–</span>
                                         {/if}
                                     </td>
                                     <td>
@@ -739,6 +767,214 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <h6 class="fw-bold text-secondary mb-3 mt-4 border-bottom pb-2">
+                                                <i class="bi bi-mortarboard-fill me-1 text-warning"></i>
+                                                4. Ausbildungen & Qualifikationen (FwDV 2)
+                                            </h6>
+                                            <div class="mb-2">
+                                                <p class="text-muted small mb-3">Wählen Sie die absolvierten Ausbildungen und Lehrgänge des Kameraden gemäß Feuerwehr-Dienstvorschrift 2 (FwDV 2) aus:</p>
+
+                                                <!-- Truppausbildung -->
+                                                <div class="card mb-3 border-primary-subtle bg-light-subtle">
+                                                    <div class="card-header bg-primary-subtle py-2">
+                                                        <strong class="text-primary small"><i class="bi bi-people-fill me-1"></i> Truppausbildung (FwDV 2 Ziffer 2)</strong>
+                                                    </div>
+                                                    <div class="card-body py-2">
+                                                        <div class="row g-2">
+                                                            <div class="col-md-12">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="TRUPPMANN_TEIL_1" id="edit_ausb_tm1_{k.id}" {#if k.hatAusbildung('TRUPPMANN_TEIL_1')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_tm1_{k.id}">
+                                                                        <strong>2.1.1</strong> Truppmann Teil 1 (Grundausbildungslehrgang) <span class="text-muted">(70 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="TRUPPMANN_TEIL_2" id="edit_ausb_tm2_{k.id}" {#if k.hatAusbildung('TRUPPMANN_TEIL_2')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_tm2_{k.id}">
+                                                                        <strong>2.1.2</strong> Truppmann Teil 2 <span class="text-muted">(80 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="TRUPPFUEHRER" id="edit_ausb_tf_{k.id}" {#if k.hatAusbildung('TRUPPFUEHRER')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_tf_{k.id}">
+                                                                        <strong>2.2</strong> Truppführer <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Technische Ausbildung -->
+                                                <div class="card mb-3 border-warning-subtle bg-light-subtle">
+                                                    <div class="card-header bg-warning-subtle py-2">
+                                                        <strong class="text-dark small"><i class="bi bi-tools me-1"></i> Technische Ausbildung (FwDV 2 Ziffer 3)</strong>
+                                                    </div>
+                                                    <div class="card-body py-2">
+                                                        <div class="row g-2">
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="SPRECHFUNKER" id="edit_ausb_funk_{k.id}" {#if k.hatAusbildung('SPRECHFUNKER')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_funk_{k.id}">
+                                                                        <strong>3.1</strong> Sprechfunker <span class="text-muted">(16 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ATEMSCHUTZGERAETETRAEGER" id="edit_ausb_agt_{k.id}" {#if k.hatAusbildung('ATEMSCHUTZGERAETETRAEGER')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_agt_{k.id}">
+                                                                        <strong>3.2</strong> Atemschutzgeräteträger <span class="text-muted">(25 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="MASCHINIST" id="edit_ausb_masch_{k.id}" {#if k.hatAusbildung('MASCHINIST')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_masch_{k.id}">
+                                                                        <strong>3.3</strong> Maschinist <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="TECHNISCHE_HILFELEISTUNG" id="edit_ausb_th_{k.id}" {#if k.hatAusbildung('TECHNISCHE_HILFELEISTUNG')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_th_{k.id}">
+                                                                        <strong>3.4</strong> Technische Hilfeleistung <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ABC_EINSATZ" id="edit_ausb_abc1_{k.id}" {#if k.hatAusbildung('ABC_EINSATZ')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_abc1_{k.id}">
+                                                                        <strong>3.5</strong> ABC-Einsatz <span class="text-muted">(70 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ABC_ERKUNDUNG" id="edit_ausb_abc2_{k.id}" {#if k.hatAusbildung('ABC_ERKUNDUNG')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_abc2_{k.id}">
+                                                                        <strong>3.6</strong> ABC-Erkundung <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ABC_DEKONTAMINATION_P_G" id="edit_ausb_abc3_{k.id}" {#if k.hatAusbildung('ABC_DEKONTAMINATION_P_G')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_abc3_{k.id}">
+                                                                        <strong>3.7</strong> ABC-Dekontamination P/G <span class="text-muted">(28 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="GERAETEWART" id="edit_ausb_gw_{k.id}" {#if k.hatAusbildung('GERAETEWART')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_gw_{k.id}">
+                                                                        <strong>3.8</strong> Gerätewart <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ATEMSCHUTZGERAETEWART" id="edit_ausb_agw_{k.id}" {#if k.hatAusbildung('ATEMSCHUTZGERAETEWART')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_agw_{k.id}">
+                                                                        <strong>3.9</strong> Atemschutzgerätewart <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Führungsausbildung -->
+                                                <div class="card mb-3 border-danger-subtle bg-light-subtle">
+                                                    <div class="card-header bg-danger-subtle py-2">
+                                                        <strong class="text-danger small"><i class="bi bi-award-fill me-1"></i> Führungsausbildung (FwDV 2 Ziffer 4)</strong>
+                                                    </div>
+                                                    <div class="card-body py-2">
+                                                        <div class="row g-2">
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="GRUPPENFUEHRER" id="edit_ausb_gf_{k.id}" {#if k.hatAusbildung('GRUPPENFUEHRER')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_gf_{k.id}">
+                                                                        <strong>4.1</strong> Gruppenführer <span class="text-muted">(70 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ZUGFUEHRER" id="edit_ausb_zf_{k.id}" {#if k.hatAusbildung('ZUGFUEHRER')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_zf_{k.id}">
+                                                                        <strong>4.2</strong> Zugführer <span class="text-muted">(70 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="VERBANDSFUEHRER" id="edit_ausb_vf_{k.id}" {#if k.hatAusbildung('VERBANDSFUEHRER')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_vf_{k.id}">
+                                                                        <strong>4.3</strong> Verbandsführer <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="EINFUEHRUNG_IN_DIE_STABSARBEIT" id="edit_ausb_stab_{k.id}" {#if k.hatAusbildung('EINFUEHRUNG_IN_DIE_STABSARBEIT')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_stab_{k.id}">
+                                                                        <strong>4.4</strong> Einführung in die Stabsarbeit <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="FUEHREN_IM_ABC_EINSATZ" id="edit_ausb_fabc_{k.id}" {#if k.hatAusbildung('FUEHREN_IM_ABC_EINSATZ')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_fabc_{k.id}">
+                                                                        <strong>4.5</strong> Führen im ABC-Einsatz <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="LEITER_EINER_FEUERWEHR" id="edit_ausb_lf_{k.id}" {#if k.hatAusbildung('LEITER_EINER_FEUERWEHR')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_lf_{k.id}">
+                                                                        <strong>4.6</strong> Leiter einer Feuerwehr <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="AUSBILDER_IN_DER_FEUERWEHR" id="edit_ausb_ausb_{k.id}" {#if k.hatAusbildung('AUSBILDER_IN_DER_FEUERWEHR')}checked{/if}>
+                                                                    <label class="form-check-label small" for="edit_ausb_ausb_{k.id}">
+                                                                        <strong>4.7</strong> Ausbilder in der Feuerwehr <span class="text-muted">(35 Std.)</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Fortbildung -->
+                                                <div class="card border-secondary-subtle bg-light-subtle">
+                                                    <div class="card-header bg-secondary-subtle py-2">
+                                                        <strong class="text-secondary small"><i class="bi bi-arrow-repeat me-1"></i> Fortbildung (FwDV 2 Ziffer 5)</strong>
+                                                    </div>
+                                                    <div class="card-body py-2">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="ausbildungen" value="FORTBILDUNG" id="edit_ausb_fort_{k.id}" {#if k.hatAusbildung('FORTBILDUNG')}checked{/if}>
+                                                            <label class="form-check-label small" for="edit_ausb_fort_{k.id}">
+                                                                <strong>5</strong> Fortbildungslehrgang / Fortbildung
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer bg-light">
                                             <button type="button" class="btn btn-outline-secondary"
@@ -919,6 +1155,214 @@
                                         <input type="email" class="form-control" id="inputEmail"
                                                name="emailAdresse"
                                                placeholder="z. B. julia.meier@feuerwehr.de">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold text-secondary mb-3 mt-4 border-bottom pb-2">
+                                <i class="bi bi-mortarboard-fill me-1 text-warning"></i> 4.
+                                Ausbildungen & Qualifikationen (FwDV 2)
+                            </h6>
+                            <div class="mb-2">
+                                <p class="text-muted small mb-3">Wählen Sie die bereits absolvierten Ausbildungen und Lehrgänge des Kameraden gemäß Feuerwehr-Dienstvorschrift 2 (FwDV 2) aus:</p>
+
+                                <!-- Truppausbildung -->
+                                <div class="card mb-3 border-primary-subtle bg-light-subtle">
+                                    <div class="card-header bg-primary-subtle py-2">
+                                        <strong class="text-primary small"><i class="bi bi-people-fill me-1"></i> Truppausbildung (FwDV 2 Ziffer 2)</strong>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="TRUPPMANN_TEIL_1" id="add_ausb_tm1">
+                                                    <label class="form-check-label small" for="add_ausb_tm1">
+                                                        <strong>2.1.1</strong> Truppmann Teil 1 (Grundausbildungslehrgang) <span class="text-muted">(70 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="TRUPPMANN_TEIL_2" id="add_ausb_tm2">
+                                                    <label class="form-check-label small" for="add_ausb_tm2">
+                                                        <strong>2.1.2</strong> Truppmann Teil 2 <span class="text-muted">(80 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="TRUPPFUEHRER" id="add_ausb_tf">
+                                                    <label class="form-check-label small" for="add_ausb_tf">
+                                                        <strong>2.2</strong> Truppführer <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Technische Ausbildung -->
+                                <div class="card mb-3 border-warning-subtle bg-light-subtle">
+                                    <div class="card-header bg-warning-subtle py-2">
+                                        <strong class="text-dark small"><i class="bi bi-tools me-1"></i> Technische Ausbildung (FwDV 2 Ziffer 3)</strong>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="SPRECHFUNKER" id="add_ausb_funk">
+                                                    <label class="form-check-label small" for="add_ausb_funk">
+                                                        <strong>3.1</strong> Sprechfunker <span class="text-muted">(16 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ATEMSCHUTZGERAETETRAEGER" id="add_ausb_agt">
+                                                    <label class="form-check-label small" for="add_ausb_agt">
+                                                        <strong>3.2</strong> Atemschutzgeräteträger <span class="text-muted">(25 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="MASCHINIST" id="add_ausb_masch">
+                                                    <label class="form-check-label small" for="add_ausb_masch">
+                                                        <strong>3.3</strong> Maschinist <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="TECHNISCHE_HILFELEISTUNG" id="add_ausb_th">
+                                                    <label class="form-check-label small" for="add_ausb_th">
+                                                        <strong>3.4</strong> Technische Hilfeleistung <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ABC_EINSATZ" id="add_ausb_abc1">
+                                                    <label class="form-check-label small" for="add_ausb_abc1">
+                                                        <strong>3.5</strong> ABC-Einsatz <span class="text-muted">(70 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ABC_ERKUNDUNG" id="add_ausb_abc2">
+                                                    <label class="form-check-label small" for="add_ausb_abc2">
+                                                        <strong>3.6</strong> ABC-Erkundung <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ABC_DEKONTAMINATION_P_G" id="add_ausb_abc3">
+                                                    <label class="form-check-label small" for="add_ausb_abc3">
+                                                        <strong>3.7</strong> ABC-Dekontamination P/G <span class="text-muted">(28 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="GERAETEWART" id="add_ausb_gw">
+                                                    <label class="form-check-label small" for="add_ausb_gw">
+                                                        <strong>3.8</strong> Gerätewart <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ATEMSCHUTZGERAETEWART" id="add_ausb_agw">
+                                                    <label class="form-check-label small" for="add_ausb_agw">
+                                                        <strong>3.9</strong> Atemschutzgerätewart <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Führungsausbildung -->
+                                <div class="card mb-3 border-danger-subtle bg-light-subtle">
+                                    <div class="card-header bg-danger-subtle py-2">
+                                        <strong class="text-danger small"><i class="bi bi-award-fill me-1"></i> Führungsausbildung (FwDV 2 Ziffer 4)</strong>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="GRUPPENFUEHRER" id="add_ausb_gf">
+                                                    <label class="form-check-label small" for="add_ausb_gf">
+                                                        <strong>4.1</strong> Gruppenführer <span class="text-muted">(70 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="ZUGFUEHRER" id="add_ausb_zf">
+                                                    <label class="form-check-label small" for="add_ausb_zf">
+                                                        <strong>4.2</strong> Zugführer <span class="text-muted">(70 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="VERBANDSFUEHRER" id="add_ausb_vf">
+                                                    <label class="form-check-label small" for="add_ausb_vf">
+                                                        <strong>4.3</strong> Verbandsführer <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="EINFUEHRUNG_IN_DIE_STABSARBEIT" id="add_ausb_stab">
+                                                    <label class="form-check-label small" for="add_ausb_stab">
+                                                        <strong>4.4</strong> Einführung in die Stabsarbeit <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="FUEHREN_IM_ABC_EINSATZ" id="add_ausb_fabc">
+                                                    <label class="form-check-label small" for="add_ausb_fabc">
+                                                        <strong>4.5</strong> Führen im ABC-Einsatz <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="LEITER_EINER_FEUERWEHR" id="add_ausb_lf">
+                                                    <label class="form-check-label small" for="add_ausb_lf">
+                                                        <strong>4.6</strong> Leiter einer Feuerwehr <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="ausbildungen" value="AUSBILDER_IN_DER_FEUERWEHR" id="add_ausb_ausb">
+                                                    <label class="form-check-label small" for="add_ausb_ausb">
+                                                        <strong>4.7</strong> Ausbilder in der Feuerwehr <span class="text-muted">(35 Std.)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Fortbildung -->
+                                <div class="card border-secondary-subtle bg-light-subtle">
+                                    <div class="card-header bg-secondary-subtle py-2">
+                                        <strong class="text-secondary small"><i class="bi bi-arrow-repeat me-1"></i> Fortbildung (FwDV 2 Ziffer 5)</strong>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="ausbildungen" value="FORTBILDUNG" id="add_ausb_fort">
+                                            <label class="form-check-label small" for="add_ausb_fort">
+                                                <strong>5</strong> Fortbildungslehrgang / Fortbildung
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

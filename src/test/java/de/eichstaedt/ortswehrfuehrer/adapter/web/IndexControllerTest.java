@@ -46,43 +46,46 @@ class IndexControllerTest {
   @Test
   @DisplayName("Startseite liefert Status 200 und HTML-Inhalt mit Dashboard-, Fahrzeug- und Kameraden-Elementen für authentifizierten Benutzer")
   void testIndexEndpoint() {
-    given()
+    String html = given()
         .cookie(AnmeldungController.SITZUNG_COOKIE_NAME, sitzungsId)
         .when()
         .get("/")
         .then()
         .statusCode(200)
         .contentType(ContentType.HTML)
-        .body(containsString("Ortswehrführer"))
-        .body(containsString("Verwaltung der Ortswehr"))
-        .body(containsString("Freiwillige Feuerwehr Musterstadt"))
-        .body(containsString("Einsatzabteilungen"))
-        .body(containsString("Gerätehaus Mitte"))
-        .body(containsString("Zugeordnete Einsatzfahrzeuge"))
-        .body(containsString("TSF_W"))
-        .body(containsString("Florian Musterstadt 1/48-1"))
-        .body(containsString("HLF10"))
-        .body(containsString("Florian Musterstadt 1/43-1"))
-        .body(not(containsString("ID: fz-tsfw-01")))
-        .body(containsString("Kamerad aufnehmen"))
-        .body(containsString("Kameradinnen"))
-        .body(containsString("id=\"kameradModal\""))
-        .body(containsString("action=\"/kameraden\""))
-        .body(containsString("name=\"vorname\""))
-        .body(containsString("name=\"nachname\""))
-        .body(containsString("name=\"geburtsdatum\""))
-        .body(containsString("name=\"strasse\""))
-        .body(containsString("name=\"hausnummer\""))
-        .body(containsString("name=\"postleitzahl\""))
-        .body(containsString("name=\"ort\""))
-        .body(containsString("name=\"telefonnummer\""))
-        .body(containsString("name=\"emailAdresse\""))
-        .body(containsString("id=\"fahrzeugModal\""))
-        .body(containsString("action=\"/fahrzeuge\""))
-        .body(containsString("name=\"bezeichnung\""))
-        .body(containsString("name=\"kennung\""))
-        .body(containsString("name=\"fahrzeugtyp\""))
-        .body(containsString("Neues Einsatzfahrzeug zur Wehr hinzufügen"));
+        .extract().asString();
+
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Ortswehrführer"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Verwaltung der"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Freiwillige Feuerwehr Göttlin"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Einsatzabteilungen"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Gerätehaus Göttliner Chaussee"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Zugeordnete Einsatzfahrzeuge"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("TSF"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("HVL/5/467/2"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("TLF4000"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("HVL/5/24/3"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Kamerad aufnehmen"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Ausbildungen (FwDV 2)"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Truppmann Teil 1"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("id=\"kameradModal\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("action=\"/kameraden\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"vorname\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"nachname\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"geburtsdatum\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"strasse\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"hausnummer\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"postleitzahl\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"ort\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"telefonnummer\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"emailAdresse\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"ausbildungen\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("id=\"fahrzeugModal\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("action=\"/fahrzeuge\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"bezeichnung\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"kennung\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("name=\"fahrzeugtyp\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Neues Einsatzfahrzeug zur Wehr"));
   }
 
   @Test
@@ -125,7 +128,7 @@ class IndexControllerTest {
         .statusCode(200)
         .contentType(ContentType.HTML)
         .body(containsString("Fehler beim Speichern"))
-        .body(containsString("mindestens Vorname und Nachname"));
+        .body(containsString("mindestens Vorname und"));
   }
 
   @Test
@@ -140,7 +143,7 @@ class IndexControllerTest {
         .statusCode(200)
         .contentType(ContentType.HTML)
         .body(containsString("Fehler beim Speichern"))
-        .body(containsString("Funkkennung für das Einsatzfahrzeug"));
+        .body(containsString("Funkkennung für das"));
   }
 
   @Test

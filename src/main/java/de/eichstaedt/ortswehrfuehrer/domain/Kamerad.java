@@ -2,7 +2,10 @@ package de.eichstaedt.ortswehrfuehrer.domain;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import org.jmolecules.ddd.annotation.Entity;
 import org.jmolecules.ddd.annotation.Identity;
@@ -30,6 +33,8 @@ public class Kamerad {
 
   private String emailAdresse;
 
+  private Set<Ausbildung> ausbildungen = new LinkedHashSet<>();
+
   public Kamerad() {
   }
 
@@ -41,6 +46,9 @@ public class Kamerad {
     this.adresse = builder.adresse;
     this.telefonnummer = builder.telefonnummer;
     this.emailAdresse = builder.emailAdresse;
+    this.ausbildungen = builder.ausbildungen != null
+        ? new LinkedHashSet<>(builder.ausbildungen)
+        : new LinkedHashSet<>();
   }
 
   public static Builder builder() {
@@ -55,6 +63,7 @@ public class Kamerad {
     private Adresse adresse;
     private String telefonnummer;
     private String emailAdresse;
+    private Set<Ausbildung> ausbildungen = new LinkedHashSet<>();
 
     public Builder id(String id) {
       this.id = id;
@@ -127,6 +136,26 @@ public class Kamerad {
       return emailAdresse(email);
     }
 
+    public Builder ausbildungen(Collection<Ausbildung> ausbildungen) {
+      this.ausbildungen = ausbildungen != null ? new LinkedHashSet<>(ausbildungen) : new LinkedHashSet<>();
+      return this;
+    }
+
+    public Builder mitAusbildungen(Collection<Ausbildung> ausbildungen) {
+      return ausbildungen(ausbildungen);
+    }
+
+    public Builder ausbildung(Ausbildung ausbildung) {
+      if (ausbildung != null) {
+        this.ausbildungen.add(ausbildung);
+      }
+      return this;
+    }
+
+    public Builder mitAusbildung(Ausbildung ausbildung) {
+      return ausbildung(ausbildung);
+    }
+
     public Kamerad build() {
       return new Kamerad(this);
     }
@@ -196,6 +225,44 @@ public class Kamerad {
     this.emailAdresse = email;
   }
 
+  public Set<Ausbildung> getAusbildungen() {
+    return ausbildungen;
+  }
+
+  public void setAusbildungen(Set<Ausbildung> ausbildungen) {
+    this.ausbildungen = ausbildungen != null ? new LinkedHashSet<>(ausbildungen) : new LinkedHashSet<>();
+  }
+
+  public Kamerad ausbildungHinzufuegen(Ausbildung ausbildung) {
+    if (ausbildung != null) {
+      if (this.ausbildungen == null) {
+        this.ausbildungen = new LinkedHashSet<>();
+      }
+      this.ausbildungen.add(ausbildung);
+    }
+    return this;
+  }
+
+  public Kamerad ausbildungEntfernen(Ausbildung ausbildung) {
+    if (this.ausbildungen != null && ausbildung != null) {
+      this.ausbildungen.remove(ausbildung);
+    }
+    return this;
+  }
+
+  public boolean hatAusbildung(Ausbildung ausbildung) {
+    return this.ausbildungen != null && ausbildung != null && this.ausbildungen.contains(ausbildung);
+  }
+
+  public boolean hatAusbildung(String nameOderZiffer) {
+    if (nameOderZiffer == null || nameOderZiffer.isBlank() || this.ausbildungen == null) {
+      return false;
+    }
+    return Ausbildung.von(nameOderZiffer)
+        .map(this.ausbildungen::contains)
+        .orElse(false);
+  }
+
   public Kamerad aendern(
       String vorname,
       String nachname,
@@ -203,6 +270,18 @@ public class Kamerad {
       Adresse adresse,
       String telefonnummer,
       String emailAdresse
+  ) {
+    return aendern(vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse, this.ausbildungen);
+  }
+
+  public Kamerad aendern(
+      String vorname,
+      String nachname,
+      LocalDate geburtsdatum,
+      Adresse adresse,
+      String telefonnummer,
+      String emailAdresse,
+      Set<Ausbildung> ausbildungen
   ) {
     if (vorname == null || vorname.isBlank() || nachname == null || nachname.isBlank()) {
       throw new IllegalArgumentException("Vor- und Nachname sind Pflichtangaben.");
@@ -213,6 +292,7 @@ public class Kamerad {
     this.adresse = adresse;
     this.telefonnummer = telefonnummer;
     this.emailAdresse = emailAdresse;
+    this.ausbildungen = ausbildungen != null ? new LinkedHashSet<>(ausbildungen) : new LinkedHashSet<>();
     return this;
   }
 

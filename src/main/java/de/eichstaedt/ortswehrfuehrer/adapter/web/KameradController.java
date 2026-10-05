@@ -10,6 +10,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.net.URI;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +45,8 @@ public class KameradController {
       @FormParam("postleitzahl") String postleitzahl,
       @FormParam("ort") String ort,
       @FormParam("telefonnummer") String telefonnummer,
-      @FormParam("emailAdresse") String emailAdresse
+      @FormParam("emailAdresse") String emailAdresse,
+      @FormParam("ausbildungen") List<String> ausbildungen
   ) {
     try {
       wehrService.kameradHinzufuegen(
@@ -56,7 +58,8 @@ public class KameradController {
           postleitzahl,
           ort,
           telefonnummer,
-          emailAdresse
+          emailAdresse,
+          ausbildungen
       );
       return Response.seeOther(URI.create("/?erfolg=kamerad_hinzugefuegt#kameraden")).build();
     } catch (IllegalArgumentException e) {
@@ -93,7 +96,8 @@ public class KameradController {
       @FormParam("postleitzahl") String postleitzahl,
       @FormParam("ort") String ort,
       @FormParam("telefonnummer") String telefonnummer,
-      @FormParam("emailAdresse") String emailAdresse
+      @FormParam("emailAdresse") String emailAdresse,
+      @FormParam("ausbildungen") List<String> ausbildungen
   ) {
     try {
       wehrService.kameradAendern(
@@ -106,7 +110,8 @@ public class KameradController {
           postleitzahl,
           ort,
           telefonnummer,
-          emailAdresse
+          emailAdresse,
+          ausbildungen
       );
       return Response.seeOther(URI.create("/?erfolg=kamerad_geaendert#kameraden")).build();
     } catch (IllegalArgumentException | IllegalStateException e) {

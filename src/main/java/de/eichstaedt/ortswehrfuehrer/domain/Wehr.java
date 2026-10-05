@@ -245,12 +245,48 @@ public class Wehr {
     Kamerad kamerad = findeKamerad(kameradId)
         .orElseThrow(() -> new IllegalArgumentException(
             "Kamerad mit ID '" + kameradId + "' wurde nicht gefunden."));
-    kamerad.aendern(vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse);
+    return kameradAendern(kameradId, vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse, kamerad.getAusbildungen());
+  }
+
+  public Wehr kameradAendern(
+      String kameradId,
+      String vorname,
+      String nachname,
+      LocalDate geburtsdatum,
+      Adresse adresse,
+      String telefonnummer,
+      String emailAdresse,
+      Set<Ausbildung> ausbildungen
+  ) {
+    Kamerad kamerad = findeKamerad(kameradId)
+        .orElseThrow(() -> new IllegalArgumentException(
+            "Kamerad mit ID '" + kameradId + "' wurde nicht gefunden."));
+    kamerad.aendern(vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse, ausbildungen);
 
     Abteilung zielAbteilung = ermittleAbteilung(kamerad, LocalDate.now());
     if (zielAbteilung.getKameraden() == null || !zielAbteilung.getKameraden().contains(kamerad)) {
       kameradEntfernen(kamerad);
       zielAbteilung.kameradHinzufuegen(kamerad);
+    }
+    return this;
+  }
+
+  public Wehr ausbildungZuweisen(String kameradId, Ausbildung ausbildung) {
+    Kamerad kamerad = findeKamerad(kameradId)
+        .orElseThrow(() -> new IllegalArgumentException(
+            "Kamerad mit ID '" + kameradId + "' wurde nicht gefunden."));
+    if (ausbildung != null) {
+      kamerad.ausbildungHinzufuegen(ausbildung);
+    }
+    return this;
+  }
+
+  public Wehr ausbildungEntfernen(String kameradId, Ausbildung ausbildung) {
+    Kamerad kamerad = findeKamerad(kameradId)
+        .orElseThrow(() -> new IllegalArgumentException(
+            "Kamerad mit ID '" + kameradId + "' wurde nicht gefunden."));
+    if (ausbildung != null) {
+      kamerad.ausbildungEntfernen(ausbildung);
     }
     return this;
   }

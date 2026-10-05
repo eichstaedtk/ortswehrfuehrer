@@ -784,4 +784,45 @@ class WehrTest {
     assertTrue(wehr.findeKamerad("   ").isEmpty());
     assertTrue(wehr.findeKamerad(null).isEmpty());
   }
+
+  @Test
+  void testAusbildungZuweisenUndEntfernen() {
+    Wehr wehr = new Wehr();
+    Kamerad kamerad = Kamerad.builder().id("k-1").vorname("Max").nachname("Mustermann").build();
+    wehr.kameradHinzufuegen(kamerad);
+
+    wehr.ausbildungZuweisen("k-1", Ausbildung.TRUPPMANN_TEIL_1);
+    wehr.ausbildungZuweisen("k-1", Ausbildung.SPRECHFUNKER);
+
+    assertTrue(kamerad.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(kamerad.hatAusbildung(Ausbildung.SPRECHFUNKER));
+
+    wehr.ausbildungEntfernen("k-1", Ausbildung.TRUPPMANN_TEIL_1);
+    assertFalse(kamerad.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(kamerad.hatAusbildung(Ausbildung.SPRECHFUNKER));
+
+    // Ausnahmen bei unbekannter ID
+    assertThrows(IllegalArgumentException.class, () -> wehr.ausbildungZuweisen("unbekannt", Ausbildung.MASCHINIST));
+    assertThrows(IllegalArgumentException.class, () -> wehr.ausbildungEntfernen("unbekannt", Ausbildung.MASCHINIST));
+  }
+
+  @Test
+  void testKameradAendernMitAusbildungenSet() {
+    Wehr wehr = new Wehr();
+    Kamerad kamerad = Kamerad.builder()
+        .id("k-1")
+        .vorname("Max")
+        .nachname("Mustermann")
+        .mitAusbildung(Ausbildung.TRUPPMANN_TEIL_1)
+        .build();
+    wehr.kameradHinzufuegen(kamerad);
+
+    wehr.kameradAendern("k-1", "Max", "Mustermann", LocalDate.of(1990, 1, 1), null, null, null,
+        Set.of(Ausbildung.GRUPPENFUEHRER, Ausbildung.ZUGFUEHRER));
+
+    assertEquals(2, kamerad.getAusbildungen().size());
+    assertFalse(kamerad.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(kamerad.hatAusbildung(Ausbildung.GRUPPENFUEHRER));
+    assertTrue(kamerad.hatAusbildung(Ausbildung.ZUGFUEHRER));
+  }
 }

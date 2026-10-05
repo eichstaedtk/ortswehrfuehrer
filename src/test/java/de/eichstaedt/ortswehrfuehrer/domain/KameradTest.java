@@ -7,8 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
@@ -252,5 +255,78 @@ class KameradTest {
     assertThrows(IllegalArgumentException.class, () -> kamerad.aendern("Konrad", " ", null, null, null, null));
     assertEquals("Max", kamerad.getVorname());
     assertEquals("Mustermann", kamerad.getNachname());
+  }
+
+  @Test
+  void testAusbildungenInitialisierenUndVerwalten() {
+    Kamerad kamerad = Kamerad.builder()
+        .vorname("Max")
+        .nachname("Mustermann")
+        .mitAusbildung(Ausbildung.TRUPPMANN_TEIL_1)
+        .ausbildung(Ausbildung.SPRECHFUNKER)
+        .build();
+
+    assertNotNull(kamerad.getAusbildungen());
+    assertEquals(2, kamerad.getAusbildungen().size());
+    assertTrue(kamerad.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(kamerad.hatAusbildung(Ausbildung.SPRECHFUNKER));
+    assertFalse(kamerad.hatAusbildung(Ausbildung.ATEMSCHUTZGERAETETRAEGER));
+
+    // Ausbildung hinzufügen
+    kamerad.ausbildungHinzufuegen(Ausbildung.ATEMSCHUTZGERAETETRAEGER);
+    assertEquals(3, kamerad.getAusbildungen().size());
+    assertTrue(kamerad.hatAusbildung(Ausbildung.ATEMSCHUTZGERAETETRAEGER));
+
+    // Duplikat hinzufügen -> bleibt 3
+    kamerad.ausbildungHinzufuegen(Ausbildung.ATEMSCHUTZGERAETETRAEGER);
+    assertEquals(3, kamerad.getAusbildungen().size());
+
+    // null hinzufügen -> keine Änderung
+    kamerad.ausbildungHinzufuegen(null);
+    assertEquals(3, kamerad.getAusbildungen().size());
+
+    // Ausbildung entfernen
+    kamerad.ausbildungEntfernen(Ausbildung.SPRECHFUNKER);
+    assertEquals(2, kamerad.getAusbildungen().size());
+    assertFalse(kamerad.hatAusbildung(Ausbildung.SPRECHFUNKER));
+
+    // null entfernen -> keine Auswirkung
+    kamerad.ausbildungEntfernen(null);
+    assertEquals(2, kamerad.getAusbildungen().size());
+  }
+
+  @Test
+  void testBuilderMitAusbildungenCollection() {
+    Kamerad kamerad = Kamerad.builder()
+        .vorname("Erika")
+        .nachname("Musterfrau")
+        .mitAusbildungen(List.of(Ausbildung.GRUPPENFUEHRER, Ausbildung.ZUGFUEHRER))
+        .build();
+
+    assertEquals(2, kamerad.getAusbildungen().size());
+    assertTrue(kamerad.hatAusbildung(Ausbildung.GRUPPENFUEHRER));
+    assertTrue(kamerad.hatAusbildung(Ausbildung.ZUGFUEHRER));
+  }
+
+  @Test
+  void testAendernMitAusbildungen() {
+    Kamerad kamerad = Kamerad.builder()
+        .vorname("Max")
+        .nachname("Mustermann")
+        .mitAusbildung(Ausbildung.TRUPPMANN_TEIL_1)
+        .build();
+
+    kamerad.aendern("Max", "Mustermann", LocalDate.of(1990, 1, 1), null, null, null,
+        Set.of(Ausbildung.GRUPPENFUEHRER, Ausbildung.VERBANDSFUEHRER));
+
+    assertEquals(2, kamerad.getAusbildungen().size());
+    assertFalse(kamerad.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(kamerad.hatAusbildung(Ausbildung.GRUPPENFUEHRER));
+    assertTrue(kamerad.hatAusbildung(Ausbildung.VERBANDSFUEHRER));
+
+    // Mit null Ausbildungen
+    kamerad.setAusbildungen(null);
+    assertNotNull(kamerad.getAusbildungen());
+    assertTrue(kamerad.getAusbildungen().isEmpty());
   }
 }

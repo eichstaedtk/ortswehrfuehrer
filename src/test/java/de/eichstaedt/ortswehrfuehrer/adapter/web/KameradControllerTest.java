@@ -3,17 +3,20 @@ package de.eichstaedt.ortswehrfuehrer.adapter.web;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.eichstaedt.ortswehrfuehrer.application.WehrApplicationService;
+import de.eichstaedt.ortswehrfuehrer.domain.Ausbildung;
 import de.eichstaedt.ortswehrfuehrer.domain.Kamerad;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -209,7 +212,7 @@ class KameradControllerTest {
     Kamerad k = mockService.kameradHinzufuegen("Max", "Mustermann", LocalDate.of(1990, 1, 1), null, null, null);
 
     try (Response r1 = controller.kameradAendern(k.getId(), "Konrad", "Eichstädt", "1990-01-01",
-        null, null, null, null, null, null)) {
+        null, null, null, null, null, null, null)) {
       assertEquals(303, r1.getStatus());
       assertEquals("/?erfolg=kamerad_geaendert#kameraden", r1.getLocation().toString());
       assertEquals("Konrad", mockService.getKamerad(k.getId()).getVorname());
@@ -217,7 +220,7 @@ class KameradControllerTest {
 
     mockService.setAktiveWehr(null);
     try (Response r2 = controller.kameradAendern(k.getId(), "Konrad", "Eichstädt", null,
-        null, null, null, null, null, null)) {
+        null, null, null, null, null, null, null)) {
       assertEquals(303, r2.getStatus());
       assertEquals("/?fehler=kamerad_aendern_fehlgeschlagen#kameraden", r2.getLocation().toString());
     }
@@ -245,7 +248,8 @@ class KameradControllerTest {
         "",
         "",
         "",
-        ""
+        "",
+        null
     )) {
       assertEquals(303, response.getStatus());
     }
@@ -257,5 +261,52 @@ class KameradControllerTest {
     assertTrue(klara.isPresent());
     assertNull(klara.get().getGeburtsdatum());
     assertEquals("Wiesenweg", klara.get().getAdresse().strasse());
+  }
+
+  @Test
+  @DisplayName("POST /kameraden und POST /kameraden/aendern mit Ausbildungen")
+  void testKameradAusbildungenViaHttp() {
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("vorname", "Felix")
+        .formParam("nachname", "Brandt")
+        .formParam("geburtsdatum", "1995-04-12")
+        .formParam("ausbildungen", "TRUPPMANN_TEIL_1")
+        .formParam("ausbildungen", "3.1")
+        .when()
+        .post("/kameraden")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?erfolg=kamerad_hinzugefuegt#kameraden"));
+
+    Kamerad felix = wehrService.getAlleKameraden().stream()
+        .filter(k -> "Felix".equals(k.getVorname()) && "Brandt".equals(k.getNachname()))
+        .findFirst()
+        .orElseThrow();
+
+    assertEquals(2, felix.getAusbildungen().size());
+    assertTrue(felix.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(felix.hatAusbildung(Ausbildung.SPRECHFUNKER));
+
+    // Ändern: Ausbildung entfernen und eine neue hinzufügen
+    given()
+        .redirects().follow(false)
+        .contentType(ContentType.URLENC)
+        .formParam("kameradId", felix.getId())
+        .formParam("vorname", "Felix")
+        .formParam("nachname", "Brandt")
+        .formParam("geburtsdatum", "1995-04-12")
+        .formParam("ausbildungen", "GRUPPENFUEHRER")
+        .when()
+        .post("/kameraden/aendern")
+        .then()
+        .statusCode(303)
+        .header("Location", containsString("/?erfolg=kamerad_geaendert#kameraden"));
+
+    Kamerad geaendert = wehrService.getKamerad(felix.getId());
+    assertEquals(1, geaendert.getAusbildungen().size());
+    assertFalse(geaendert.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(geaendert.hatAusbildung(Ausbildung.GRUPPENFUEHRER));
   }
 }

@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.eichstaedt.ortswehrfuehrer.domain.Adresse;
+import de.eichstaedt.ortswehrfuehrer.domain.Ausbildung;
 import de.eichstaedt.ortswehrfuehrer.domain.Einsatzfahrzeug;
 import de.eichstaedt.ortswehrfuehrer.domain.Fahrzeugtyp;
 import de.eichstaedt.ortswehrfuehrer.domain.Kamerad;
@@ -33,13 +34,17 @@ class WehrApplicationServiceTest {
   void testInitialisiereStandardWehr() {
     Wehr wehr = service.getAktiveWehr();
     assertNotNull(wehr);
-    assertEquals("Freiwillige Feuerwehr Musterstadt", wehr.getName());
+    assertEquals("Freiwillige Feuerwehr Göttlin", wehr.getName());
     assertEquals(3, service.getAlleKameraden().size());
 
     List<Einsatzfahrzeug> fahrzeuge = service.getFahrzeugeDerAktivenWehr();
     assertEquals(2, fahrzeuge.size());
-    assertTrue(fahrzeuge.stream().anyMatch(f -> f.getFahrzeugtyp() == Fahrzeugtyp.TSF_W && "Florian Musterstadt 1/48-1".equals(f.getKennung())));
-    assertTrue(fahrzeuge.stream().anyMatch(f -> f.getFahrzeugtyp() == Fahrzeugtyp.HLF10 && "Florian Musterstadt 1/43-1".equals(f.getKennung())));
+    assertTrue(fahrzeuge.stream().anyMatch(f -> f.getFahrzeugtyp() == Fahrzeugtyp.TSF && "HVL/5/467/2".equals(f.getKennung())));
+    assertTrue(fahrzeuge.stream().anyMatch(f -> f.getFahrzeugtyp() == Fahrzeugtyp.TLF4000 && "HVL/5/24/3".equals(f.getKennung())));
+
+    Kamerad max = service.getAlleKameraden().stream().filter(k -> "Max".equals(k.getVorname())).findFirst().orElseThrow();
+    assertTrue(max.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(max.hatAusbildung(Ausbildung.ATEMSCHUTZGERAETETRAEGER));
   }
 
   @Test
@@ -371,5 +376,75 @@ class WehrApplicationServiceTest {
     assertNull(service.getKamerad(k.getId()));
     assertThrows(IllegalStateException.class,
         () -> service.kameradAendern(k.getId(), "Konrad", "Eichstädt", null, null, null, null));
+  }
+
+  @Test
+  @DisplayName("Kamerad mit Ausbildungen anlegen und bearbeiten")
+  void testKameradMitAusbildungen() {
+    Kamerad k = service.kameradHinzufuegen(
+        "Klaus",
+        "Schulz",
+        "1990-01-01",
+        "Hauptstr.", "1", "12345", "Stadt",
+        "0170 123", "klaus@example.com",
+        List.of("TRUPPMANN_TEIL_1", "3.1", "Atemschutzgeräteträger")
+    );
+
+    assertNotNull(k);
+    assertEquals(3, k.getAusbildungen().size());
+    assertTrue(k.hatAusbildung(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(k.hatAusbildung(Ausbildung.SPRECHFUNKER));
+    assertTrue(k.hatAusbildung(Ausbildung.ATEMSCHUTZGERAETETRAEGER));
+
+    // Ausbildung zuweisen
+    service.ausbildungZuweisen(k.getId(), Ausbildung.MASCHINIST);
+    assertEquals(4, k.getAusbildungen().size());
+    assertTrue(k.hatAusbildung(Ausbildung.MASCHINIST));
+
+    // Ausbildung zuweisen per String
+    service.ausbildungZuweisen(k.getId(), "4.1");
+    assertEquals(5, k.getAusbildungen().size());
+    assertTrue(k.hatAusbildung(Ausbildung.GRUPPENFUEHRER));
+
+    // Ausbildung entfernen
+    service.ausbildungEntfernen(k.getId(), Ausbildung.SPRECHFUNKER);
+    assertEquals(4, k.getAusbildungen().size());
+    assertFalse(k.hatAusbildung(Ausbildung.SPRECHFUNKER));
+
+    // Ausbildung entfernen per String
+    service.ausbildungEntfernen(k.getId(), "4.1");
+    assertEquals(3, k.getAusbildungen().size());
+    assertFalse(k.hatAusbildung(Ausbildung.GRUPPENFUEHRER));
+
+    // Ausbildungen aktualisieren
+    service.ausbildungenAktualisieren(k.getId(), List.of("ZUGFUEHRER"));
+    assertEquals(1, k.getAusbildungen().size());
+    assertTrue(k.hatAusbildung(Ausbildung.ZUGFUEHRER));
+
+    // Kamerad mit neuen Ausbildungen ändern
+    service.kameradAendern(
+        k.getId(),
+        "Klaus",
+        "Schulz",
+        "1990-01-01",
+        "Hauptstr.", "1", "12345", "Stadt",
+        "0170 123", "klaus@example.com",
+        List.of("VERBANDSFUEHRER", "LEITER_EINER_FEUERWEHR")
+    );
+    assertEquals(2, k.getAusbildungen().size());
+    assertTrue(k.hatAusbildung(Ausbildung.VERBANDSFUEHRER));
+    assertTrue(k.hatAusbildung(Ausbildung.LEITER_EINER_FEUERWEHR));
+  }
+
+  @Test
+  @DisplayName("ParseAusbildungen ignoriert unbekannte und leere Werte")
+  void testParseAusbildungen() {
+    Set<Ausbildung> res = WehrApplicationService.parseAusbildungen(List.of("TRUPPMANN_TEIL_1", "", "   ", "UNBEKANNT", "3.2"));
+    assertEquals(2, res.size());
+    assertTrue(res.contains(Ausbildung.TRUPPMANN_TEIL_1));
+    assertTrue(res.contains(Ausbildung.ATEMSCHUTZGERAETETRAEGER));
+
+    assertTrue(WehrApplicationService.parseAusbildungen(null).isEmpty());
+    assertTrue(WehrApplicationService.parseAusbildungen(List.of()).isEmpty());
   }
 }

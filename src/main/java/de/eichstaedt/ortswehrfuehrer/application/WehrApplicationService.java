@@ -1,6 +1,7 @@
 package de.eichstaedt.ortswehrfuehrer.application;
 
 import de.eichstaedt.ortswehrfuehrer.domain.Adresse;
+import de.eichstaedt.ortswehrfuehrer.domain.Ausbildung;
 import de.eichstaedt.ortswehrfuehrer.domain.Einsatzfahrzeug;
 import de.eichstaedt.ortswehrfuehrer.domain.Fahrzeugtyp;
 import de.eichstaedt.ortswehrfuehrer.domain.Gebaeude;
@@ -11,6 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -82,6 +84,12 @@ public class WehrApplicationService {
                 .emailAdresse("max.mustermann@feuerwehr.de")
                 .telefonnummer("0170 1234567")
                 .adresse(new Adresse("Hauptstraße", "12", "12345", "Musterstadt"))
+                .mitAusbildungen(List.of(
+                    Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPMANN_TEIL_2,
+                    Ausbildung.SPRECHFUNKER,
+                    Ausbildung.ATEMSCHUTZGERAETETRAEGER
+                ))
                 .build(),
             Kamerad.builder()
                 .vorname("Apard")
@@ -94,6 +102,12 @@ public class WehrApplicationService {
                 .nachname("Schröder")
                 .geburtsdatum(LocalDate.of(1950, 11, 2))
                 .adresse(new Adresse("Am Wald", "8", "12345", "Musterstadt"))
+                .mitAusbildungen(List.of(
+                    Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPFUEHRER,
+                    Ausbildung.GRUPPENFUEHRER,
+                    Ausbildung.LEITER_EINER_FEUERWEHR
+                ))
                 .build()
         )
     );
@@ -352,6 +366,18 @@ public class WehrApplicationService {
       String telefonnummer,
       String emailAdresse
   ) {
+    return kameradHinzufuegen(vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse, (Set<Ausbildung>) null);
+  }
+
+  public Kamerad kameradHinzufuegen(
+      String vorname,
+      String nachname,
+      LocalDate geburtsdatum,
+      Adresse adresse,
+      String telefonnummer,
+      String emailAdresse,
+      Set<Ausbildung> ausbildungen
+  ) {
     pruefeName(vorname, nachname);
     Kamerad kamerad = Kamerad.builder()
         .vorname(vorname.trim())
@@ -360,6 +386,7 @@ public class WehrApplicationService {
         .adresse(adresse)
         .telefonnummer(trimToNull(telefonnummer))
         .emailAdresse(trimToNull(emailAdresse))
+        .ausbildungen(ausbildungen)
         .build();
     return kameradHinzufuegen(kamerad);
   }
@@ -375,6 +402,32 @@ public class WehrApplicationService {
       String telefonnummer,
       String emailAdresse
   ) {
+    return kameradHinzufuegen(
+        vorname,
+        nachname,
+        geburtsdatumStr,
+        strasse,
+        hausnummer,
+        postleitzahl,
+        ort,
+        telefonnummer,
+        emailAdresse,
+        null
+    );
+  }
+
+  public Kamerad kameradHinzufuegen(
+      String vorname,
+      String nachname,
+      String geburtsdatumStr,
+      String strasse,
+      String hausnummer,
+      String postleitzahl,
+      String ort,
+      String telefonnummer,
+      String emailAdresse,
+      List<String> ausbildungen
+  ) {
     pruefeName(vorname, nachname);
     return kameradHinzufuegen(
         vorname,
@@ -382,7 +435,8 @@ public class WehrApplicationService {
         parseGeburtsdatum(geburtsdatumStr),
         baueAdresse(strasse, hausnummer, postleitzahl, ort),
         telefonnummer,
-        emailAdresse
+        emailAdresse,
+        parseAusbildungen(ausbildungen)
     );
   }
 
@@ -394,6 +448,24 @@ public class WehrApplicationService {
       Adresse adresse,
       String telefonnummer,
       String emailAdresse
+  ) {
+    if (kameradId == null || kameradId.isBlank()) {
+      throw new IllegalArgumentException("Kamerad-ID darf nicht leer sein.");
+    }
+    Kamerad existing = getKamerad(kameradId);
+    Set<Ausbildung> ausbildungen = existing != null ? existing.getAusbildungen() : null;
+    return kameradAendern(kameradId, vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse, ausbildungen);
+  }
+
+  public Kamerad kameradAendern(
+      String kameradId,
+      String vorname,
+      String nachname,
+      LocalDate geburtsdatum,
+      Adresse adresse,
+      String telefonnummer,
+      String emailAdresse,
+      Set<Ausbildung> ausbildungen
   ) {
     if (kameradId == null || kameradId.isBlank()) {
       throw new IllegalArgumentException("Kamerad-ID darf nicht leer sein.");
@@ -410,11 +482,13 @@ public class WehrApplicationService {
         geburtsdatum,
         adresse,
         trimToNull(telefonnummer),
-        trimToNull(emailAdresse)
+        trimToNull(emailAdresse),
+        ausbildungen
     );
     Kamerad kamerad = getKamerad(trimmedId);
-    log.info("Kamerad {} {} ({}) erfolgreich geändert (Abteilung: {}).",
-        kamerad.getVorname(), kamerad.getNachname(), trimmedId, ermittleAbteilungName(kamerad));
+    log.info("Kamerad {} {} ({}) erfolgreich geändert (Abteilung: {}, Ausbildungen: {}).",
+        kamerad.getVorname(), kamerad.getNachname(), trimmedId, ermittleAbteilungName(kamerad),
+        kamerad.getAusbildungen().size());
     return kamerad;
   }
 
@@ -434,11 +508,107 @@ public class WehrApplicationService {
         kameradId,
         vorname,
         nachname,
+        geburtsdatumStr,
+        strasse,
+        hausnummer,
+        postleitzahl,
+        ort,
+        telefonnummer,
+        emailAdresse,
+        (List<String>) null
+    );
+  }
+
+  public Kamerad kameradAendern(
+      String kameradId,
+      String vorname,
+      String nachname,
+      String geburtsdatumStr,
+      String strasse,
+      String hausnummer,
+      String postleitzahl,
+      String ort,
+      String telefonnummer,
+      String emailAdresse,
+      List<String> ausbildungen
+  ) {
+    Kamerad existing = getKamerad(kameradId);
+    Set<Ausbildung> ausbildungenSet = ausbildungen != null
+        ? parseAusbildungen(ausbildungen)
+        : (existing != null ? existing.getAusbildungen() : new LinkedHashSet<>());
+    return kameradAendern(
+        kameradId,
+        vorname,
+        nachname,
         parseGeburtsdatum(geburtsdatumStr),
         baueAdresse(strasse, hausnummer, postleitzahl, ort),
         telefonnummer,
-        emailAdresse
+        emailAdresse,
+        ausbildungenSet
     );
+  }
+
+  public void ausbildungZuweisen(String kameradId, Ausbildung ausbildung) {
+    if (kameradId == null || kameradId.isBlank()) {
+      throw new IllegalArgumentException("Kamerad-ID darf nicht leer sein.");
+    }
+    if (ausbildung == null) {
+      throw new IllegalArgumentException("Ausbildung darf nicht null sein.");
+    }
+    if (aktiveWehr == null) {
+      throw new IllegalStateException("Keine aktive Wehr vorhanden.");
+    }
+    aktiveWehr.ausbildungZuweisen(kameradId.trim(), ausbildung);
+    log.info("Ausbildung '{}' ({}) erfolgreich Kamerad '{}' zugewiesen.",
+        ausbildung.getBezeichnung(), ausbildung.getZiffer(), kameradId);
+  }
+
+  public void ausbildungZuweisen(String kameradId, String ausbildungName) {
+    Ausbildung.von(ausbildungName).ifPresent(a -> ausbildungZuweisen(kameradId, a));
+  }
+
+  public void ausbildungEntfernen(String kameradId, Ausbildung ausbildung) {
+    if (kameradId == null || kameradId.isBlank()) {
+      throw new IllegalArgumentException("Kamerad-ID darf nicht leer sein.");
+    }
+    if (ausbildung == null) {
+      throw new IllegalArgumentException("Ausbildung darf nicht null sein.");
+    }
+    if (aktiveWehr == null) {
+      throw new IllegalStateException("Keine aktive Wehr vorhanden.");
+    }
+    aktiveWehr.ausbildungEntfernen(kameradId.trim(), ausbildung);
+    log.info("Ausbildung '{}' ({}) erfolgreich von Kamerad '{}' entfernt.",
+        ausbildung.getBezeichnung(), ausbildung.getZiffer(), kameradId);
+  }
+
+  public void ausbildungEntfernen(String kameradId, String ausbildungName) {
+    Ausbildung.von(ausbildungName).ifPresent(a -> ausbildungEntfernen(kameradId, a));
+  }
+
+  public void ausbildungenAktualisieren(String kameradId, Set<Ausbildung> ausbildungen) {
+    Kamerad kamerad = getKamerad(kameradId);
+    if (kamerad == null) {
+      throw new IllegalArgumentException("Kamerad mit ID '" + kameradId + "' wurde nicht gefunden.");
+    }
+    kamerad.setAusbildungen(ausbildungen);
+  }
+
+  public void ausbildungenAktualisieren(String kameradId, List<String> ausbildungenNamen) {
+    ausbildungenAktualisieren(kameradId, parseAusbildungen(ausbildungenNamen));
+  }
+
+  public static Set<Ausbildung> parseAusbildungen(List<String> ausbildungenNamen) {
+    if (ausbildungenNamen == null || ausbildungenNamen.isEmpty()) {
+      return new LinkedHashSet<>();
+    }
+    Set<Ausbildung> result = new LinkedHashSet<>();
+    for (String name : ausbildungenNamen) {
+      if (name != null && !name.isBlank()) {
+        Ausbildung.von(name).ifPresent(result::add);
+      }
+    }
+    return result;
   }
 
   public Kamerad getKamerad(String kameradId) {
