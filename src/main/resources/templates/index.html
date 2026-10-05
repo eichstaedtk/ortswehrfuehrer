@@ -6,8 +6,8 @@
         <!-- Benachrichtigungen / Alerts -->
         {#if erfolg == 'kamerad_hinzugefuegt'}
             <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
-                 role="alert">
-                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                 role="alert" aria-live="polite">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Erfolg!</strong> Der Kamerad / die Kameradin wurde erfolgreich aufgenommen
                 und anhand des Alters automatisch der passenden Einsatzabteilung zugewiesen.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -17,8 +17,8 @@
 
         {#if erfolg == 'fahrzeug_hinzugefuegt'}
             <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
-                 role="alert">
-                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                 role="alert" aria-live="polite">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Erfolg!</strong> Das Einsatzfahrzeug wurde erfolgreich angelegt und der Wehr
                 zugeordnet.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -28,8 +28,8 @@
 
         {#if erfolg == 'fahrzeug_geloescht'}
             <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
-                 role="alert">
-                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                 role="alert" aria-live="polite">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Erfolg!</strong> Das Einsatzfahrzeug wurde erfolgreich aus der Wehr
                 entfernt.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -39,8 +39,8 @@
 
         {#if erfolg == 'fahrzeug_geaendert'}
             <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
-                 role="alert">
-                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                 role="alert" aria-live="polite">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Erfolg!</strong> Die Daten des Einsatzfahrzeugs wurden erfolgreich
                 aktualisiert.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -50,8 +50,8 @@
 
         {#if erfolg == 'kamerad_entfernt' || erfolg == 'kamerad_geloescht'}
             <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
-                 role="alert">
-                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                 role="alert" aria-live="polite">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Erfolg!</strong> Der Kamerad wurde erfolgreich aus der Wehr entfernt.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                         aria-label="Schließen"></button>
@@ -60,8 +60,8 @@
 
         {#if erfolg == 'kamerad_geaendert'}
             <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4"
-                 role="alert">
-                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                 role="alert" aria-live="polite">
+                <i class="bi bi-check-circle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Erfolg!</strong> Die Daten des Kameraden wurden erfolgreich aktualisiert.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                         aria-label="Schließen"></button>
@@ -69,8 +69,8 @@
         {/if}
 
         {#if fehler == 'name_fehlt'}
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" aria-live="assertive">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Fehler beim Speichern:</strong> Bitte geben Sie mindestens Vorname und
                 Nachname an.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -79,8 +79,8 @@
         {/if}
 
         {#if fehler == 'fahrzeug_kennung_fehlt'}
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" aria-live="assertive">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Fehler beim Speichern:</strong> Bitte geben Sie eine Funkkennung für das
                 Einsatzfahrzeug an.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -89,8 +89,8 @@
         {/if}
 
         {#if fehler == 'fahrzeug_loeschen_fehlgeschlagen'}
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" aria-live="assertive">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Fehler beim Löschen:</strong> Das Einsatzfahrzeug konnte nicht entfernt
                 werden.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -99,8 +99,8 @@
         {/if}
 
         {#if fehler == 'fahrzeug_aendern_fehlgeschlagen'}
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" aria-live="assertive">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Fehler beim Ändern:</strong> Das Einsatzfahrzeug konnte nicht aktualisiert
                 werden. Bitte prüfen Sie die Angaben.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -109,8 +109,8 @@
         {/if}
 
         {#if fehler == 'kamerad_entfernen_fehlgeschlagen' || fehler == 'kamerad_loeschen_fehlgeschlagen'}
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" aria-live="assertive">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Fehler beim Entfernen:</strong> Der Kamerad konnte nicht entfernt werden.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                         aria-label="Schließen"></button>
@@ -118,8 +118,8 @@
         {/if}
 
         {#if fehler == 'kamerad_aendern_fehlgeschlagen'}
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" aria-live="assertive">
+                <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                 <strong>Fehler beim Ändern:</strong> Der Kamerad konnte nicht aktualisiert werden.
                 Bitte geben Sie mindestens Vorname und Nachname an.
                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -132,33 +132,33 @@
             <div class="row align-items-center">
                 <div class="col-lg-8">
             <span class="badge bg-danger mb-2 px-3 py-2 text-uppercase fw-semibold letter-spacing">
-                <i class="bi bi-shield-check me-1"></i> Feuerwehr-Management
+                <i class="bi bi-shield-check me-1" aria-hidden="true"></i> Feuerwehr-Management
             </span>
                     <h1 class="display-5 fw-bold mb-3">Verwaltung der
                         Ortswehr {beispielWehr.name}</h1>
                     <div class="d-flex flex-wrap gap-2">
                         <button type="button" class="btn btn-feuerwehr btn-lg px-4 shadow-sm"
                                 data-bs-toggle="modal" data-bs-target="#kameradModal">
-                            <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
+                            <i class="bi bi-person-plus-fill me-1" aria-hidden="true"></i> Kamerad aufnehmen
                         </button>
                         <button type="button"
                                 class="btn btn-warning text-dark btn-lg px-4 shadow-sm fw-semibold"
                                 data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
-                            <i class="bi bi-truck me-1"></i> Fahrzeug hinzufügen
+                            <i class="bi bi-truck me-1" aria-hidden="true"></i> Fahrzeug hinzufügen
                         </button>
                         <a href="#kameraden" class="btn btn-outline-light btn-lg px-4">
-                            <i class="bi bi-people-fill me-1"></i> Kameradenliste ({anzahlKameraden}
-                            )
+                            <i class="bi bi-people-fill me-1" aria-hidden="true"></i> Kameradenliste ({anzahlKameraden})
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-4 text-center d-none d-lg-block">
-                    <i class="bi bi-fire text-warning" style="font-size: 7rem; opacity: 0.9;"></i>
+                    <i class="bi bi-fire text-warning" style="font-size: 7rem; opacity: 0.9;" aria-hidden="true"></i>
                 </div>
             </div>
         </div>
 
         <!-- Dashboard Stats -->
+        <h2 class="visually-hidden">Statistik-Übersicht</h2>
         <div class="row g-4 mb-4">
             <div class="col-sm-6 col-xl-3">
                 <div class="card card-stat h-100 shadow-sm border-0">
@@ -166,7 +166,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted text-uppercase fw-bold small">Ortswehren</span>
                             <span class="badge bg-danger-subtle text-danger fs-6 p-2 rounded-3">
-                        <i class="bi bi-shield-shaded"></i>
+                        <i class="bi bi-shield-shaded" aria-hidden="true"></i>
                     </span>
                         </div>
                         <h3 class="fw-bold mb-1">{anzahlWehren}</h3>
@@ -181,7 +181,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted text-uppercase fw-bold small">Kameraden</span>
                             <span class="badge bg-primary-subtle text-primary fs-6 p-2 rounded-3">
-                        <i class="bi bi-people-fill"></i>
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>
                     </span>
                         </div>
                         <h3 class="fw-bold mb-1">{anzahlKameraden}</h3>
@@ -196,7 +196,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted text-uppercase fw-bold small">Einsatzfahrzeuge</span>
                             <span class="badge bg-warning-subtle text-warning-emphasis fs-6 p-2 rounded-3">
-                        <i class="bi bi-truck"></i>
+                        <i class="bi bi-truck" aria-hidden="true"></i>
                     </span>
                         </div>
                         <h3 class="fw-bold mb-1">{anzahlFahrzeuge}</h3>
@@ -211,7 +211,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <span class="text-muted text-uppercase fw-bold small">Gebäude</span>
                             <span class="badge bg-success-subtle text-success fs-6 p-2 rounded-3">
-                        <i class="bi bi-building"></i>
+                        <i class="bi bi-building" aria-hidden="true"></i>
                     </span>
                         </div>
                         <h3 class="fw-bold mb-1">{anzahlGebaeude}</h3>
@@ -225,13 +225,13 @@
         {#if beispielWehr}
             <div id="uebersicht-wehr" class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0 fw-bold text-dark">
-                        <i class="bi bi-flag-fill text-danger me-2"></i>Aktive
+                    <h2 class="h5 mb-0 fw-bold text-dark">
+                        <i class="bi bi-flag-fill text-danger me-2" aria-hidden="true"></i>Aktive
                         Ortswehr: {beispielWehr.name}
-                    </h5>
+                    </h2>
                     {#if beispielWehr.gruendungsdatum}
                         <span class="badge bg-secondary-subtle text-secondary-emphasis">
-            <i class="bi bi-calendar-event me-1"></i> Gegründet: {beispielWehr.gruendungsdatum}
+            <i class="bi bi-calendar-event me-1" aria-hidden="true"></i> Gegründet: {beispielWehr.gruendungsdatum}
         </span>
                     {/if}
                 </div>
@@ -240,20 +240,20 @@
                         <!-- Abteilungen -->
                         <div class="col-lg-4">
                             <div class="border rounded-3 p-3 bg-light h-100">
-                                <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center">
-                                    <i class="bi bi-diagram-3 me-2 text-danger"></i>Einsatzabteilungen
-                                </h6>
+                                <h3 class="h6 fw-bold text-secondary mb-3 d-flex align-items-center">
+                                    <i class="bi bi-diagram-3 me-2 text-danger" aria-hidden="true"></i>Einsatzabteilungen
+                                </h3>
                                 <ul class="list-group list-group-flush bg-transparent">
                                     <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
-                                        <span><i class="bi bi-person-heart me-2 text-info"></i>Jugendabteilung (bis 16 Jahre)</span>
+                                        <span><i class="bi bi-person-heart me-2 text-info" aria-hidden="true"></i>Jugendabteilung (bis 16 Jahre)</span>
                                         <span class="badge bg-primary rounded-pill">{beispielWehr.jugendabteilung.kameraden.size}</span>
                                     </li>
                                     <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
-                                        <span><i class="bi bi-person-check-fill me-2 text-danger"></i>Einsatzabteilung (17–65 Jahre)</span>
+                                        <span><i class="bi bi-person-check-fill me-2 text-danger" aria-hidden="true"></i>Einsatzabteilung (17–65 Jahre)</span>
                                         <span class="badge bg-danger rounded-pill">{beispielWehr.einsatzabteilung.kameraden.size}</span>
                                     </li>
                                     <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
-                                        <span><i class="bi bi-award me-2 text-warning"></i>Alters- & Ehrenabteilung (&gt;65 Jahre)</span>
+                                        <span><i class="bi bi-award me-2 text-warning" aria-hidden="true"></i>Alters- & Ehrenabteilung (&gt;65 Jahre)</span>
                                         <span class="badge bg-secondary rounded-pill">{beispielWehr.altersUndEhrenabteilung.kameraden.size}</span>
                                     </li>
                                 </ul>
@@ -263,10 +263,10 @@
                         <!-- Liegenschaften & Gebäude -->
                         <div class="col-lg-4">
                             <div class="border rounded-3 p-3 bg-light h-100">
-                                <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center">
-                                    <i class="bi bi-geo-alt-fill me-2 text-success"></i>Liegenschaften
+                                <h3 class="h6 fw-bold text-secondary mb-3 d-flex align-items-center">
+                                    <i class="bi bi-geo-alt-fill me-2 text-success" aria-hidden="true"></i>Liegenschaften
                                     & Standorte
-                                </h6>
+                                </h3>
                                 {#if beispielWehr.gebaeude.isEmpty}
                                     <p class="text-muted small mb-0">Keine Gebäude eingetragen.</p>
                                 {#else}
@@ -276,7 +276,7 @@
                                                 <div class="fw-semibold">{g.bezeichnung}</div>
                                                 {#if g.adresse}
                                                     <small class="text-muted">
-                                                        <i class="bi bi-pin-map me-1"></i>{g.adresse.strasse} {g.adresse.hausnummer}
+                                                        <i class="bi bi-pin-map me-1" aria-hidden="true"></i>{g.adresse.strasse} {g.adresse.hausnummer}
                                                         , {g.adresse.postleitzahl} {g.adresse.ort}
                                                     </small>
                                                 {/if}
@@ -291,14 +291,14 @@
                         <div id="fahrzeuge" class="col-lg-4">
                             <div class="border rounded-3 p-3 bg-light h-100">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold text-secondary mb-0 d-flex align-items-center">
-                                        <i class="bi bi-truck me-2 text-warning"></i>Zugeordnete
+                                    <h3 class="h6 fw-bold text-secondary mb-0 d-flex align-items-center">
+                                        <i class="bi bi-truck me-2 text-warning" aria-hidden="true"></i>Zugeordnete
                                         Einsatzfahrzeuge
-                                    </h6>
+                                    </h3>
                                     <button type="button"
                                             class="btn btn-sm btn-outline-warning text-dark fw-semibold"
                                             data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
-                                        <i class="bi bi-plus-lg me-1"></i>Hinzufügen
+                                        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Hinzufügen
                                     </button>
                                 </div>
                                 {#if fahrzeuge.isEmpty}
@@ -322,9 +322,10 @@
                                                     <button type="button"
                                                             class="btn btn-outline-secondary btn-sm"
                                                             title="Fahrzeug bearbeiten"
+                                                            aria-label="Einsatzfahrzeug {fz.kennung} bearbeiten"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#editFahrzeugModal_{fz.id}">
-                                                        <i class="bi bi-pencil"></i>
+                                                        <i class="bi bi-pencil" aria-hidden="true"></i>
                                                     </button>
                                                     <form action="/fahrzeuge/loeschen" method="post"
                                                           class="d-inline">
@@ -332,8 +333,9 @@
                                                                value="{fz.id}">
                                                         <button type="submit"
                                                                 class="btn btn-outline-danger btn-sm"
-                                                                title="Fahrzeug entfernen">
-                                                            <i class="bi bi-trash3"></i>
+                                                                title="Fahrzeug entfernen"
+                                                                aria-label="Einsatzfahrzeug {fz.kennung} entfernen">
+                                                            <i class="bi bi-trash3" aria-hidden="true"></i>
                                                         </button>
                                                     </form>
                                                 </div>
@@ -349,7 +351,7 @@
                                                         <div class="modal-header bg-secondary text-white">
                                                             <h5 class="modal-title fw-bold"
                                                                 id="editFahrzeugModalLabel_{fz.id}">
-                                                                <i class="bi bi-pencil-square me-2"></i>Einsatzfahrzeug
+                                                                <i class="bi bi-pencil-square me-2" aria-hidden="true"></i>Einsatzfahrzeug
                                                                 bearbeiten
                                                             </h5>
                                                             <button type="button"
@@ -364,19 +366,21 @@
                                                             <div class="modal-body p-4">
                                                                 <div class="row g-3 mb-3">
                                                                     <div class="col-md-6">
-                                                                        <label class="form-label fw-semibold">Funkkennung
+                                                                        <label for="editKennung_{fz.id}" class="form-label fw-semibold">Funkkennung
                                                                             / Kennzeichen <span
                                                                                     class="text-danger">*</span></label>
                                                                         <input type="text"
                                                                                class="form-control"
+                                                                               id="editKennung_{fz.id}"
                                                                                name="kennung"
                                                                                value="{fz.kennung}"
                                                                                required>
                                                                     </div>
                                                                     <div class="col-md-6">
-                                                                        <label class="form-label fw-semibold">Fahrzeugtyp
+                                                                        <label for="editFahrzeugtyp_{fz.id}" class="form-label fw-semibold">Fahrzeugtyp
                                                                             (DIN 14530)</label>
                                                                         <select class="form-select"
+                                                                                id="editFahrzeugtyp_{fz.id}"
                                                                                 name="fahrzeugtyp">
                                                                             <option value="TSF"
                                                                                     {#if fz.fahrzeugtyp == 'TSF'}selected{/if}>
@@ -451,11 +455,12 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="mb-3">
-                                                                    <label class="form-label fw-semibold">Individuelle
+                                                                    <label for="editBezeichnung_{fz.id}" class="form-label fw-semibold">Individuelle
                                                                         Bezeichnung
                                                                         (optional)</label>
                                                                     <input type="text"
                                                                            class="form-control"
+                                                                           id="editBezeichnung_{fz.id}"
                                                                            name="bezeichnung"
                                                                            value="{fz.bezeichnung}">
                                                                 </div>
@@ -468,7 +473,7 @@
                                                                 </button>
                                                                 <button type="submit"
                                                                         class="btn btn-primary"><i
-                                                                            class="bi bi-save me-1"></i>Änderungen
+                                                                            class="bi bi-save me-1" aria-hidden="true"></i>Änderungen
                                                                     speichern
                                                                 </button>
                                                             </div>
@@ -490,22 +495,22 @@
         <div id="kameraden" class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <div>
-                    <h5 class="mb-0 fw-bold text-dark">
-                        <i class="bi bi-people-fill text-primary me-2"></i>Kameradinnen & Kameraden
+                    <h2 class="h5 mb-0 fw-bold text-dark">
+                        <i class="bi bi-people-fill text-primary me-2" aria-hidden="true"></i>Kameradinnen & Kameraden
                         ({anzahlKameraden})
-                    </h5>
+                    </h2>
                     <small class="text-muted">Mitgliederübersicht mit automatischer
                         Abteilungseinteilung nach Alter</small>
                 </div>
                 <button type="button" class="btn btn-feuerwehr shadow-sm" data-bs-toggle="modal"
                         data-bs-target="#kameradModal">
-                    <i class="bi bi-person-plus-fill me-1"></i> Kamerad aufnehmen
+                    <i class="bi bi-person-plus-fill me-1" aria-hidden="true"></i> Kamerad aufnehmen
                 </button>
             </div>
             <div class="card-body p-0">
                 {#if kameraden.isEmpty}
                     <div class="text-center py-5 text-muted">
-                        <i class="bi bi-person-slash fs-1 d-block mb-2 text-secondary"></i>
+                        <i class="bi bi-person-slash fs-1 d-block mb-2 text-secondary" aria-hidden="true"></i>
                         <p class="mb-0">Noch keine Kameradinnen und Kameraden erfasst.</p>
                     </div>
                 {#else}
@@ -541,15 +546,15 @@
                                     <td>
                                         {#if beispielWehr.jugendabteilung.kameraden.contains(k)}
                                             <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
-                                        <i class="bi bi-person-heart me-1"></i>Jugendabteilung
+                                        <i class="bi bi-person-heart me-1" aria-hidden="true"></i>Jugendabteilung
                                     </span>
                                         {#else if beispielWehr.einsatzabteilung.kameraden.contains(k)}
                                             <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
-                                        <i class="bi bi-person-check-fill me-1"></i>Einsatzabteilung
+                                        <i class="bi bi-person-check-fill me-1" aria-hidden="true"></i>Einsatzabteilung
                                     </span>
                                         {#else if beispielWehr.altersUndEhrenabteilung.kameraden.contains(k)}
                                             <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1">
-                                        <i class="bi bi-award me-1"></i>Alters- & Ehrenabteilung
+                                        <i class="bi bi-award me-1" aria-hidden="true"></i>Alters- & Ehrenabteilung
                                     </span>
                                         {#else}
                                             <span class="badge bg-light text-dark border">
@@ -588,7 +593,7 @@
                                         {#if k.geburtsdatum}
                                             <div class="fw-semibold">{k.berechneAlter()} Jahre</div>
                                             <small class="text-muted"><i
-                                                        class="bi bi-calendar-event me-1"></i>{k.geburtsdatum}
+                                                        class="bi bi-calendar-event me-1" aria-hidden="true"></i>{k.geburtsdatum}
                                             </small>
                                         {#else}
                                             <span class="text-muted small">Nicht angegeben</span>
@@ -607,13 +612,13 @@
                                             {#if k.telefonnummer}
                                                 <a href="tel:{k.telefonnummer}"
                                                    class="text-decoration-none text-dark">
-                                                    <i class="bi bi-telephone text-primary me-1"></i>{k.telefonnummer}
+                                                    <i class="bi bi-telephone text-primary me-1" aria-hidden="true"></i>{k.telefonnummer}
                                                 </a>
                                             {/if}
                                             {#if k.emailAdresse}
                                                 <a href="mailto:{k.emailAdresse}"
                                                    class="text-decoration-none text-muted">
-                                                    <i class="bi bi-envelope text-danger me-1"></i>{k.emailAdresse}
+                                                    <i class="bi bi-envelope text-danger me-1" aria-hidden="true"></i>{k.emailAdresse}
                                                 </a>
                                             {/if}
                                             {#if ! k.telefonnummer && ! k.emailAdresse}
@@ -624,17 +629,20 @@
                                     <td class="pe-3 text-end text-nowrap">
                                         <button type="button"
                                                 class="btn btn-outline-secondary btn-sm"
-                                                title="Kamerad bearbeiten" data-bs-toggle="modal"
+                                                title="Kamerad bearbeiten"
+                                                aria-label="Kamerad {k.vorname} {k.nachname} bearbeiten"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#editKameradModal_{k.id}">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
                                         </button>
                                         <form action="/kameraden/entfernen" method="post"
                                               class="d-inline">
                                             <input type="hidden" name="kameradId" value="{k.id}">
                                             <button type="submit"
                                                     class="btn btn-outline-danger btn-sm"
-                                                    title="Kamerad entfernen">
-                                                <i class="bi bi-trash3"></i>
+                                                    title="Kamerad entfernen"
+                                                    aria-label="Kamerad {k.vorname} {k.nachname} entfernen">
+                                                <i class="bi bi-trash3" aria-hidden="true"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -653,7 +661,7 @@
                                     <div class="modal-header bg-secondary text-white">
                                         <h5 class="modal-title fw-bold"
                                             id="editKameradModalLabel_{k.id}">
-                                            <i class="bi bi-pencil-square me-2"></i>Kamerad
+                                            <i class="bi bi-pencil-square me-2" aria-hidden="true"></i>Kamerad
                                             bearbeiten
                                         </h5>
                                         <button type="button" class="btn-close btn-close-white"
@@ -665,14 +673,14 @@
                                         <div class="modal-body p-4">
                                             <div class="alert alert-info py-2 small d-flex align-items-center mb-4"
                                                  role="alert">
-                                                <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                                <i class="bi bi-info-circle-fill me-2 fs-5" aria-hidden="true"></i>
                                                 <span>Bei Änderung des Geburtsdatums wird die <strong>Einsatzabteilung</strong> automatisch neu ermittelt.</span>
                                             </div>
 
-                                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                                <i class="bi bi-person-lines-fill me-1 text-danger"></i>
+                                            <h3 class="h6 fw-bold text-secondary mb-3 border-bottom pb-2">
+                                                <i class="bi bi-person-lines-fill me-1 text-danger" aria-hidden="true"></i>
                                                 1. Persönliche Angaben
-                                            </h6>
+                                            </h3>
                                             <div class="row g-3 mb-4">
                                                 <div class="col-md-6">
                                                     <label for="editVorname_{k.id}"
@@ -680,7 +688,7 @@
                                                         <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control"
                                                            id="editVorname_{k.id}" name="vorname"
-                                                           value="{k.vorname}" required>
+                                                           value="{k.vorname}" autocomplete="given-name" required>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="editNachname_{k.id}"
@@ -688,7 +696,7 @@
                                                         <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control"
                                                            id="editNachname_{k.id}" name="nachname"
-                                                           value="{k.nachname}" required>
+                                                           value="{k.nachname}" autocomplete="family-name" required>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="editGeburtsdatum_{k.id}"
@@ -696,20 +704,22 @@
                                                     <input type="date" class="form-control"
                                                            id="editGeburtsdatum_{k.id}"
                                                            name="geburtsdatum"
+                                                           autocomplete="bday"
                                                            value="{#if k.geburtsdatum}{k.geburtsdatum}{/if}">
                                                 </div>
                                             </div>
 
-                                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                                <i class="bi bi-house-door-fill me-1 text-success"></i>
+                                            <h3 class="h6 fw-bold text-secondary mb-3 border-bottom pb-2">
+                                                <i class="bi bi-house-door-fill me-1 text-success" aria-hidden="true"></i>
                                                 2. Anschrift
-                                            </h6>
+                                            </h3>
                                             <div class="row g-3 mb-4">
                                                 <div class="col-md-8">
                                                     <label for="editStrasse_{k.id}"
                                                            class="form-label fw-semibold">Straße</label>
                                                     <input type="text" class="form-control"
                                                            id="editStrasse_{k.id}" name="strasse"
+                                                           autocomplete="street-address"
                                                            value="{#if k.adresse}{k.adresse.strasse}{/if}">
                                                 </div>
                                                 <div class="col-md-4">
@@ -718,6 +728,7 @@
                                                     <input type="text" class="form-control"
                                                            id="editHausnummer_{k.id}"
                                                            name="hausnummer"
+                                                           autocomplete="address-line2"
                                                            value="{#if k.adresse}{k.adresse.hausnummer}{/if}">
                                                 </div>
                                                 <div class="col-md-4">
@@ -725,6 +736,7 @@
                                                            class="form-label fw-semibold">Postleitzahl</label>
                                                     <input type="text" class="form-control"
                                                            id="editPlz_{k.id}" name="postleitzahl"
+                                                           autocomplete="postal-code"
                                                            value="{#if k.adresse}{k.adresse.postleitzahl}{/if}">
                                                 </div>
                                                 <div class="col-md-8">
@@ -732,14 +744,15 @@
                                                            class="form-label fw-semibold">Wohnort</label>
                                                     <input type="text" class="form-control"
                                                            id="editOrt_{k.id}" name="ort"
+                                                           autocomplete="address-level2"
                                                            value="{#if k.adresse}{k.adresse.ort}{/if}">
                                                 </div>
                                             </div>
 
-                                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                                <i class="bi bi-telephone-fill me-1 text-primary"></i>
+                                            <h3 class="h6 fw-bold text-secondary mb-3 border-bottom pb-2">
+                                                <i class="bi bi-telephone-fill me-1 text-primary" aria-hidden="true"></i>
                                                 3. Kontaktdaten & Erreichbarkeit
-                                            </h6>
+                                            </h3>
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label for="editTelefon_{k.id}"
@@ -747,10 +760,11 @@
                                                         / Mobil</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i
-                                                                    class="bi bi-telephone"></i></span>
+                                                                    class="bi bi-telephone" aria-hidden="true"></i></span>
                                                         <input type="tel" class="form-control"
                                                                id="editTelefon_{k.id}"
                                                                name="telefonnummer"
+                                                               autocomplete="tel"
                                                                value="{#if k.telefonnummer}{k.telefonnummer}{/if}">
                                                     </div>
                                                 </div>
@@ -759,26 +773,27 @@
                                                            class="form-label fw-semibold">E-Mail-Adresse</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i
-                                                                    class="bi bi-envelope"></i></span>
+                                                                    class="bi bi-envelope" aria-hidden="true"></i></span>
                                                         <input type="email" class="form-control"
                                                                id="editEmail_{k.id}"
                                                                name="emailAdresse"
+                                                               autocomplete="email"
                                                                value="{#if k.emailAdresse}{k.emailAdresse}{/if}">
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <h6 class="fw-bold text-secondary mb-3 mt-4 border-bottom pb-2">
-                                                <i class="bi bi-mortarboard-fill me-1 text-warning"></i>
+                                            <h3 class="h6 fw-bold text-secondary mb-3 mt-4 border-bottom pb-2">
+                                                <i class="bi bi-mortarboard-fill me-1 text-warning" aria-hidden="true"></i>
                                                 4. Ausbildungen & Qualifikationen (FwDV 2)
-                                            </h6>
+                                            </h3>
                                             <div class="mb-2">
                                                 <p class="text-muted small mb-3">Wählen Sie die absolvierten Ausbildungen und Lehrgänge des Kameraden gemäß Feuerwehr-Dienstvorschrift 2 (FwDV 2) aus:</p>
 
                                                 <!-- Truppausbildung -->
                                                 <div class="card mb-3 border-primary-subtle bg-light-subtle">
                                                     <div class="card-header bg-primary-subtle py-2">
-                                                        <strong class="text-primary small"><i class="bi bi-people-fill me-1"></i> Truppausbildung (FwDV 2 Ziffer 2)</strong>
+                                                        <strong class="text-primary small"><i class="bi bi-people-fill me-1" aria-hidden="true"></i> Truppausbildung (FwDV 2 Ziffer 2)</strong>
                                                     </div>
                                                     <div class="card-body py-2">
                                                         <div class="row g-2">
@@ -1023,31 +1038,31 @@
                                 Kontaktdaten erfassen.</p>
                             <button type="button" class="btn btn-sm btn-primary w-100"
                                     data-bs-toggle="modal" data-bs-target="#kameradModal">
-                                <i class="bi bi-plus-circle me-1"></i> Aufnehmen
+                                <i class="bi bi-plus-circle me-1" aria-hidden="true"></i> Aufnehmen
                             </button>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="p-3 border rounded-3 text-center h-100">
-                            <i class="bi bi-truck-front text-warning fs-1 mb-2"></i>
-                            <h6 class="fw-bold">Fahrzeug zuweisen</h6>
+                            <i class="bi bi-truck-front text-warning fs-1 mb-2" aria-hidden="true"></i>
+                            <h3 class="h6 fw-bold">Fahrzeug zuweisen</h3>
                             <p class="text-muted small">DIN-14530-Einsatzfahrzeug der Wehr
                                 zuordnen.</p>
                             <button type="button"
                                     class="btn btn-sm btn-warning text-dark fw-semibold w-100"
                                     data-bs-toggle="modal" data-bs-target="#fahrzeugModal">
-                                <i class="bi bi-plus-circle me-1"></i> Hinzufügen
+                                <i class="bi bi-plus-circle me-1" aria-hidden="true"></i> Hinzufügen
                             </button>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="p-3 border rounded-3 text-center h-100">
-                            <i class="bi bi-building-add text-success fs-1 mb-2"></i>
-                            <h6 class="fw-bold">Gebäude anlegen</h6>
+                            <i class="bi bi-building-add text-success fs-1 mb-2" aria-hidden="true"></i>
+                            <h3 class="h6 fw-bold">Gebäude anlegen</h3>
                             <p class="text-muted small">Gerätehaus oder Liegenschaft mit Adresse
                                 hinterlegen.</p>
                             <button class="btn btn-sm btn-outline-success w-100 disabled"
-                                    title="In Kürze verfügbar">Anlegen
+                                    title="In Kürze verfügbar" aria-disabled="true">Anlegen
                             </button>
                         </div>
                     </div>
@@ -1062,7 +1077,7 @@
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header bg-feuerwehr text-white">
                         <h5 class="modal-title fw-bold" id="kameradModalLabel">
-                            <i class="bi bi-person-plus-fill me-2"></i>Neuen Kameraden / Kameradin
+                            <i class="bi bi-person-plus-fill me-2" aria-hidden="true"></i>Neuen Kameraden / Kameradin
                             aufnehmen
                         </h5>
                         <button type="button" class="btn-close btn-close-white"
@@ -1072,97 +1087,106 @@
                         <div class="modal-body p-4">
                             <div class="alert alert-info py-2 small d-flex align-items-center mb-4"
                                  role="alert">
-                                <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                <i class="bi bi-info-circle-fill me-2 fs-5" aria-hidden="true"></i>
                                 <span>Die Zuordnung zur passenden <strong>Einsatzabteilung</strong> (Jugendwehr bis 16 Jahre, Einsatzabteilung 17–65 Jahre, Alters- und Ehrenabteilung &gt;65 Jahre) erfolgt vollautomatisch anhand des Geburtsdatums.</span>
                             </div>
 
-                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                <i class="bi bi-person-lines-fill me-1 text-danger"></i> 1.
+                            <h3 class="h6 fw-bold text-secondary mb-3 border-bottom pb-2">
+                                <i class="bi bi-person-lines-fill me-1 text-danger" aria-hidden="true"></i> 1.
                                 Persönliche Angaben
-                            </h6>
+                            </h3>
                             <div class="row g-3 mb-4">
                                 <div class="col-md-6">
                                     <label for="inputVorname" class="form-label fw-semibold">Vorname
                                         <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="inputVorname"
-                                           name="vorname" placeholder="z. B. Julia" required>
+                                           name="vorname" placeholder="z. B. Julia"
+                                           autocomplete="given-name" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputNachname" class="form-label fw-semibold">Nachname
                                         <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="inputNachname"
-                                           name="nachname" placeholder="z. B. Meier" required>
+                                           name="nachname" placeholder="z. B. Meier"
+                                           autocomplete="family-name" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputGeburtsdatum" class="form-label fw-semibold">Geburtsdatum</label>
                                     <input type="date" class="form-control" id="inputGeburtsdatum"
-                                           name="geburtsdatum">
+                                           name="geburtsdatum"
+                                           autocomplete="bday">
                                     <div class="form-text small">Wird zur automatischen
                                         Abteilungsberechnung benötigt.
                                     </div>
                                 </div>
                             </div>
 
-                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                <i class="bi bi-house-door-fill me-1 text-success"></i> 2. Anschrift
-                            </h6>
+                            <h3 class="h6 fw-bold text-secondary mb-3 border-bottom pb-2">
+                                <i class="bi bi-house-door-fill me-1 text-success" aria-hidden="true"></i> 2. Anschrift
+                            </h3>
                             <div class="row g-3 mb-4">
                                 <div class="col-md-8">
                                     <label for="inputStrasse"
                                            class="form-label fw-semibold">Straße</label>
                                     <input type="text" class="form-control" id="inputStrasse"
-                                           name="strasse" placeholder="z. B. Lindenallee">
+                                           name="strasse" placeholder="z. B. Lindenallee"
+                                           autocomplete="street-address">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inputHausnummer" class="form-label fw-semibold">Hausnummer</label>
                                     <input type="text" class="form-control" id="inputHausnummer"
-                                           name="hausnummer" placeholder="z. B. 12a">
+                                           name="hausnummer" placeholder="z. B. 12a"
+                                           autocomplete="address-line2">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inputPlz" class="form-label fw-semibold">Postleitzahl</label>
                                     <input type="text" class="form-control" id="inputPlz"
-                                           name="postleitzahl" placeholder="z. B. 12345">
+                                           name="postleitzahl" placeholder="z. B. 12345"
+                                           autocomplete="postal-code">
                                 </div>
                                 <div class="col-md-8">
                                     <label for="inputOrt"
                                            class="form-label fw-semibold">Wohnort</label>
                                     <input type="text" class="form-control" id="inputOrt" name="ort"
-                                           placeholder="z. B. Musterstadt">
+                                           placeholder="z. B. Musterstadt"
+                                           autocomplete="address-level2">
                                 </div>
                             </div>
 
-                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">
-                                <i class="bi bi-telephone-fill me-1 text-primary"></i> 3.
+                            <h3 class="h6 fw-bold text-secondary mb-3 border-bottom pb-2">
+                                <i class="bi bi-telephone-fill me-1 text-primary" aria-hidden="true"></i> 3.
                                 Kontaktdaten & Erreichbarkeit
-                            </h6>
+                            </h3>
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label for="inputTelefon" class="form-label fw-semibold">Telefonnummer
                                         / Mobil</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i
-                                                    class="bi bi-telephone"></i></span>
+                                                    class="bi bi-telephone" aria-hidden="true"></i></span>
                                         <input type="tel" class="form-control" id="inputTelefon"
                                                name="telefonnummer"
-                                               placeholder="z. B. 0171 9876543">
+                                               placeholder="z. B. 0171 9876543"
+                                               autocomplete="tel">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputEmail" class="form-label fw-semibold">E-Mail-Adresse</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i
-                                                    class="bi bi-envelope"></i></span>
+                                                    class="bi bi-envelope" aria-hidden="true"></i></span>
                                         <input type="email" class="form-control" id="inputEmail"
                                                name="emailAdresse"
-                                               placeholder="z. B. julia.meier@feuerwehr.de">
+                                               placeholder="z. B. julia.meier@feuerwehr.de"
+                                               autocomplete="email">
                                     </div>
                                 </div>
                             </div>
 
-                            <h6 class="fw-bold text-secondary mb-3 mt-4 border-bottom pb-2">
-                                <i class="bi bi-mortarboard-fill me-1 text-warning"></i> 4.
+                            <h3 class="h6 fw-bold text-secondary mb-3 mt-4 border-bottom pb-2">
+                                <i class="bi bi-mortarboard-fill me-1 text-warning" aria-hidden="true"></i> 4.
                                 Ausbildungen & Qualifikationen (FwDV 2)
-                            </h6>
+                            </h3>
                             <div class="mb-2">
                                 <p class="text-muted small mb-3">Wählen Sie die bereits absolvierten Ausbildungen und Lehrgänge des Kameraden gemäß Feuerwehr-Dienstvorschrift 2 (FwDV 2) aus:</p>
 
@@ -1372,7 +1396,7 @@
                                     data-bs-dismiss="modal">Abbrechen
                             </button>
                             <button type="submit" class="btn btn-feuerwehr shadow-sm px-4">
-                                <i class="bi bi-check-lg me-1"></i> Kamerad aufnehmen
+                                <i class="bi bi-check-lg me-1" aria-hidden="true"></i> Kamerad aufnehmen
                             </button>
                         </div>
                     </form>
@@ -1387,7 +1411,7 @@
                 <div class="modal-content border-0 shadow">
                     <div class="modal-header bg-warning text-dark">
                         <h5 class="modal-title fw-bold" id="fahrzeugModalLabel">
-                            <i class="bi bi-truck me-2"></i>Neues Einsatzfahrzeug zur Wehr
+                            <i class="bi bi-truck me-2" aria-hidden="true"></i>Neues Einsatzfahrzeug zur Wehr
                             hinzufügen
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -1397,7 +1421,7 @@
                         <div class="modal-body p-4">
                             <div class="alert alert-info py-2 small d-flex align-items-center mb-4"
                                  role="alert">
-                                <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                <i class="bi bi-info-circle-fill me-2 fs-5" aria-hidden="true"></i>
                                 <span>Einsatzfahrzeuge werden gemäß <strong>DIN 14530</strong> typisiert. Technische Eigenschaften (Löschwasser, Besatzung, Pumpe etc.) werden automatisch vom gewählten Typ abgeleitet.</span>
                             </div>
 
@@ -1462,7 +1486,7 @@
                             </button>
                             <button type="submit"
                                     class="btn btn-warning text-dark fw-semibold px-4">
-                                <i class="bi bi-plus-circle me-1"></i> Fahrzeug hinzufügen
+                                <i class="bi bi-plus-circle me-1" aria-hidden="true"></i> Fahrzeug hinzufügen
                             </button>
                         </div>
                     </form>
@@ -1471,14 +1495,15 @@
         </div>
 
         <!-- Architektur- & Technologie-Infobox -->
+        <h2 class="visually-hidden">System- und Architekturinformationen</h2>
         <div class="row g-4">
             <div class="col-md-6">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body">
-                        <h6 class="fw-bold mb-3 d-flex align-items-center">
-                            <i class="bi bi-shield-lock-fill text-danger me-2"></i>Architektur &
+                        <h3 class="h6 fw-bold mb-3 d-flex align-items-center">
+                            <i class="bi bi-shield-lock-fill text-danger me-2" aria-hidden="true"></i>Architektur &
                             DDD-Design
-                        </h6>
+                        </h3>
                         <p class="text-muted small">
                             Die Anwendung basiert auf <strong>Clean Architecture</strong> und
                             <strong>Domain-Driven Design</strong>.
@@ -1498,10 +1523,10 @@
             <div class="col-md-6">
                 <div class="card shadow-sm border-0 h-100">
                     <div class="card-body">
-                        <h6 class="fw-bold mb-3 d-flex align-items-center">
-                            <i class="bi bi-window-fullscreen text-info me-2"></i>UI-Architektur
+                        <h3 class="h6 fw-bold mb-3 d-flex align-items-center">
+                            <i class="bi bi-window-fullscreen text-info me-2" aria-hidden="true"></i>UI-Architektur
                             (ADR-05)
-                        </h6>
+                        </h3>
                         <p class="text-muted small">
                             Server-Side Rendering mit <strong>Quarkus Qute</strong> und dynamische
                             Interaktionen über <strong>HTMX</strong>.

@@ -2,7 +2,6 @@ package de.eichstaedt.ortswehrfuehrer.adapter.web;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import de.eichstaedt.ortswehrfuehrer.application.AnmeldungApplicationService;
@@ -155,5 +154,33 @@ class IndexControllerTest {
 
     TemplateInstance mitParams = controller.index("kamerad_hinzugefuegt", null);
     assertNotNull(mitParams);
+  }
+
+  @Test
+  @DisplayName("Barrierefreiheit: Startseite enthält Skip-Link, Überschriftenhierarchie, for/id-Verknüpfungen, Autocomplete und ARIA")
+  void testIndexBarrierefreiheit() {
+    String html = given()
+        .cookie(AnmeldungController.SITZUNG_COOKIE_NAME, sitzungsId)
+        .when()
+        .get("/")
+        .then()
+        .statusCode(200)
+        .contentType(ContentType.HTML)
+        .extract().asString();
+
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("<html lang=\"de\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("href=\"#main-content\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("id=\"main-content\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Statistik-Übersicht"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("autocomplete=\"given-name\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("autocomplete=\"family-name\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("autocomplete=\"bday\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("autocomplete=\"street-address\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("aria-label=\"Kamerad"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("aria-label=\"Einsatzfahrzeug"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("aria-hidden=\"true\""));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("id=\"editKennung_"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("for=\"editKennung_"));
+    org.junit.jupiter.api.Assertions.assertTrue(html.contains("Erklärung zur Barrierefreiheit"));
   }
 }

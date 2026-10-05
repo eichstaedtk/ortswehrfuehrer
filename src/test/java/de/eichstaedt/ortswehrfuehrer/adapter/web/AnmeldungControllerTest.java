@@ -209,6 +209,25 @@ class AnmeldungControllerTest {
                 .body(containsString("btnNavAbmelden"));
     }
 
+    @Test
+    @DisplayName("Barrierefreiheit: Anmeldeseite enthält Skip-Link, Autocomplete, korrekte Überschriftenhierarchie und ARIA")
+    void testAnmeldungBarrierefreiheit() {
+        given()
+                .when()
+                .get("/anmeldung")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.HTML)
+                .body(containsString("<html lang=\"de\""))
+                .body(containsString("href=\"#main-content\""))
+                .body(containsString("id=\"main-content\""))
+                .body(containsString("autocomplete=\"username\""))
+                .body(containsString("autocomplete=\"current-password\""))
+                .body(containsString("<h1 class=\"h4 mb-0 fw-bold\">Ortswehrführer Anmeldung</h1>"))
+                .body(containsString("aria-hidden=\"true\""))
+                .body(containsString("Erklärung zur Barrierefreiheit"));
+    }
+
     private void assertEqualsUser(String expectedUsername, Benutzer benutzer) {
         assertNotNull(benutzer);
         org.junit.jupiter.api.Assertions.assertEquals(expectedUsername, benutzer.benutzername());

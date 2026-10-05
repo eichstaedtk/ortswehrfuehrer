@@ -7,16 +7,16 @@
     <div class="col-12 col-md-8 col-lg-5">
         <div class="card shadow border-0">
             <div class="card-header bg-feuerwehr text-white text-center py-4">
-                <i class="bi bi-shield-lock-fill fs-1 d-block mb-2 text-warning"></i>
-                <h3 class="h4 mb-0 fw-bold">Ortswehrführer Anmeldung</h3>
+                <i class="bi bi-shield-lock-fill fs-1 d-block mb-2 text-warning" aria-hidden="true"></i>
+                <h1 class="h4 mb-0 fw-bold">Ortswehrführer Anmeldung</h1>
                 <p class="small text-white-50 mb-0 mt-1">Bitte melden Sie sich an, um fortzufahren</p>
             </div>
             <div class="card-body p-4 p-md-5 bg-white">
 
                 <!-- Fehler-Feedback -->
                 {#if fehler}
-                <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4" role="alert" aria-live="assertive">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                     {#if fehler == 'ungueltige_anmeldedaten'}
                         <strong>Anmeldung fehlgeschlagen:</strong> Ungültige Anmeldedaten.
                     {#else if fehler == 'fehlende_eingabe'}
@@ -32,8 +32,8 @@
 
                 <!-- Erfolgs-Feedback (z.B. nach Logout) -->
                 {#if erfolg}
-                <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-                    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
+                <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert" aria-live="polite">
+                    <i class="bi bi-check-circle-fill me-2 fs-5 align-middle" aria-hidden="true"></i>
                     {#if erfolg == 'abgemeldet'}
                         Sie wurden erfolgreich abgemeldet.
                     {#else}
@@ -46,35 +46,37 @@
                 <form id="anmeldeFormular" action="/anmeldung" method="POST">
                     <div class="mb-3">
                         <label for="benutzername" class="form-label fw-semibold">
-                            <i class="bi bi-person me-1"></i> Benutzername <span class="text-danger">*</span>
+                            <i class="bi bi-person me-1" aria-hidden="true"></i> Benutzername <span class="text-danger">*</span>
                         </label>
                         <input type="text"
                                class="form-control form-control-lg"
                                id="benutzername"
                                name="benutzername"
                                placeholder="z. B. owf oder kamerad"
+                               autocomplete="username"
                                required
                                autofocus>
                     </div>
 
                     <div class="mb-4">
                         <label for="passwort" class="form-label fw-semibold">
-                            <i class="bi bi-key me-1"></i> Passwort <span class="text-danger">*</span>
+                            <i class="bi bi-key me-1" aria-hidden="true"></i> Passwort <span class="text-danger">*</span>
                         </label>
                         <input type="password"
                                class="form-control form-control-lg"
                                id="passwort"
                                name="passwort"
                                placeholder="••••••••"
+                               autocomplete="current-password"
                                required>
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-between pt-2">
                         <a href="/anmeldung/abbrechen" id="btnAbbrechen" class="btn btn-outline-secondary btn-lg px-4 order-2 order-md-1">
-                            <i class="bi bi-x-circle me-1"></i> Abbrechen
+                            <i class="bi bi-x-circle me-1" aria-hidden="true"></i> Abbrechen
                         </a>
                         <button type="submit" id="btnAnmelden" class="btn btn-feuerwehr btn-lg px-4 order-1 order-md-2">
-                            <i class="bi bi-box-arrow-in-right me-1"></i> Anmelden (OK)
+                            <i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i> Anmelden (OK)
                         </button>
                     </div>
                 </form>
