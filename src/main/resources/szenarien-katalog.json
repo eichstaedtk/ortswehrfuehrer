@@ -1,0 +1,413 @@
+{
+  "vorlagen": [
+    {
+      "id": "LOESCHUEBUNG_INNENANGRIFF",
+      "art": "LOESCHUEBUNG",
+      "titel": "Brand mit Menschenrettung – {ort}",
+      "alarmstichwort": "B2 - Gebäudebrand / Zimmerbrand",
+      "ausgangslage": "Gemeldeter Zimmerbrand im 1. Obergeschoss des Objekts {ort}. Starke Rauchentwicklung aus zwei Fenstern. 1 Person im Gebäude vermisst. Wasserentnahmestelle: Unterflurhydrant vor dem Gebäude.",
+      "schadenslage": "Rauchentwicklung breitet sich in den Treppenraum aus. Brandherd im Schlafzimmer. Keine sichtbaren Flammen im Außenbereich.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur Menschenrettung und Brandbekämpfung",
+          "mittel": "1. C-Rohr unter Atemschutz",
+          "ziel": "in das 1. Obergeschoss",
+          "weg": "über Treppenraum",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "als Sicherheitstrupp unter Atemschutz und zur Herstellung der Wasserversorgung",
+          "mittel": "Standrohr und B-Leitung",
+          "ziel": "vom Unterflurhydranten zum Fahrzeug",
+          "weg": "über Gehweg",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zur Riegelstellung und Vorbereitung der Belüftung",
+          "mittel": "2. C-Rohr und Drucklüfter",
+          "ziel": "zum Hauseingang und Nachbargrundstück",
+          "weg": "über Vorgarten",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Melder",
+          "auftrag": "zur Lagefeststellung und Unterstützung des Gruppenführers",
+          "mittel": "Handfunkgerät und Dokumentationsmappe",
+          "ziel": "an der Einsatzstelle",
+          "weg": "über Einsatzabschnitt 1",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Bereitstellung von Löschwasser und Überwachung der Pumpe",
+          "mittel": "Feuerlöschkreiselpumpe und Verteiler",
+          "ziel": "am Einsatzfahrzeug",
+          "weg": "über Straßenrand",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Vermisste Person im Flur aufgefunden und an Rettungsdienst übergeben.",
+          "erwarteteMassnahme": "Notfallmeldung an Einheitsführer, weitere Brandbekämpfung fortsetzen."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Feuer unter Kontrolle, Nachlöscharbeiten mit Wärmebildkamera.",
+          "erwarteteMassnahme": "Belüftung des Gebäudes einleiten und Brandgut ins Freie bringen.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Druckabfall im Hydrantennetz – Wasserversorgung gefährdet.",
+          "erwarteteMassnahme": "Wasserpuffer im Tank nutzen und zweite Leitung vom offenen Gewässer vorbereiten.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        },
+        {
+          "nachMinuten": 30,
+          "ereignis": "Meldung einer Verpuffung im Nebenraum – Nullsicht im 1. OG.",
+          "erwarteteMassnahme": "Rückzugsweg prüfen, Sicherheitstrupp in Bereitschaft halten, Lüftung einleiten.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "FwDV 7",
+          "kategorie": "Atemschutz",
+          "hinweisText": "Lückenlose Atemschutzüberwachung (Zeit, Druck, Standort) vor dem Betreten des Gefahrenbereichs durchführen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Rückzugsweg freihalten, Schlauchreserven im Treppenraum knickfrei auslegen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "FwDV 3",
+          "kategorie": "Taktik",
+          "hinweisText": "Sicherheitstrupp steht voll ausgerüstet mit angeschlossenem PA am Verteiler bereit.",
+          "kritisch": true
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Führung",
+          "kriterien": "Vollständiger FwDV-3-Einsatzbefehl (Einheit, Auftrag, Mittel, Ziel, Weg) gegeben",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Atemschutz",
+          "kriterien": "Atemschutzüberwachung korrekt dokumentiert und Funkprüfung erfolgt",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Sicherheit",
+          "kriterien": "Sicherheitstrupp einsatzbereit am Verteiler positioniert",
+          "punkte": 2
+        },
+        {
+          "kategorie": "Wasserversorgung",
+          "kriterien": "Stabile Löschwasserversorgung vor dem Vorgehen des AT gesichert",
+          "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "LOESCHUEBUNG_AUSSENANGRIFF",
+      "art": "LOESCHUEBUNG",
+      "titel": "Gebäudebrand Außenangriff & Riegelstellung – {ort}",
+      "alarmstichwort": "B2 - Schuppenbrand / Außenangriff",
+      "ausgangslage": "Vollbrand eines freistehenden Schuppens und Anbaus bei {ort}. Keine Personen im Gebäude. Gefahr des Übergreifens auf angrenzendes Wohnhaus. Eingesetzte Fahrzeuge: {fahrzeuge}.",
+      "schadenslage": "Flammen schlagen aus Dachstuhl. Strahlungswärme gefährdet Nachbargebäude im Abstand von 4 Metern. Offene Wasserentnahme aus Löschteich in 80 m Entfernung.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur Riegelstellung zum Schutz des Nachbargebäudes",
+          "mittel": "1. B-Rohr / C-Hohlstrahlrohr",
+          "ziel": "zur Gebäudewand Ostseite",
+          "weg": "über Einfahrt",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "zur offenen Wasserentnahme und Speisung des Fahrzeugs",
+          "mittel": "4 Saugschläuche, Saugkorb und Leinen",
+          "ziel": "vom Löschteich zum Fahrzeug",
+          "weg": "über Wiese",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zur Brandbekämpfung der Brandstelle von der Westseite",
+          "mittel": "2. C-Rohr",
+          "ziel": "zur Schuppenfront",
+          "weg": "über Garten",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Inbetriebnahme der Saugleitung und Förderung",
+          "mittel": "Saugleitung und Tragkraftspritze/FP",
+          "ziel": "am Fahrzeug / Wasserentnahmestelle",
+          "weg": "über befestigten Weg",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Erfolgreiche Riegelstellung, Ausbreitung auf das Wohnhaus gestoppt.",
+          "erwarteteMassnahme": "Fokus auf Niederschlagen der Flammen im Schuppen richten."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Dachhaut stürzt ein, gezielte Ablöschung von Brandnestern.",
+          "erwarteteMassnahme": "Schaumteppich oder Netzmittel einsetzen.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Ansauggitter verlegt durch Schlamm/Blätter, Förderdruck bricht ein.",
+          "erwarteteMassnahme": "Saugkorb spülen, Saugschutzkorb/Korbhalterung anpassen.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Trümmerschatten und Einsturzbereich bei brennenden Holzstrukturen einhalten (1,5-fache Wandhöhe).",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "FwDV 3",
+          "kategorie": "Löscheinsatz",
+          "hinweisText": "Schutzkleidung gegen Wärmestrahlung vollständig anlegen (Visier, Handschuhe).",
+          "kritisch": false
+        },
+        {
+          "vorschrift": "FwDV 7",
+          "kategorie": "Hinweis",
+          "hinweisText": "Wegen reduzierter AGT-Kapazität ist das Betreten des Gefahrenbereichs streng untersagt.",
+          "kritisch": true
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Taktik",
+          "kriterien": "Schutz des Nachbargebäudes vor Brandbekämpfung priorisiert (Riegelstellung)",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Wasserförderung",
+          "kriterien": "Saugleitung nach FwDV 3 ordnungsgemäß gekuppelt und gesichert",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Sicherheit",
+          "kriterien": "Sicherheitsabstand zum einsturzgefährdeten Dach eingehalten",
+          "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "TH_VU_EINGEKLEMMT",
+      "art": "TECHNISCHE_HILFELEISTUNG",
+      "titel": "THL - Verkehrsunfall mit eingeklemmter Person – {ort}",
+      "alarmstichwort": "H:Hilfeleistung-Klemm / VU mit P-klemmt",
+      "ausgangslage": "PKW in Seitenlage gegen Baum geprallt auf {ort}. 1 Person im Fahrzeug eingeklemmt, ansprechbar aber verletzt. Betriebsmittel laufen aus. Eingesetzte Kräfte mit {fahrzeuge}.",
+      "schadenslage": "Fahrzeug ungesichert auf Fahrerseite. Deformation an B-Säule blockiert Fahrertür. Dämmerung / Dunkelheit erfordert Ausleuchtung.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur Personenbetreuung und Schaffung einer Erstöffnung",
+          "mittel": "Halligan-Tool, Federkörner, Glasmanagement und Decke",
+          "ziel": "zur Heckscheibe / Beifahrerfenster des verunfallten PKW",
+          "weg": "über Straßenbankett",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "zur Absicherung gegen Brandgefahr (zweifacher Brandschutz) und Ausleuchtung der Einsatzstelle",
+          "mittel": "Zweifacher Brandschutz (Pulverlöscher + Schnellangriff/C-Leitung) und Flutlichtstrahler",
+          "ziel": "zur Unfallstelle",
+          "weg": "über rechten Fahrbahnrand",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zur Geräteablage und Unterstützung bei der Stabilisierung",
+          "mittel": "Bereitstellungsplane, Unterbaumaterial (Stab-Fast / Formhölzer) und Hydraulikaggregat",
+          "ziel": "zur Gerätebereitstellungszone",
+          "weg": "über Gehweg",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Melder",
+          "auftrag": "zur Verkehrsabsicherung und Lagemeldung",
+          "mittel": "Warndreieck, Blitzleuchte und Leitkegel",
+          "ziel": "100 m vor die Unfallstelle in Fahrtrichtung",
+          "weg": "über Standstreifen",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Absicherung mit Blaulicht, Warnblinkanlage und Inbetriebnahme des Aggregats",
+          "mittel": "Lichtmast, Bordnetz und Hydraulikaggregat",
+          "ziel": "am Einsatzfahrzeug",
+          "weg": "über Fahrbahn",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Fahrzeug stabilisiert, Notarzt trifft ein und ordnet schonende Rettung an.",
+          "erwarteteMassnahme": "Große Seitenöffnung mittels Schere und Spreizer vorbereiten."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Dachentfernung abgeschlossen, Person achsengerecht über Spineboard befreit.",
+          "erwarteteMassnahme": "Übergabe an Rettungsdienst und Übergabe der Einsatzstelle an Polizei.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Batteriebrand im Motorraum droht durch Kurzschluss.",
+          "erwarteteMassnahme": "Brandschutz aktivieren, Massekabel mit geeignetem Werkzeug kappen.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        },
+        {
+          "nachMinuten": 30,
+          "ereignis": "Zustandsverschlechterung der Person – Notarzt ordnet Sofortrettung (Crash-Rettung) an.",
+          "erwarteteMassnahme": "Taktikwechsel von schonender Rettung auf Sofortrettung mittels Spineboard.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Verkehrsabsicherung und Warnkleidung (Warnweste/Einsatzkleidung Reflex) zwingend anlegen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "FwDV 3",
+          "kategorie": "TH-Einsatz",
+          "hinweisText": "Zweifacher Brandschutz (Wasser/Schaum und Pulver) vor Beginn der technischen Rettung sicherstellen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "DGUV Information 205-010",
+          "kategorie": "Patientengerechte Rettung",
+          "hinweisText": "Airbag-Sicherheitsabstände (Regel 30-60-90) und Gasdruckdämpfer beim Schneiden beachten.",
+          "kritisch": true
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Einsatzstellenhygiene & Ordnung",
+          "kriterien": "Geräteablage nach FwDV 3 sauber aufgebaut",
+          "punkte": 2
+        },
+        {
+          "kategorie": "Sicherheit",
+          "kriterien": "Zweifacher Brandschutz und Verkehrsabsicherung lückenlos errichtet",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Technik",
+          "kriterien": "Fahrzeugstabilisierung wirksam vor Beginn hydraulischer Arbeiten durchgeführt",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Patientenschutz",
+          "kriterien": "Glasmanagement und Patientenschutzplane konsequent angewendet",
+          "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "TH_BASISMASSNAHMEN",
+      "art": "TECHNISCHE_HILFELEISTUNG",
+      "titel": "THL - Sturmschaden & Verkehrsabsicherung – {ort}",
+      "alarmstichwort": "H:Hilfeleistung-Natur / Baum auf Straße",
+      "ausgangslage": "Nach Sturm liegt ein Baum quer über der Fahrbahn bei {ort}. Keine Verletzten. Dunkelheit und Gegenverkehr. Eingesetzte Kräfte mit {fahrzeuge}.",
+      "schadenslage": "Baumkrone blockiert beide Fahrspuren. Äste unter Spannung. Gefahr durch unaufmerksamen Nachfolgeverkehr.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur Erkundung von Spannungen und Beseitigung der Äste",
+          "mittel": "Motorsäge, Schnittschutzkleidung und Fällheber",
+          "ziel": "zur Baumkrone auf der Fahrbahn",
+          "weg": "über Straßenrand",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "zur weiträumigen Verkehrsabsicherung und Ausleuchtung",
+          "mittel": "Warndreiecke, Blitzleuchten, Leitkegel und Flutlichtstrahler",
+          "ziel": "100 m vor und hinter die Einsatzstelle",
+          "weg": "über Seitenstreifen",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Absicherung des Fahrzeugs und Betrieb des Stromerzeugers",
+          "mittel": "Lichtmast und Stromerzeuger",
+          "ziel": "am Fahrzeug",
+          "weg": "über Fahrbahnrand",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Hauptstamm steht unter starker Biegespannung.",
+          "erwarteteMassnahme": "Spannungsschnitt fachgerecht von der Druckseite her ansetzen."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Fahrbahn geräumt und mit Besen von Splittern gereinigt.",
+          "erwarteteMassnahme": "Verkehrsabsicherung abbauen und Rückmeldung an Leitstelle."
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "DGUV Regel 114-018",
+          "kategorie": "Motorsägeneinsatz",
+          "hinweisText": "Vollständige PSA (Schnittschutzhose, Forsthelm mit Visier/Gehörschutz, Schnittschutzschuhe) zwingend tragen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Sicherheitsbereich im doppelten Baumlängenradius beachten.",
+          "kritisch": true
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Sicherheit",
+          "kriterien": "Schnittschutzkleidung vollständig und vor Sägenbeginn angelegt",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Verkehrsabsicherung",
+          "kriterien": "Verkehrsabsicherung ordnungsgemäß positioniert",
+          "punkte": 2
+        },
+        {
+          "kategorie": "Sägetechnik",
+          "kriterien": "Schnitttechnik unter Spannungsbeachtung korrekt ausgeführt",
+          "punkte": 3
+        }
+      ]
+    }
+  ]
+}

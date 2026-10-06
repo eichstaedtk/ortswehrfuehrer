@@ -86,9 +86,7 @@ public class WehrApplicationService {
                 .adresse(new Adresse("Hauptstraße", "12", "12345", "Musterstadt"))
                 .mitAusbildungen(List.of(
                     Ausbildung.TRUPPMANN_TEIL_1,
-                    Ausbildung.TRUPPMANN_TEIL_2,
-                    Ausbildung.SPRECHFUNKER,
-                    Ausbildung.ATEMSCHUTZGERAETETRAEGER
+                    Ausbildung.TRUPPMANN_TEIL_2
                 ))
                 .build(),
             Kamerad.builder()
@@ -96,6 +94,13 @@ public class WehrApplicationService {
                 .nachname("Mezaros")
                 .geburtsdatum(LocalDate.of(2012, 8, 20))
                 .adresse(new Adresse("Rosenweg", "4", "12345", "Musterstadt"))
+                .mitAusbildungen(List.of(
+                    Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPMANN_TEIL_2,
+                    Ausbildung.SPRECHFUNKER,
+                    Ausbildung.MASCHINIST,
+                    Ausbildung.TRUPPFUEHRER
+                ))
                 .build(),
             Kamerad.builder()
                 .vorname("Steffen")
@@ -104,9 +109,85 @@ public class WehrApplicationService {
                 .adresse(new Adresse("Am Wald", "8", "12345", "Musterstadt"))
                 .mitAusbildungen(List.of(
                     Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPMANN_TEIL_2,
+                    Ausbildung.SPRECHFUNKER,
+                    Ausbildung.MASCHINIST,
+                    Ausbildung.TRUPPFUEHRER
+                ))
+                .build(),
+            Kamerad.builder()
+                .vorname("Konrad")
+                .nachname("Eichstädt")
+                .geburtsdatum(LocalDate.of(1950, 11, 2))
+                .adresse(new Adresse("Am Wald", "8", "12345", "Musterstadt"))
+                .mitAusbildungen(List.of(
+                    Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPMANN_TEIL_2,
+                    Ausbildung.SPRECHFUNKER,
+                    Ausbildung.MASCHINIST,
                     Ausbildung.TRUPPFUEHRER,
-                    Ausbildung.GRUPPENFUEHRER,
-                    Ausbildung.LEITER_EINER_FEUERWEHR
+                    Ausbildung.ATEMSCHUTZGERAETETRAEGER,
+                    Ausbildung.GRUPPENFUEHRER
+                ))
+                .build(),
+            Kamerad.builder()
+                .vorname("Fabian")
+                .nachname("Jörs")
+                .geburtsdatum(LocalDate.of(1950, 11, 2))
+                .adresse(new Adresse("Am Wald", "8", "12345", "Musterstadt"))
+                .mitAusbildungen(List.of(
+                    Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPMANN_TEIL_2,
+                    Ausbildung.SPRECHFUNKER,
+                    Ausbildung.MASCHINIST,
+                    Ausbildung.TRUPPFUEHRER,
+                    Ausbildung.ATEMSCHUTZGERAETETRAEGER,
+                    Ausbildung.GRUPPENFUEHRER
+                ))
+                .build(),
+            Kamerad.builder()
+                .vorname("Stefan Nickel")
+                .nachname("Jörs")
+                .geburtsdatum(LocalDate.of(1950, 11, 2))
+                .adresse(new Adresse("Am Wald", "8", "12345", "Musterstadt"))
+                .mitAusbildungen(List.of(
+                    Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPMANN_TEIL_2,
+                    Ausbildung.SPRECHFUNKER,
+                    Ausbildung.MASCHINIST,
+                    Ausbildung.TRUPPFUEHRER,
+                    Ausbildung.ATEMSCHUTZGERAETETRAEGER,
+                    Ausbildung.GRUPPENFUEHRER
+                ))
+                .build(),
+            Kamerad.builder()
+                .vorname("Holger")
+                .nachname("Schröder")
+                .geburtsdatum(LocalDate.of(1950, 11, 2))
+                .adresse(new Adresse("Am Wald", "8", "12345", "Musterstadt"))
+                .mitAusbildungen(List.of(
+                    Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPMANN_TEIL_2,
+                    Ausbildung.SPRECHFUNKER,
+                    Ausbildung.MASCHINIST,
+                    Ausbildung.TRUPPFUEHRER,
+                    Ausbildung.ATEMSCHUTZGERAETETRAEGER,
+                    Ausbildung.GRUPPENFUEHRER
+                ))
+                .build(),
+            Kamerad.builder()
+                .vorname("Lutz")
+                .nachname("Hansich")
+                .geburtsdatum(LocalDate.of(1950, 11, 2))
+                .adresse(new Adresse("Am Wald", "8", "12345", "Musterstadt"))
+                .mitAusbildungen(List.of(
+                    Ausbildung.TRUPPMANN_TEIL_1,
+                    Ausbildung.TRUPPMANN_TEIL_2,
+                    Ausbildung.SPRECHFUNKER,
+                    Ausbildung.MASCHINIST,
+                    Ausbildung.TRUPPFUEHRER,
+                    Ausbildung.ATEMSCHUTZGERAETETRAEGER,
+                    Ausbildung.GRUPPENFUEHRER
                 ))
                 .build()
         )
@@ -366,7 +447,8 @@ public class WehrApplicationService {
       String telefonnummer,
       String emailAdresse
   ) {
-    return kameradHinzufuegen(vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse, (Set<Ausbildung>) null);
+    return kameradHinzufuegen(vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse,
+        (Set<Ausbildung>) null);
   }
 
   public Kamerad kameradHinzufuegen(
@@ -454,7 +536,8 @@ public class WehrApplicationService {
     }
     Kamerad existing = getKamerad(kameradId);
     Set<Ausbildung> ausbildungen = existing != null ? existing.getAusbildungen() : null;
-    return kameradAendern(kameradId, vorname, nachname, geburtsdatum, adresse, telefonnummer, emailAdresse, ausbildungen);
+    return kameradAendern(kameradId, vorname, nachname, geburtsdatum, adresse, telefonnummer,
+        emailAdresse, ausbildungen);
   }
 
   public Kamerad kameradAendern(
@@ -589,7 +672,8 @@ public class WehrApplicationService {
   public void ausbildungenAktualisieren(String kameradId, Set<Ausbildung> ausbildungen) {
     Kamerad kamerad = getKamerad(kameradId);
     if (kamerad == null) {
-      throw new IllegalArgumentException("Kamerad mit ID '" + kameradId + "' wurde nicht gefunden.");
+      throw new IllegalArgumentException(
+          "Kamerad mit ID '" + kameradId + "' wurde nicht gefunden.");
     }
     kamerad.setAusbildungen(ausbildungen);
   }
