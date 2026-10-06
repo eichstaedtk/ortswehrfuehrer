@@ -5,8 +5,8 @@
       "art": "LOESCHUEBUNG",
       "titel": "Brand mit Menschenrettung – {ort}",
       "alarmstichwort": "B2 - Gebäudebrand / Zimmerbrand",
-      "ausgangslage": "Gemeldeter Zimmerbrand im 1. Obergeschoss des Objekts {ort}. Starke Rauchentwicklung aus zwei Fenstern. 1 Person im Gebäude vermisst. Wasserentnahmestelle: Unterflurhydrant vor dem Gebäude.",
-      "schadenslage": "Rauchentwicklung breitet sich in den Treppenraum aus. Brandherd im Schlafzimmer. Keine sichtbaren Flammen im Außenbereich.",
+      "ausgangslage": "Gemeldeter Wohnungsbrand im 1. Obergeschoss eines Wohnhauses bei {ort} in Göttlin. Starke Rauchentwicklung aus zwei Fenstern zur Dorfstraße. 1 Person im Gebäude vermisst. Wasserentnahmestelle: Unterflurhydrant in der Göttliner Chaussee / Dorfstraße. Eingesetzte Fahrzeuge: {fahrzeuge}.",
+      "schadenslage": "Rauchentwicklung breitet sich in den Treppenraum aus. Brandherd im Schlafzimmer/Dachgeschoss. Keine sichtbaren Flammen im Außenbereich, Nachbargebäude auf eng bebautem Dorf-Grundstück gefährdet.",
       "auftraege": [
         {
           "einheit": "Angriffstrupp",
@@ -29,12 +29,12 @@
           "auftrag": "zur Riegelstellung und Vorbereitung der Belüftung",
           "mittel": "2. C-Rohr und Drucklüfter",
           "ziel": "zum Hauseingang und Nachbargrundstück",
-          "weg": "über Vorgarten",
+          "weg": "über Hofeinfahrt",
           "nurGruppe": true
         },
         {
           "einheit": "Melder",
-          "auftrag": "zur Lagefeststellung und Unterstützung des Gruppenführers",
+          "auftrag": "zur Lagefeststellung und Unterstützung des Einheitsführers",
           "mittel": "Handfunkgerät und Dokumentationsmappe",
           "ziel": "an der Einsatzstelle",
           "weg": "über Einsatzabschnitt 1",
@@ -63,14 +63,14 @@
         },
         {
           "nachMinuten": 20,
-          "ereignis": "Druckabfall im Hydrantennetz – Wasserversorgung gefährdet.",
-          "erwarteteMassnahme": "Wasserpuffer im Tank nutzen und zweite Leitung vom offenen Gewässer vorbereiten.",
+          "ereignis": "Druckabfall im Unterflurhydrantennetz – Löschwasserversorgung gefährdet.",
+          "erwarteteMassnahme": "Wasserpuffer im Tank nutzen und zweite Leitung vom Dorfteich / Havel vorbereiten.",
           "schwierigkeitsgrad": "ANSPRUCHSVOLL"
         },
         {
           "nachMinuten": 30,
-          "ereignis": "Meldung einer Verpuffung im Nebenraum – Nullsicht im 1. OG.",
-          "erwarteteMassnahme": "Rückzugsweg prüfen, Sicherheitstrupp in Bereitschaft halten, Lüftung einleiten.",
+          "ereignis": "Meldung einer Durchzündung (Flashover) im Nebenraum – Nullsicht im 1. OG.",
+          "erwarteteMassnahme": "Rückzugsweg prüfen, Sicherheitstrupp in Bereitschaft halten, Riegelung verstärken.",
           "schwierigkeitsgrad": "ANSPRUCHSVOLL"
         }
       ],
@@ -122,23 +122,23 @@
       "art": "LOESCHUEBUNG",
       "titel": "Gebäudebrand Außenangriff & Riegelstellung – {ort}",
       "alarmstichwort": "B2 - Schuppenbrand / Außenangriff",
-      "ausgangslage": "Vollbrand eines freistehenden Schuppens und Anbaus bei {ort}. Keine Personen im Gebäude. Gefahr des Übergreifens auf angrenzendes Wohnhaus. Eingesetzte Fahrzeuge: {fahrzeuge}.",
-      "schadenslage": "Flammen schlagen aus Dachstuhl. Strahlungswärme gefährdet Nachbargebäude im Abstand von 4 Metern. Offene Wasserentnahme aus Löschteich in 80 m Entfernung.",
+      "ausgangslage": "Vollbrand eines freistehenden Werkstattschuppens und Holzlagers bei {ort} in Göttlin. Keine Personen im Gebäude. Akute Gefahr des Flammenüberschlags auf angrenzendes Wohnhaus. Wasserentnahmestelle: Dorfteich Göttlin / offenes Gewässer in 80 m Entfernung. Eingesetzte Fahrzeuge: {fahrzeuge}.",
+      "schadenslage": "Flammen schlagen aus dem Dachstuhl. Starke Wärmestrahlung auf Nachbargebäude im Abstand von 4 Metern. Offene Wasserentnahme aus dem Dorfteich über Saugleitung erforderlich.",
       "auftraege": [
         {
           "einheit": "Angriffstrupp",
           "auftrag": "zur Riegelstellung zum Schutz des Nachbargebäudes",
           "mittel": "1. B-Rohr / C-Hohlstrahlrohr",
           "ziel": "zur Gebäudewand Ostseite",
-          "weg": "über Einfahrt",
+          "weg": "über Hofeinfahrt",
           "nurGruppe": false
         },
         {
           "einheit": "Wassertrupp",
           "auftrag": "zur offenen Wasserentnahme und Speisung des Fahrzeugs",
           "mittel": "4 Saugschläuche, Saugkorb und Leinen",
-          "ziel": "vom Löschteich zum Fahrzeug",
-          "weg": "über Wiese",
+          "ziel": "vom Dorfteich zum Fahrzeug",
+          "weg": "über Wiese / Uferbereich",
           "nurGruppe": false
         },
         {
@@ -151,8 +151,8 @@
         },
         {
           "einheit": "Maschinist",
-          "auftrag": "zur Inbetriebnahme der Saugleitung und Förderung",
-          "mittel": "Saugleitung und Tragkraftspritze/FP",
+          "auftrag": "zur Inbetriebnahme der Saugleitung und Wasserförderung",
+          "mittel": "Saugleitung und Tragkraftspritze / FP",
           "ziel": "am Fahrzeug / Wasserentnahmestelle",
           "weg": "über befestigten Weg",
           "nurGruppe": false
@@ -167,13 +167,13 @@
         {
           "nachMinuten": 20,
           "ereignis": "Dachhaut stürzt ein, gezielte Ablöschung von Brandnestern.",
-          "erwarteteMassnahme": "Schaumteppich oder Netzmittel einsetzen.",
+          "erwarteteMassnahme": "Schaumrohr oder Netzmittel einsetzen.",
           "schwierigkeitsgrad": "STANDARD"
         },
         {
           "nachMinuten": 20,
-          "ereignis": "Ansauggitter verlegt durch Schlamm/Blätter, Förderdruck bricht ein.",
-          "erwarteteMassnahme": "Saugkorb spülen, Saugschutzkorb/Korbhalterung anpassen.",
+          "ereignis": "Ansauggitter im Dorfteich verlegt durch Schlamm und Pflanzenreste, Förderdruck bricht ein.",
+          "erwarteteMassnahme": "Saugkorb spülen, Saugschutzkorb anbringen und Förderdruck stabilisieren.",
           "schwierigkeitsgrad": "ANSPRUCHSVOLL"
         }
       ],
@@ -187,7 +187,7 @@
         {
           "vorschrift": "FwDV 3",
           "kategorie": "Löscheinsatz",
-          "hinweisText": "Schutzkleidung gegen Wärmestrahlung vollständig anlegen (Visier, Handschuhe).",
+          "hinweisText": "Schutzkleidung gegen Wärmestrahlung vollständig anlegen (Visier, Feuerschutzhaube, Handschuhe).",
           "kritisch": false
         },
         {
@@ -205,7 +205,7 @@
         },
         {
           "kategorie": "Wasserförderung",
-          "kriterien": "Saugleitung nach FwDV 3 ordnungsgemäß gekuppelt und gesichert",
+          "kriterien": "Saugleitung nach FwDV 3 ordnungsgemäß gekuppelt, mit Leinen gesichert und entlüftet",
           "punkte": 3
         },
         {
@@ -216,49 +216,385 @@
       ]
     },
     {
+      "id": "LOESCHUEBUNG_WALD_VEGETATION",
+      "art": "LOESCHUEBUNG",
+      "titel": "Wald- und Vegetationsbrand – {ort}",
+      "alarmstichwort": "B:Wald / Wald- und Vegetationsbrand",
+      "ausgangslage": "Bodenfeuer auf ca. 600 m² Kiefernmischwald im Forstrevier Göttliner Heide nahe {ort}. Auffrischender Wind droht das Feuer in dichten Nadelholzbestand zu treiben. Wasserentnahmestelle: Löschwasserbrunnen am Waldrand sowie Pendelverkehr / Saugstelle Havelufer Göttlin. Eingesetzte Fahrzeuge: {fahrzeuge}.",
+      "schadenslage": "Laufendes Bodenfeuer mit Flammenhöhen bis zu 1 Meter in trockenem Moos und Totholz. Rauchentwicklung zieht in Richtung Göttliner Chaussee.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur direkten Brandbekämpfung an der Brandflanke",
+          "mittel": "2 D-Rohre / Löschrucksäcke und Waldbrandhacke",
+          "ziel": "zur linken Flanke der Brandstelle",
+          "weg": "über Waldweg",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "zur Wasserförderung und Errichtung einer Riegelstellung",
+          "mittel": "B-Leitung und C-Hohlstrahlrohr",
+          "ziel": "vom Löschwasserbrunnen / Saugstelle zum Waldrand",
+          "weg": "über Forstschneise",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zum Schlagen eines Wundstreifens und Nachlöscharbeiten von Glutnestern",
+          "mittel": "Wiedehopfhacken, Schaufeln und Löschrucksäcke",
+          "ziel": "hinter der Brandfront",
+          "weg": "entlang der Schneise",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Melder",
+          "auftrag": "zur Lageerkundung von Brandausbreitung und Windverhältnissen",
+          "mittel": "Handfunkgerät und Waldbrandkarte",
+          "ziel": "zum Hochsitz / Freifläche am Waldrand",
+          "weg": "über Hauptschneise",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Pumpenbedienung, Einspeisung und Überwachung des Tankinhalts",
+          "mittel": "Feuerlöschkreiselpumpe und D-Abgänge",
+          "ziel": "am Fahrzeugstandort",
+          "weg": "über Waldweg",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Flankenfeuer erfolgreich gestoppt, Ausbreitung verlangsamt.",
+          "erwarteteMassnahme": "Brandfront mit D-Strahlrohren von den Flanken her in die Zange nehmen."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Offene Flammen gelöscht, tiefliegende Glutnester im Waldboden qualmen nach.",
+          "erwarteteMassnahme": "Waldboden mit Hacken umgraben und mit Netzwasser tiefenwirksam ablöschen.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Plötzliche Winddrehung aus Nordost treibt Flammen über die Schneise in Wipfelbereich.",
+          "erwarteteMassnahme": "Rückzug in Sicherheitszone, sofortige Riegelstellung mit C-Rohren aufbauen.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        },
+        {
+          "nachMinuten": 30,
+          "ereignis": "Wasserstand im Löschwassertank sinkt auf Reserve – Brunnenförderung verzögert.",
+          "erwarteteMassnahme": "Wasserabgabe drosseln, Pendelverkehr zur Saugstelle Havel / Dorfteich anfordern.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "FwDV 3",
+          "kategorie": "Waldbrandbekämpfung",
+          "hinweisText": "Fluchtwege und Sicherheitszonen (Safety Zones) im Waldgebiet vor Vorgehen festlegen und bekanntgeben.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Gefahr durch herabfallende Äste und umstürzende Totholzbäume im Brandbereich beachten.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "UVV Waldbrand",
+          "kategorie": "Atemschutz & PSA",
+          "hinweisText": "Partikelfiltrierende Halbmasken (FFP3) und leichte Waldbrand-PSA bei Vegetationsbränden nutzen.",
+          "kritisch": false
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Taktik",
+          "kriterien": "Flankenangriff und Festlegung von Rückzugswegen korrekt ausgeführt",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Wasserökonomie",
+          "kriterien": "Sparsamer Wassereinsatz mit D-Strahlrohren / Netzwasser praktiziert",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Sicherheit",
+          "kriterien": "Eigensicherung und ständige Windbeobachtung gewährleistet",
+          "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "LOESCHUEBUNG_LANDWIRTSCHAFT_WASSERFOERDERUNG",
+      "art": "LOESCHUEBUNG",
+      "titel": "Großbrand Landwirtschaft & Wasserförderung Havel – {ort}",
+      "alarmstichwort": "B:Gebäude-Groß / Scheunenbrand mit Riegelstellung",
+      "ausgangslage": "Brand eines Heu- und Strohlagers auf einer landwirtschaftlichen Hofanlage bei {ort} in Göttlin. Angrenzendes Stallgebäude mit Nutztieren akut bedroht. Wasserentnahmestelle: Wasserförderung über lange Wegstrecke von der Havel (Saugstelle Bootsanleger / Havelsteg Göttlin, ca. 350 m). Eingesetzte Fahrzeuge: {fahrzeuge}.",
+      "schadenslage": "Offener Dachstuhlbrand einer 30x15m großen Scheune. Erheblicher Funkenflug in Richtung Stall und Nachbargehöfte. Unterflurhydrantennetz vor Ort reicht für Großbrandbekämpfung nicht aus.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur Riegelstellung und Niederschlagung des Funkenflugs zum Stall",
+          "mittel": "1. B-Rohr / C-Hohlstrahlrohr",
+          "ziel": "zur Stallwand Westseite",
+          "weg": "über Hofgelände",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "zur Errichtung der Wasserentnahme aus der Havel und Speisung der B-Förderleitung",
+          "mittel": "4 Saugschläuche, Saugkorb, Halteleine und Tragkraftspritze (TS)",
+          "ziel": "zur Saugstelle Havel Bootssteg Göttlin",
+          "weg": "über Havelweg / Uferböschung",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zur Verlegung der B-Schlauchleitung über 350 m und Setzen von Schlauchbrücken",
+          "mittel": "B-Schlauchtragekörbe, Schlauchhaspel und 4 Schlauchbrücken",
+          "ziel": "von der Havel zum Brandobjekt Hofstelle",
+          "weg": "über Dorfstraße / Göttliner Chaussee",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Melder",
+          "auftrag": "zur Überwachung der Schlauchstrecke und Verkehrsführung",
+          "mittel": "Handfunkgerät und Warnleuchten",
+          "ziel": "entlang der Förderstrecke Dorfstraße",
+          "weg": "über Gehweg",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Abstimmung des Förderdrucks an der Verstärkerpumpe / Fahrzeug",
+          "mittel": "Feuerlöschkreiselpumpe und Verteiler",
+          "ziel": "am Brandplatz",
+          "weg": "über Hoffläche",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Riegelstellung steht, Funkenflug auf das Stallgebäude unter Kontrolle.",
+          "erwarteteMassnahme": "Schutz des Nachbargebäudes halten und Brandstelle weiter kühlen."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "B-Leitung von der Havel steht stabil, voller Förderdruck am Brandobjekt vorhanden.",
+          "erwarteteMassnahme": "Zweites C-Rohr zur direkten Brandbekämpfung vornehmen.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Druckabfall in der B-Förderleitung durch Schlauchplatzer auf der Dorfstraße.",
+          "erwarteteMassnahme": "Defekten B-Schlauch mit Schlauchbindern abdichten bzw. sofort austauschen.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        },
+        {
+          "nachMinuten": 30,
+          "ereignis": "Scheunengiebel neigt sich gefährlich nach außen – akute Einsturzgefahr.",
+          "erwarteteMassnahme": "Sicherheitsabstand auf 1,5-fache Wandhöhe erweitern, Rohre auf Außenpositionen verlegen.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "FwDV 3",
+          "kategorie": "Wasserförderung",
+          "hinweisText": "Schlauchbrücken bei Straßenquerungen zwingend auslegen und Verkehrsabsicherung stellen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Einsturzgefahren an landwirtschaftlichen Tragwerken und brennendem Heulager beachten.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "FwDV 7",
+          "kategorie": "Atemschutz",
+          "hinweisText": "Kein Innenangriff bei durchbranntem Scheunendach wegen Trümmergefahr.",
+          "kritisch": true
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Wasserförderung",
+          "kriterien": "Saugleitung und B-Förderstrecke fehlerfrei aufgebaut und entlüftet",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Taktik",
+          "kriterien": "Riegelstellung zum Schutz des Viehstalls wirksam aufgebaut",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Sicherheit",
+          "kriterien": "Schlauchbrücken und Einsturzbereiche korrekt abgesichert",
+          "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "LOESCHUEBUNG_KIRCHE_DENKMAL",
+      "art": "LOESCHUEBUNG",
+      "titel": "Brand an Sonderobjekt Dorfkirche Göttlin – {ort}",
+      "alarmstichwort": "B:Sonderobjekt / Brand in historischem Gebäude",
+      "ausgangslage": "Gemeldete Rauchentwicklung aus dem Glockenturm der denkmalgeschützten Dorfkirche Göttlin bei {ort}. Historisches Kirchenschiff und Kunstgüter gefährdet. Wasserentnahmestelle: Unterflurhydrant am Kirchplatz / Dorfstraße sowie offene Entnahme aus dem Dorfteich Göttlin. Eingesetzte Fahrzeuge: {fahrzeuge}.",
+      "schadenslage": "Schwelbrand im hölzernen Glockengestühl des Kirchturms. Dichter Brandrauch breitet sich unter dem Schieferdach aus. Verwinkelte Zugänge über enge Holztreppen.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur Erkundung und Brandbekämpfung im Glockenstuhl",
+          "mittel": "1. C-Rohr unter Atemschutz mit Hohlstrahlrohr und Wärmebildkamera",
+          "ziel": "in den Kirchturm",
+          "weg": "über hölzernen Turmaufgang",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "als Sicherheitstrupp unter Atemschutz und zur Sicherstellung der Wasserversorgung",
+          "mittel": "Standrohr, B-Leitung und mobiler Rauchverschluss",
+          "ziel": "vom Unterflurhydranten zum Kircheneingang",
+          "weg": "über Kirchplatz",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zur Riegelstellung im Dachraum und Sicherung von Kunst- und Kulturgütern",
+          "mittel": "2. C-Rohr, Falteimer und Schutzplanen",
+          "ziel": "in das Kirchenschiff und Dachboden",
+          "weg": "über Hauptportal",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Melder",
+          "auftrag": "zur Einweisung nachrückender Kräfte und Lagemeldung",
+          "mittel": "Handfunkgerät und Gebäudeplan / Brandschutzordnung",
+          "ziel": "vor der Kirche am Portal",
+          "weg": "über Kirchweg",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Druckbegrenzung und Bereitstellung von Löschwasser",
+          "mittel": "Feuerlöschkreiselpumpe und Verteiler",
+          "ziel": "am Fahrzeug",
+          "weg": "über Straßenrand",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Rauchverschluss am Turmeingang gesetzt, Treppenraum rauchfrei gehalten.",
+          "erwarteteMassnahme": "Löschangriff im Glockenstuhl mit geringer Wassermenge beginnen."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Glutnester im Gebälk mit Wärmebildkamera lokalisiert und punktuell abgelöscht.",
+          "erwarteteMassnahme": "Wasserschaden minimieren, Belüftung über Turmluken durchführen.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Teile der hölzernen Zwischendecke im Turm angekohlt – Tragfähigkeit unsicher.",
+          "erwarteteMassnahme": "Rückzugsweg sichern, tragbare Steckleiter als zweiten Rettungsweg anstellen.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        },
+        {
+          "nachMinuten": 30,
+          "ereignis": "Druckabfall im Hydrantennetz durch zeitgleiche Entnahme – Saugstelle Dorfteich erforderlich.",
+          "erwarteteMassnahme": "Wassertrupp baut sofort Saugleitung am Dorfteich Göttlin auf.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "FwDV 7",
+          "kategorie": "Atemschutz",
+          "hinweisText": "Atemschutzüberwachung und ständige Funkverbindung im Kirchturm sicherstellen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Absturz- und Durchsturzgefahr auf historischen Holzdecken und Treppen beachten.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "FwDV 3",
+          "kategorie": "Denkmalschutz",
+          "hinweisText": "Wasserschäden an historischer Bausubstanz durch minimierte Wasserabgabe (Hohlstrahlrohr) vermeiden.",
+          "kritisch": false
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Atemschutz & Sicherheit",
+          "kriterien": "Rauchverschluss gesetzt, Zweitweg über Steckleiter erkundet",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Denkmalschutz",
+          "kriterien": "Minimaler Wassereinsatz und Schutz der Kulturgüter beachtet",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Wasserversorgung",
+          "kriterien": "Redundante Speisung ab Unterflurhydrant / Dorfteich sichergestellt",
+          "punkte": 2
+        }
+      ]
+    },
+    {
       "id": "TH_VU_EINGEKLEMMT",
       "art": "TECHNISCHE_HILFELEISTUNG",
       "titel": "THL - Verkehrsunfall mit eingeklemmter Person – {ort}",
       "alarmstichwort": "H:Hilfeleistung-Klemm / VU mit P-klemmt",
-      "ausgangslage": "PKW in Seitenlage gegen Baum geprallt auf {ort}. 1 Person im Fahrzeug eingeklemmt, ansprechbar aber verletzt. Betriebsmittel laufen aus. Eingesetzte Kräfte mit {fahrzeuge}.",
-      "schadenslage": "Fahrzeug ungesichert auf Fahrerseite. Deformation an B-Säule blockiert Fahrertür. Dämmerung / Dunkelheit erfordert Ausleuchtung.",
+      "ausgangslage": "PKW nach Kollision mit Alleebaum in Schräglage im Straßengraben auf der Göttliner Chaussee Richtung Rathenow bei {ort}. 1 Person im Fahrzeug massiv eingeklemmt, ansprechbar aber schwer verletzt. Kraftstoff tritt aus. Eingesetzte Kräfte mit {fahrzeuge}.",
+      "schadenslage": "Fahrzeug droht weiter in den Graben abzurutschen. Fahrerseite deformiert, Türen verkeilt. Dunkelheit auf unbeleuchteter Landstraße erfordert umfassende Absicherung und Ausleuchtung.",
       "auftraege": [
         {
           "einheit": "Angriffstrupp",
-          "auftrag": "zur Personenbetreuung und Schaffung einer Erstöffnung",
-          "mittel": "Halligan-Tool, Federkörner, Glasmanagement und Decke",
-          "ziel": "zur Heckscheibe / Beifahrerfenster des verunfallten PKW",
+          "auftrag": "zur Personenbetreuung, Glasmanagement und Schaffung einer Erstöffnung",
+          "mittel": "Halligan-Tool, Federkörner, Glassäge, Decke und Patientenschutz",
+          "ziel": "zum verunfallten PKW / Seitenfenster",
           "weg": "über Straßenbankett",
           "nurGruppe": false
         },
         {
           "einheit": "Wassertrupp",
-          "auftrag": "zur Absicherung gegen Brandgefahr (zweifacher Brandschutz) und Ausleuchtung der Einsatzstelle",
-          "mittel": "Zweifacher Brandschutz (Pulverlöscher + Schnellangriff/C-Leitung) und Flutlichtstrahler",
-          "ziel": "zur Unfallstelle",
+          "auftrag": "zur Sicherstellung des zweifachen Brandschutzes und Ausleuchtung der Einsatzstelle",
+          "mittel": "Zweifacher Brandschutz (Pulverlöscher + Schnellangriff / C-Leitung) und Flutlichtstrahler",
+          "ziel": "zur Unfallstelle am Graben",
           "weg": "über rechten Fahrbahnrand",
           "nurGruppe": false
         },
         {
           "einheit": "Schlauchtrupp",
-          "auftrag": "zur Geräteablage und Unterstützung bei der Stabilisierung",
+          "auftrag": "zur Geräteablage und Stabilisierung des Fahrzeugs",
           "mittel": "Bereitstellungsplane, Unterbaumaterial (Stab-Fast / Formhölzer) und Hydraulikaggregat",
-          "ziel": "zur Gerätebereitstellungszone",
-          "weg": "über Gehweg",
+          "ziel": "zur Gerätebereitstellungszone neben der Unfallstelle",
+          "weg": "über Fahrbahn",
           "nurGruppe": true
         },
         {
           "einheit": "Melder",
-          "auftrag": "zur Verkehrsabsicherung und Lagemeldung",
-          "mittel": "Warndreieck, Blitzleuchte und Leitkegel",
-          "ziel": "100 m vor die Unfallstelle in Fahrtrichtung",
+          "auftrag": "zur Verkehrsabsicherung auf der Landstraße und Einweisung des Rettungsdienstes",
+          "mittel": "Warndreiecke, Blinkleuchten und Leitkegel",
+          "ziel": "150 m vor die Unfallstelle auf der Göttliner Chaussee",
           "weg": "über Standstreifen",
           "nurGruppe": true
         },
         {
           "einheit": "Maschinist",
-          "auftrag": "zur Absicherung mit Blaulicht, Warnblinkanlage und Inbetriebnahme des Aggregats",
-          "mittel": "Lichtmast, Bordnetz und Hydraulikaggregat",
+          "auftrag": "zur Absicherung mit Blaulicht / Warnblinkanlage, Stromerzeugung und Lichtmastbetrieb",
+          "mittel": "Lichtmast, Stromerzeuger und Hydraulikaggregat",
           "ziel": "am Einsatzfahrzeug",
           "weg": "über Fahrbahn",
           "nurGruppe": false
@@ -267,25 +603,25 @@
       "lageentwicklungen": [
         {
           "nachMinuten": 10,
-          "ereignis": "Fahrzeug stabilisiert, Notarzt trifft ein und ordnet schonende Rettung an.",
+          "ereignis": "Fahrzeug stabilisiert, Notarzt trifft ein und ordnet patientenschonende Rettung an.",
           "erwarteteMassnahme": "Große Seitenöffnung mittels Schere und Spreizer vorbereiten."
         },
         {
           "nachMinuten": 20,
           "ereignis": "Dachentfernung abgeschlossen, Person achsengerecht über Spineboard befreit.",
-          "erwarteteMassnahme": "Übergabe an Rettungsdienst und Übergabe der Einsatzstelle an Polizei.",
+          "erwarteteMassnahme": "Übergabe an Rettungsdienst und Unterstützung bei der Fahrbahnreinigung.",
           "schwierigkeitsgrad": "STANDARD"
         },
         {
           "nachMinuten": 20,
-          "ereignis": "Batteriebrand im Motorraum droht durch Kurzschluss.",
-          "erwarteteMassnahme": "Brandschutz aktivieren, Massekabel mit geeignetem Werkzeug kappen.",
+          "ereignis": "Dämpfe entzünden sich am heißen Katalysator / Batterie – Brandgefahr flammt auf.",
+          "erwarteteMassnahme": "Zweifachen Brandschutz sofort einsetzen, Schnellangriff Wasser/Schaum vornehmen.",
           "schwierigkeitsgrad": "ANSPRUCHSVOLL"
         },
         {
           "nachMinuten": 30,
-          "ereignis": "Zustandsverschlechterung der Person – Notarzt ordnet Sofortrettung (Crash-Rettung) an.",
-          "erwarteteMassnahme": "Taktikwechsel von schonender Rettung auf Sofortrettung mittels Spineboard.",
+          "ereignis": "Kreislaufzusammenbruch des Patienten – Notarzt ordnet Sofortrettung (Crash-Rettung) an.",
+          "erwarteteMassnahme": "Taktikwechsel: Schnelle Befreiung über Spineboard ohne vollständiges Dachabtrennen.",
           "schwierigkeitsgrad": "ANSPRUCHSVOLL"
         }
       ],
@@ -293,7 +629,7 @@
         {
           "vorschrift": "DGUV Vorschrift 49",
           "kategorie": "UVV",
-          "hinweisText": "Verkehrsabsicherung und Warnkleidung (Warnweste/Einsatzkleidung Reflex) zwingend anlegen.",
+          "hinweisText": "Verkehrsabsicherung und Warnkleidung (Warnweste / Einsatzkleidung Reflex) zwingend anlegen.",
           "kritisch": true
         },
         {
@@ -311,17 +647,17 @@
       ],
       "bewertungspunkte": [
         {
-          "kategorie": "Einsatzstellenhygiene & Ordnung",
-          "kriterien": "Geräteablage nach FwDV 3 sauber aufgebaut",
+          "kategorie": "Einsatzstellenordnung",
+          "kriterien": "Geräteablage nach FwDV 3 strukturiert aufgebaut",
           "punkte": 2
         },
         {
-          "kategorie": "Sicherheit",
+          "kategorie": "Sicherheit & Brandschutz",
           "kriterien": "Zweifacher Brandschutz und Verkehrsabsicherung lückenlos errichtet",
           "punkte": 3
         },
         {
-          "kategorie": "Technik",
+          "kategorie": "Technik & Rettung",
           "kriterien": "Fahrzeugstabilisierung wirksam vor Beginn hydraulischer Arbeiten durchgeführt",
           "punkte": 3
         },
@@ -335,15 +671,15 @@
     {
       "id": "TH_BASISMASSNAHMEN",
       "art": "TECHNISCHE_HILFELEISTUNG",
-      "titel": "THL - Sturmschaden & Verkehrsabsicherung – {ort}",
+      "titel": "THL - Sturmschaden & Baumbeseitigung – {ort}",
       "alarmstichwort": "H:Hilfeleistung-Natur / Baum auf Straße",
-      "ausgangslage": "Nach Sturm liegt ein Baum quer über der Fahrbahn bei {ort}. Keine Verletzten. Dunkelheit und Gegenverkehr. Eingesetzte Kräfte mit {fahrzeuge}.",
-      "schadenslage": "Baumkrone blockiert beide Fahrspuren. Äste unter Spannung. Gefahr durch unaufmerksamen Nachfolgeverkehr.",
+      "ausgangslage": "Nach schwerem Unwetter liegt eine alte Weide quer über der Fahrbahn der Verbindungsstraße Göttlin Richtung Grütz bei {ort}. Baumkrone blockiert beide Fahrspuren und drückt auf Freileitungen. Eingesetzte Kräfte mit {fahrzeuge}.",
+      "schadenslage": "Stamm mit ca. 60 cm Durchmesser steht unter starker Biegespannung. Dunkelheit und herabfallende Äste gefährden Einsatzkräfte. Behinderung des Durchgangsverkehrs.",
       "auftraege": [
         {
           "einheit": "Angriffstrupp",
-          "auftrag": "zur Erkundung von Spannungen und Beseitigung der Äste",
-          "mittel": "Motorsäge, Schnittschutzkleidung und Fällheber",
+          "auftrag": "zur Erkundung von Holzspannungen und Beseitigung der Krone unter Beachtung von Freileitungen",
+          "mittel": "Motorsäge, Schnittschutzkleidung, Fällheber und Wendehaken",
           "ziel": "zur Baumkrone auf der Fahrbahn",
           "weg": "über Straßenrand",
           "nurGruppe": false
@@ -352,13 +688,21 @@
           "einheit": "Wassertrupp",
           "auftrag": "zur weiträumigen Verkehrsabsicherung und Ausleuchtung",
           "mittel": "Warndreiecke, Blitzleuchten, Leitkegel und Flutlichtstrahler",
-          "ziel": "100 m vor und hinter die Einsatzstelle",
+          "ziel": "100 m vor und hinter die Einsatzstelle auf der Göttliner Landstraße",
           "weg": "über Seitenstreifen",
           "nurGruppe": false
         },
         {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zum Beräumen von Stammholz und Geäst sowie Fahrbahnreinigung",
+          "mittel": "Besen, Schaufeln, Schälgabeln und Handpackzangen",
+          "ziel": "zum Fahrbahnbereich",
+          "weg": "über Fahrbahn",
+          "nurGruppe": true
+        },
+        {
           "einheit": "Maschinist",
-          "auftrag": "zur Absicherung des Fahrzeugs und Betrieb des Stromerzeugers",
+          "auftrag": "zur Absicherung des Fahrzeugs und Betrieb des Stromerzeugers / Lichtmasts",
           "mittel": "Lichtmast und Stromerzeuger",
           "ziel": "am Fahrzeug",
           "weg": "über Fahrbahnrand",
@@ -368,20 +712,27 @@
       "lageentwicklungen": [
         {
           "nachMinuten": 10,
-          "ereignis": "Hauptstamm steht unter starker Biegespannung.",
-          "erwarteteMassnahme": "Spannungsschnitt fachgerecht von der Druckseite her ansetzen."
+          "ereignis": "Hauptstamm steht unter extremer Druck- und Zugspannung.",
+          "erwarteteMassnahme": "Spannungsschnitt fachgerecht ansetzen (zuerst Druckseite einschneiden, dann Trennschnitt auf Zugseite)."
         },
         {
           "nachMinuten": 20,
-          "ereignis": "Fahrbahn geräumt und mit Besen von Splittern gereinigt.",
-          "erwarteteMassnahme": "Verkehrsabsicherung abbauen und Rückmeldung an Leitstelle."
+          "ereignis": "Baumteile zerkleinert, Fahrbahn geräumt und von Holzsplittern gesäubert.",
+          "erwarteteMassnahme": "Verkehrsabsicherung zurückbauen und Freigabe an Leitstelle melden.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Herabhängender Ast beschädigt Telefonleitung – Spannungs- und Rissgefahr.",
+          "erwarteteMassnahme": "Sicherheitsabstand einhalten, Energieversorger über Leitstelle anfordern, Bereich absperren.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
         }
       ],
       "sicherheitshinweise": [
         {
           "vorschrift": "DGUV Regel 114-018",
           "kategorie": "Motorsägeneinsatz",
-          "hinweisText": "Vollständige PSA (Schnittschutzhose, Forsthelm mit Visier/Gehörschutz, Schnittschutzschuhe) zwingend tragen.",
+          "hinweisText": "Vollständige PSA (Schnittschutzhose Klasse 1, Forsthelm mit Visier und Gehörschutz, Schnittschutzschuhe) zwingend tragen.",
           "kritisch": true
         },
         {
@@ -394,18 +745,342 @@
       "bewertungspunkte": [
         {
           "kategorie": "Sicherheit",
-          "kriterien": "Schnittschutzkleidung vollständig und vor Sägenbeginn angelegt",
+          "kriterien": "Schnittschutzkleidung und PSA vollständig vor Sägebeginn angelegt",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Sägetechnik",
+          "kriterien": "Schnitttechnik unter Beachtung von Druck- und Zugseite fehlerfrei ausgeführt",
           "punkte": 3
         },
         {
           "kategorie": "Verkehrsabsicherung",
-          "kriterien": "Verkehrsabsicherung ordnungsgemäß positioniert",
+          "kriterien": "Weiträumige Verkehrsabsicherung der Landstraße ordnungsgemäß aufgebaut",
           "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "TH_WASSERRETTUNG_HAVEL",
+      "art": "TECHNISCHE_HILFELEISTUNG",
+      "titel": "THL - Wasserrettung & Person in Not Havel – {ort}",
+      "alarmstichwort": "H:Wasser / Person im Wasser Havel",
+      "ausgangslage": "Gekentertes Sportboot auf der Havel auf Höhe des Havelufers Göttlin ({ort}). Eine Person treibt entkräftet in der Strömung und klammert sich an einen Bootspfahl nahe der Fahrrinne. Wasserentnahmestelle / Einsatzort: Bootsanleger / Badestelle Havel Göttlin. Eingesetzte Kräfte mit {fahrzeuge}.",
+      "schadenslage": "Person bei niedriger Wassertemperatur akut unterkühlt und erschöpft. Strömung der Havel erschwert eigenständiges Erreichen des Ufers. Dämmerung setzt ein.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur direkten Menschenrettung vom Ufer / Steg aus unter Eigensicherung",
+          "mittel": "Rettungswesten, Rettungsbund, Wurfleinensack, Spineboard / Schleifkorbtrage",
+          "ziel": "zur Steganlage / Uferkante Havel",
+          "weg": "über Uferweg",
+          "nurGruppe": false
         },
         {
-          "kategorie": "Sägetechnik",
-          "kriterien": "Schnitttechnik unter Spannungsbeachtung korrekt ausgeführt",
+          "einheit": "Wassertrupp",
+          "auftrag": "als Sicherheitstrupp Wasserrettung und zur Ausleuchtung des Gewässerabschnitts",
+          "mittel": "Schwimmwesten, Rettungsring mit Wurfleine und Flutlichtstrahler",
+          "ziel": "stromabwärts an das Havelufer",
+          "weg": "über Uferböschung",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zur Einrichtung der Übergabezone für den Rettungsdienst und Wärmeerhalt",
+          "mittel": "Rettungsdecke, Krankentrage, Erste-Hilfe-Rucksack",
+          "ziel": "zur befestigten Uferpromenade / Parkplatz",
+          "weg": "über Stegzugang",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Melder",
+          "auftrag": "zur Einweisung des Rettungsdienstes / Notarztes am Havelufer Göttlin",
+          "mittel": "Handfunkgerät und Winkerkelle",
+          "ziel": "an die Zufahrt Göttliner Chaussee / Havelweg",
+          "weg": "über Zufahrtsstraße",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Ausleuchtung der Einsatzstelle auf dem Wasser und Betrieb des Lichtmasts",
+          "mittel": "Lichtmast, Stromerzeuger und Suchscheinwerfer",
+          "ziel": "am Einsatzfahrzeug",
+          "weg": "über Uferstraße",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Wurfleinensack erfolgreich zur Person geworfen, Person wird gesichert ans Ufer gezogen.",
+          "erwarteteMassnahme": "Schonende Rettung über Spineboard an die Uferkante einleiten."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Person an Land gerettet, in Wärmedecke gehüllt und an Rettungsdienst übergeben.",
+          "erwarteteMassnahme": "Bergung des gekenterten Sportboots zur Vermeidung von Schifffahrtshindernissen vorbereiten.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Person verliert das Bewusstsein und treibt in den Schilfgürtel ab.",
+          "erwarteteMassnahme": "Sicherheitstrupp greift stromabwärts mit Rettungsstange / Rettungsring ein, Reanimation vorbereiten.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        },
+        {
+          "nachMinuten": 30,
+          "ereignis": "Ausgetretenes Benzin aus dem Außenbordmotor treibt als Schmierfilm auf der Havel.",
+          "erwarteteMassnahme": "Ölschlängel an der Steganlage einbringen und Wasserschutzpolizei verständigen.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Zwingende Schwimmwestentragepflicht für alle Kräfte im 2-Meter-Bereich zur Wasserkante.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "FwDV 1",
+          "kategorie": "Wasserrettung",
+          "hinweisText": "Leinensicherung aller eingesetzten Trupps an fließenden Gewässern sicherstellen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "UVV Wasserrettung",
+          "kategorie": "Eigensicherung",
+          "hinweisText": "Niemals ohne Sicherung in fließende Gewässer waten oder springen.",
+          "kritisch": true
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Eigensicherung",
+          "kriterien": "Schwimmwesten und Leinensicherung am Gewässer konsequent angewendet",
           "punkte": 3
+        },
+        {
+          "kategorie": "Rettungstechnik",
+          "kriterien": "Gezielter Einsatz von Wurfleine, Rettungsring und Spineboard",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Patientenversorgung",
+          "kriterien": "Schneller Wärmeerhalt und strukturierte Übergabe an den Rettungsdienst",
+          "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "TH_GEFAHRGUT_KLEIN",
+      "art": "TECHNISCHE_HILFELEISTUNG",
+      "titel": "THL - Gefahrgut & Havarieschutz Havel – {ort}",
+      "alarmstichwort": "H:Gefahrgut-Klein / Auslaufender Kraftstoff",
+      "ausgangslage": "Aufgerissener Dieseltank an einem landwirtschaftlichen Schlepper nach Rangierunfall auf der Dorfstraße nahe des Dorfgrabens in Göttlin bei {ort}. Ca. 250 Liter Kraftstoff laufen aus. Akute Gefahr des Einlaufens in die Straßenentwässerung und Weiterleitung in die Havel. Eingesetzte Kräfte mit {fahrzeuge}.",
+      "schadenslage": "Dieselkraftstoff breitet sich über das Straßenpflaster in Richtung Kanaleinläufe und Straßengraben aus. Kraftstoffdämpfe wahrnehmbar. Rutschgefahr auf nasser Fahrbahn.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur Leckageabdichtung am Fahrzeugtank und Auffangen des nachlaufenden Kraftstoffs",
+          "mittel": "Dichtkissen, Pasten, Keile und mineralölbeständige Auffangwanne",
+          "ziel": "zum Dieseltank des Schleppers",
+          "weg": "über Fahrbahn",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "zur sofortigen Abdichtung der Kanaleinläufe und Sicherung des Grabens zur Havel",
+          "mittel": "Kanalabsperrblasen, Gully-Dichtkissen, Folie und Sand / Erde",
+          "ziel": "zu den Straßenabläufen Dorfstraße / Graben",
+          "weg": "über Straßenrand",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zum Ausbringen von Ölbindemittel und Errichten einer Ölsperre im Straßengraben",
+          "mittel": "Ölbindemittel für Verkehrsflächen, Schaufeln, Besen und Tauchwand / Ölsperre",
+          "ziel": "zur Schadensfläche und Grabenüberlauf",
+          "weg": "über Gehweg",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Melder",
+          "auftrag": "zur weiträumigen Absperrung der Einsatzstelle und Information der Unteren Wasserbehörde",
+          "mittel": "Absperrband, Handfunkgerät und Dokumentation",
+          "ziel": "zur Absperrgrenze Dorfstraße",
+          "weg": "über Bürgersteig",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Bereitstellung des zweifachen Brandschutzes und Absicherung gegen Zündquellen",
+          "mittel": "Pulverlöscher, Schaumpistole / C-Schaumrohr und Erdungsmaterial",
+          "ziel": "am Einsatzfahrzeug",
+          "weg": "über Fahrbahnrand",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Tankleck provisorisch abgedichtet, Gullydeckel mit Folie und Dichtkissen versiegelt.",
+          "erwarteteMassnahme": "Ölbindemittel auf der Fahrbahn einarbeiten und Randsperre verdichten."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Kraftstoff vollständig gebunden, kontaminiertes Bindemittel in Fässer aufgenommen.",
+          "erwarteteMassnahme": "Warnschilder 'Ölunfall' aufstellen und Fachfirma zur Fahrbahnreinigung über Leitstelle veranlassen.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Plötzlicher Platzregen droht Ölfilm über die Grabenkante in die Havel zu spülen.",
+          "erwarteteMassnahme": "Provisorische Tauchwand im Graben vertiefen, Ölsaugtücher einlegen und Havariekommando Havel alarmieren.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "FwDV 500",
+          "kategorie": "Gefahrgut",
+          "hinweisText": "GAMS-Regel konsequent anwenden (Gefahr erkennen, Absperren, Menschenrettung durchführen, Spezialkräfte anfordern).",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Strikte Zündquellenvermeidung, Rauchverbot und chemikalienbeständige Schutzhandschuhe tragen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "Gewässerschutz Bbg",
+          "kategorie": "Umweltschutz",
+          "hinweisText": "Vorrangiges Schützen der Einläufe in Oberflächengewässer und Havel sicherstellen.",
+          "kritisch": true
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Gewässerschutz",
+          "kriterien": "Kanaleinläufe und Grabenabfluss zur Havel unverzüglich abgedichtet",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Gefahrenabwehr & Abdichtung",
+          "kriterien": "Leckage am Tank effektiv gestoppt und Brandschutz bereitgestellt",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Umwelt- & Arbeitsschutz",
+          "kriterien": "Fachgerechte Aufnahme des Bindemittels und PSA eingehalten",
+          "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "TH_TIERRETTUNG_LANDWIRTSCHAFT",
+      "art": "TECHNISCHE_HILFELEISTUNG",
+      "titel": "THL - Großtierrettung aus Schlammgrube – {ort}",
+      "alarmstichwort": "H:Hilfeleistung-Tier / Großtierrettung",
+      "ausgangslage": "Ein Rind ist auf einer Weide nahe des Havelaltarms bei {ort} in Göttlin in einen morastigen Entwässerungsgraben / Schlammloch gerutscht und steckt bis zum Bauch fest. Das Tier kann sich nicht selbst befreien und droht zu entkräften. Eingesetzte Kräfte mit {fahrzeuge}.",
+      "schadenslage": "Morastiger Untergrund erschwert den Zugang. Weicher Böschungsrand droht nachzurutschen. Tier ist gestresst und schlägt mit Kopf und Hufen.",
+      "auftraege": [
+        {
+          "einheit": "Angriffstrupp",
+          "auftrag": "zur vorsichtigen Annäherung, Beruhigung des Tieres und Anschlagen von Hebegurten",
+          "mittel": "Hebebänder / Rundschlingen, Schlauchstücke als Scheuerschutz und Führstrick",
+          "ziel": "zum Tier im Weidegraben",
+          "weg": "über befestigte Holzbohlen auf der Weide",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Wassertrupp",
+          "auftrag": "zur Befestigung des Mehrzweckzuges / Greifzuges und Vorbereitung der Zugbahn",
+          "mittel": "Mehrzweckzug Z16 mit Stahlseil, Umlenkrolle und Anschlagpunkten an Schlepper / Festpunkt",
+          "ziel": "am stabilen Weiderand",
+          "weg": "über Weidefläche",
+          "nurGruppe": false
+        },
+        {
+          "einheit": "Schlauchtrupp",
+          "auftrag": "zur Grabenabflachung und Bereitstellung von Unterbaumaterial",
+          "mittel": "Schaufeln, Spaten, Rüstholz, Strohballen und Gleitplane",
+          "ziel": "zur Grabenböschung in Zugrichtung",
+          "weg": "über Weide",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Melder",
+          "auftrag": "zur Einweisung von Tierarzt und Landwirt sowie Dokumentation",
+          "mittel": "Handfunkgerät und Handlampe",
+          "ziel": "zur Weidezufahrt am Feldweg",
+          "weg": "über Weidetor",
+          "nurGruppe": true
+        },
+        {
+          "einheit": "Maschinist",
+          "auftrag": "zur Ausleuchtung der Rettungsstelle und Bereitstellung von Anschlagmitteln",
+          "mittel": "Flutlichtstrahler, Stromerzeuger und Zubehörkiste TH",
+          "ziel": "am Fahrzeug / Festpunkt",
+          "weg": "über Feldweg",
+          "nurGruppe": false
+        }
+      ],
+      "lageentwicklungen": [
+        {
+          "nachMinuten": 10,
+          "ereignis": "Breite Hebegurte unter Brust und Flanken des Tieres durchgezogen, Tierarzt trifft ein.",
+          "erwarteteMassnahme": "Tierarzt verabreicht Beruhigungsmittel, Grabenkante wird für schonenden Zug abgeflacht."
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Tier mittels Mehrzweckzug langsam und schonend auf festen Boden gezogen.",
+          "erwarteteMassnahme": "Gurte lösen, Tier auf Weide aufrichten und tierärztliche Kontrolle begleiten.",
+          "schwierigkeitsgrad": "STANDARD"
+        },
+        {
+          "nachMinuten": 20,
+          "ereignis": "Tier gerät in Panik, schlägt unkontrolliert um sich – Grabenböschung bricht nach.",
+          "erwarteteMassnahme": "Rückzug aus dem unmittelbaren Schlagbereich, Neuausrichtung des Zugs abwarten bis Sedierung wirkt.",
+          "schwierigkeitsgrad": "ANSPRUCHSVOLL"
+        }
+      ],
+      "sicherheitshinweise": [
+        {
+          "vorschrift": "UVV Tierrettung",
+          "kategorie": "UVV",
+          "hinweisText": "Niemals im Schlagbereich von Hufen und Hörnern aufhalten, Sicherheitsabstand wahren.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "DGUV Vorschrift 49",
+          "kategorie": "UVV",
+          "hinweisText": "Eigensicherung gegen Einsinken im Morast durch Holzbohlenunterbau sicherstellen.",
+          "kritisch": true
+        },
+        {
+          "vorschrift": "Tierschutz",
+          "kategorie": "Tiergerechte Rettung",
+          "hinweisText": "Nur breite Hebegurte mit Druckverteilung verwenden, Zugkräfte langsam und gleichmäßig aufbringen.",
+          "kritisch": false
+        }
+      ],
+      "bewertungspunkte": [
+        {
+          "kategorie": "Eigensicherung & Sicherheit",
+          "kriterien": "Sicherheitsabstand zum unberechenbaren Großtier eingehalten",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Technische Rettung",
+          "kriterien": "Mehrzweckzug und Hebegurte fachgerecht und schonend eingesetzt",
+          "punkte": 3
+        },
+        {
+          "kategorie": "Zusammenarbeit",
+          "kriterien": "Reibungslose Abstimmung mit Tierarzt und Landwirt gewährleistet",
+          "punkte": 2
         }
       ]
     }

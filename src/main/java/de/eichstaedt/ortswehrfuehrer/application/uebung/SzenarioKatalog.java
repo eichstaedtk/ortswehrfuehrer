@@ -44,7 +44,9 @@ public class SzenarioKatalog {
       List<Lageentwicklung> lageentwicklungen,
       List<Sicherheitshinweis> sicherheitshinweise,
       List<Bewertungspunkt> bewertungspunkte
-  ) {}
+  ) {
+
+  }
 
   public static record EinsatzauftragVorlage(
       String einheit,
@@ -54,6 +56,7 @@ public class SzenarioKatalog {
       String weg,
       boolean nurGruppe
   ) {
+
     public Einsatzauftrag zuEinsatzauftrag() {
       return new Einsatzauftrag(einheit, auftrag, mittel, ziel, weg);
     }
@@ -65,14 +68,17 @@ public class SzenarioKatalog {
       String erwarteteMassnahme,
       String schwierigkeitsgrad
   ) {
+
     public boolean passtZu(Schwierigkeitsgrad grad) {
-      if (schwierigkeitsgrad == null || schwierigkeitsgrad.isBlank() || "ALLE".equalsIgnoreCase(schwierigkeitsgrad)) {
+      if (schwierigkeitsgrad == null || schwierigkeitsgrad.isBlank() || "ALLE".equalsIgnoreCase(
+          schwierigkeitsgrad)) {
         return true;
       }
       if ("ANSPRUCHSVOLL".equalsIgnoreCase(schwierigkeitsgrad)) {
         return grad == Schwierigkeitsgrad.ANSPRUCHSVOLL;
       }
-      if ("STANDARD".equalsIgnoreCase(schwierigkeitsgrad) || "BASIS".equalsIgnoreCase(schwierigkeitsgrad)) {
+      if ("STANDARD".equalsIgnoreCase(schwierigkeitsgrad) || "BASIS".equalsIgnoreCase(
+          schwierigkeitsgrad)) {
         return grad != Schwierigkeitsgrad.ANSPRUCHSVOLL;
       }
       return true;
@@ -95,6 +101,7 @@ public class SzenarioKatalog {
       List<Sicherheitshinweis> sicherheitshinweise,
       List<Bewertungspunkt> bewertungspunkte
   ) {
+
     public VorlagenPaket zuVorlagenPaket(
         TaktischeEinheit einheit,
         String ort,
@@ -109,19 +116,20 @@ public class SzenarioKatalog {
 
       List<Einsatzauftrag> aufbereiteteAuftraege = auftraege != null
           ? auftraege.stream()
-              .filter(a -> !a.nurGruppe() || istGruppe)
-              .map(EinsatzauftragVorlage::zuEinsatzauftrag)
-              .toList()
+          .filter(a -> !a.nurGruppe() || istGruppe)
+          .map(EinsatzauftragVorlage::zuEinsatzauftrag)
+          .toList()
           : List.of();
 
       List<Lageentwicklung> aufbereiteteLage = lageentwicklungen != null
           ? lageentwicklungen.stream()
-              .filter(l -> l.passtZu(grad))
-              .map(LageentwicklungVorlage::zuLageentwicklung)
-              .toList()
+          .filter(l -> l.passtZu(grad))
+          .map(LageentwicklungVorlage::zuLageentwicklung)
+          .toList()
           : List.of();
 
-      List<Sicherheitshinweis> hinweise = sicherheitshinweise != null ? sicherheitshinweise : List.of();
+      List<Sicherheitshinweis> hinweise =
+          sicherheitshinweise != null ? sicherheitshinweise : List.of();
       List<Bewertungspunkt> punkte = bewertungspunkte != null ? bewertungspunkte : List.of();
 
       return new VorlagenPaket(
@@ -151,7 +159,9 @@ public class SzenarioKatalog {
     }
   }
 
-  private static record KatalogContainer(List<SzenarioVorlage> vorlagen) {}
+  private static record KatalogContainer(List<SzenarioVorlage> vorlagen) {
+
+  }
 
   private final Map<String, SzenarioVorlage> vorlagen = new LinkedHashMap<>();
 
@@ -174,7 +184,8 @@ public class SzenarioKatalog {
 
     InputStream is = getResourceAsStream(ressourcenPfad);
     if (is == null) {
-      log.error("Szenario-Vorlagendatei konnte nicht im Classpath gefunden werden: {}", ressourcenPfad);
+      log.error("Szenario-Vorlagendatei konnte nicht im Classpath gefunden werden: {}",
+          ressourcenPfad);
       throw new IllegalStateException("Szenario-Vorlagendatei nicht gefunden: " + ressourcenPfad);
     }
 
@@ -189,8 +200,10 @@ public class SzenarioKatalog {
       }
       log.info("{} Szenariovorlagen erfolgreich aus {} geladen.", vorlagen.size(), ressourcenPfad);
     } catch (IOException e) {
-      log.error("Fehler beim Einlesen der Szenariovorlagen aus {}: {}", ressourcenPfad, e.getMessage(), e);
-      throw new IllegalStateException("Fehler beim Laden der Szenariovorlagen aus " + ressourcenPfad, e);
+      log.error("Fehler beim Einlesen der Szenariovorlagen aus {}: {}", ressourcenPfad,
+          e.getMessage(), e);
+      throw new IllegalStateException(
+          "Fehler beim Laden der Szenariovorlagen aus " + ressourcenPfad, e);
     }
   }
 
@@ -228,13 +241,19 @@ public class SzenarioKatalog {
         .count() : 0;
 
     boolean darfInnenangriff = anzahlAgt >= 4;
-    String ort = parameter != null && !parameter.ortObjekt().isBlank() ? parameter.ortObjekt() : "Wohngebäude Dorfstraße 14";
-    Schwierigkeitsgrad grad = parameter != null ? parameter.schwierigkeit() : Schwierigkeitsgrad.MITTEL;
+    String ort = parameter != null && !parameter.ortObjekt().isBlank() ? parameter.ortObjekt()
+        : "Wohngebäude Dorfstraße 14";
+    Schwierigkeitsgrad grad =
+        parameter != null ? parameter.schwierigkeit() : Schwierigkeitsgrad.MITTEL;
 
     String fahrzeugNamen = ermittleFahrzeugnamen(fahrzeuge, "Löschfahrzeug");
 
-    String vorlageId = darfInnenangriff ? "LOESCHUEBUNG_INNENANGRIFF" : "LOESCHUEBUNG_AUSSENANGRIFF";
-    return erstelleAusVorlage(vorlageId, einheit, ort, fahrzeugNamen, grad);
+    var vorlagenLoeschangriff = new String[]{"LOESCHUEBUNG_INNENANGRIFF",
+        "LOESCHUEBUNG_AUSSENANGRIFF", "LOESCHUEBUNG_WALD_VEGETATION",
+        "LOESCHUEBUNG_LANDWIRTSCHAFT_WASSERFOERDERUNG", "LOESCHUEBUNG_KIRCHE_DENKMAL"};
+
+    return erstelleAusVorlage(vorlagenLoeschangriff[(int) (Math.random() * 5)], einheit, ort,
+        fahrzeugNamen, grad);
   }
 
   public VorlagenPaket erstelleTechnischeHilfeleistung(
@@ -244,13 +263,20 @@ public class SzenarioKatalog {
       SzenarioParameter parameter,
       GuardrailPruefbericht guardrailBericht
   ) {
-    boolean hatHydraulik = fahrzeuge != null && fahrzeuge.stream().anyMatch(f -> f.getFahrzeugtyp() != null && f.getFahrzeugtyp().name().toUpperCase().startsWith("HLF"));
-    String ort = parameter != null && !parameter.ortObjekt().isBlank() ? parameter.ortObjekt() : "Kreuzung B102 / Ortsausgang";
-    Schwierigkeitsgrad grad = parameter != null ? parameter.schwierigkeit() : Schwierigkeitsgrad.MITTEL;
+    boolean hatHydraulik = fahrzeuge != null && fahrzeuge.stream().anyMatch(
+        f -> f.getFahrzeugtyp() != null && f.getFahrzeugtyp().name().toUpperCase()
+            .startsWith("HLF"));
+    String ort = parameter != null && !parameter.ortObjekt().isBlank() ? parameter.ortObjekt()
+        : "Kreuzung B102 / Ortsausgang";
+    Schwierigkeitsgrad grad =
+        parameter != null ? parameter.schwierigkeit() : Schwierigkeitsgrad.MITTEL;
     String fahrzeugNamen = ermittleFahrzeugnamen(fahrzeuge, "Hilfeleistungsfahrzeug");
 
-    String vorlageId = hatHydraulik ? "TH_VU_EINGEKLEMMT" : "TH_BASISMASSNAHMEN";
-    return erstelleAusVorlage(vorlageId, einheit, ort, fahrzeugNamen, grad);
+    var vorlagenTH = new String[]{"TH_VU_EINGEKLEMMT",
+        "TH_BASISMASSNAHMEN", "TH_WASSERRETTUNG_HAVEL", "TH_GEFAHRGUT_KLEIN",
+        "TH_TIERRETTUNG_LANDWIRTSCHAFT"};
+    return erstelleAusVorlage(vorlagenTH[(int) (Math.random() * 5)], einheit, ort, fahrzeugNamen,
+        grad);
   }
 
   public VorlagenPaket erstelleAusVorlage(
