@@ -16,7 +16,6 @@ import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,7 +88,8 @@ class KameradControllerTest {
   @Test
   @DisplayName("POST /kameraden/entfernen entfernt Kamerad und leitet weiter")
   void testKameradEntfernenErfolgreich() {
-    Kamerad k = wehrService.kameradHinzufuegen("Ben", "Entfernbar", LocalDate.of(1992, 2, 2), null, null, null);
+    Kamerad k = wehrService.kameradHinzufuegen("Ben", "Entfernbar", LocalDate.of(1992, 2, 2), null,
+        null, null);
     assertTrue(wehrService.getAlleKameraden().contains(k));
 
     given()
@@ -102,7 +102,8 @@ class KameradControllerTest {
         .statusCode(303)
         .header("Location", containsString("/?erfolg=kamerad_entfernt#kameraden"));
 
-    assertTrue(wehrService.getAlleKameraden().stream().noneMatch(kam -> kam.getId().equals(k.getId())));
+    assertTrue(
+        wehrService.getAlleKameraden().stream().noneMatch(kam -> kam.getId().equals(k.getId())));
   }
 
   @Test
@@ -125,25 +126,28 @@ class KameradControllerTest {
     WehrApplicationService mockService = new WehrApplicationService();
     KameradController controller = new KameradController(mockService);
 
-    Kamerad k1 = mockService.kameradHinzufuegen("Dirk", "Direct1", LocalDate.of(1990, 1, 1), null, null, null);
-    assertEquals(4, mockService.getAlleKameraden().size());
+    Kamerad k1 = mockService.kameradHinzufuegen("Dirk", "Direct1", LocalDate.of(1990, 1, 1), null,
+        null, null);
+    assertEquals(9, mockService.getAlleKameraden().size());
 
     try (Response r1 = controller.kameradEntfernen(k1.getId())) {
       assertEquals(303, r1.getStatus());
-      assertEquals(3, mockService.getAlleKameraden().size());
+      assertEquals(8, mockService.getAlleKameraden().size());
       assertEquals("/?erfolg=kamerad_entfernt#kameraden", r1.getLocation().toString());
     }
 
     try (Response r2 = controller.kameradEntfernen("")) {
       assertEquals(303, r2.getStatus());
-      assertEquals("/?fehler=kamerad_entfernen_fehlgeschlagen#kameraden", r2.getLocation().toString());
+      assertEquals("/?fehler=kamerad_entfernen_fehlgeschlagen#kameraden",
+          r2.getLocation().toString());
     }
   }
 
   @Test
   @DisplayName("POST /kameraden/aendern aktualisiert Kamerad und leitet weiter")
   void testKameradAendernErfolgreich() {
-    Kamerad k = wehrService.kameradHinzufuegen("Max", "Aenderbar", LocalDate.of(1990, 5, 20), null, null, null);
+    Kamerad k = wehrService.kameradHinzufuegen("Max", "Aenderbar", LocalDate.of(1990, 5, 20), null,
+        null, null);
 
     given()
         .redirects().follow(false)
@@ -209,7 +213,8 @@ class KameradControllerTest {
   void testDirekterMethodenaufrufAendern() {
     WehrApplicationService mockService = new WehrApplicationService();
     KameradController controller = new KameradController(mockService);
-    Kamerad k = mockService.kameradHinzufuegen("Max", "Mustermann", LocalDate.of(1990, 1, 1), null, null, null);
+    Kamerad k = mockService.kameradHinzufuegen("Max", "Mustermann", LocalDate.of(1990, 1, 1), null,
+        null, null);
 
     try (Response r1 = controller.kameradAendern(k.getId(), "Konrad", "Eichstädt", "1990-01-01",
         null, null, null, null, null, null, null)) {
@@ -222,7 +227,8 @@ class KameradControllerTest {
     try (Response r2 = controller.kameradAendern(k.getId(), "Konrad", "Eichstädt", null,
         null, null, null, null, null, null, null)) {
       assertEquals(303, r2.getStatus());
-      assertEquals("/?fehler=kamerad_aendern_fehlgeschlagen#kameraden", r2.getLocation().toString());
+      assertEquals("/?fehler=kamerad_aendern_fehlgeschlagen#kameraden",
+          r2.getLocation().toString());
     }
   }
 
